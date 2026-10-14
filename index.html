@@ -683,6 +683,7 @@ h1{font-size:16px;margin:0 0 4px;font-weight:600}
 .sub{font-size:11px;color:var(--sub);line-height:1.5;margin:0 0 14px}
 .grp{margin-bottom:14px}
 .grp>label{display:block;font-size:12px;font-weight:600;color:var(--sub);margin-bottom:5px;letter-spacing:.02em}
+.grpnote{font-size:10.5px;color:#9aa3b0;line-height:1.5;margin-top:5px}
 input[type=search],select{width:100%;font-size:13px;padding:7px 9px;border:1px solid var(--line);border-radius:7px;background:#fff;color:var(--ink);font-family:inherit}
 input[type=search]:focus,select:focus{outline:2px solid var(--accent-soft);border-color:var(--accent)}
 .chips{display:flex;flex-wrap:wrap;gap:5px}
@@ -809,10 +810,11 @@ input[type=search]:focus,select:focus{outline:2px solid var(--accent-soft);borde
     <div class="grp">
       <label>其他</label>
       <div class="chips">
-        <div class="chip" id="cTop">只看百强</div>
+        <div class="chip" id="cTop" title="只显示机构榜单《全港小学教育竞争力100强》内的学校">只看竞争力百强</div>
         <div class="chip on" id="cStn">显示地铁站</div>
         <div class="chip" id="cReset">重置全部</div>
       </div>
+      <div class="grpnote">「竞争力百强」＝商业升学机构《全港小学教育竞争力100强》的名次，<b>不是教育局官方排名</b>，排名口径不公开，只适合当筛选线索；点击学校看具体名次。其他学校不在此榜。</div>
     </div>
 
     <div class="grp">
@@ -927,7 +929,7 @@ function schoolIcon(s, i){
 
 function popupSchool(s){
   var tags = '';
-  if (s.r) tags += '<span class="pop-tag rk">榜 ' + s.r + '</span>';
+  if (s.r) tags += '<span class="pop-tag rk" title="商业机构榜单名次，非教育局官方排名">竞争力榜 第' + s.r + '</span>';
   if (s.k && s.k !== '不适用' && s.k !== '未列名册') tags += '<span class="pop-tag net">' + esc(s.k) + ' 网</span>';
   else if (s.k === '不适用') tags += '<span class="pop-tag">不在 POA</span>';
   if (s.iv) {
@@ -951,7 +953,7 @@ function popupSchool(s){
   }
   h += '<div class="pop-btns"><a href="' + nav(BORDER[0]) + '" target="_blank" rel="noopener">从罗湖导航</a>'
      + '<a class="alt" href="' + nav(BORDER[1]) + '" target="_blank" rel="noopener">从落马洲导航</a></div>';
-  h += '<div class="pop-src">名册／地址／电话＝教育局官方 CSV（2026-09-30）；校网＝教育局 2027 年度学校网名册；底图＝高德地图；坐标为 GCJ-02（由官方 WGS-84 转换，实测偏移 595m）；站点距离与口岸站数为推算值。</div>';
+  h += '<div class="pop-src">名册／地址／电话＝教育局官方 CSV（2026-09-30）；校网＝教育局 2027 年度学校网名册；竞争力榜＝商业升学机构《全港小学教育竞争力100强》，非官方排名、口径不公开，仅作筛选线索；底图＝高德地图；坐标为 GCJ-02（由官方 WGS-84 转换，实测偏移 595m）；站点距离与口岸站数为推算值。</div>';
   return h;
 }
 
@@ -1145,7 +1147,7 @@ function selCount(){ var n = 0, k; for (k in SEL) if (SEL[k]) n++; return n; }
 function saveSel(){ try { localStorage.setItem('hkmap_sel', JSON.stringify(SEL)); } catch (e) {} }
 
 var LCOLS = [
-  {k:'rank', t:'#'}, {k:'n', t:'校名'}, {k:'t', t:'类别'}, {k:'k', t:'校网'},
+  {k:'rank', t:'竞争力榜'}, {k:'n', t:'校名'}, {k:'t', t:'类别'}, {k:'k', t:'校网'},
   {k:'d', t:'地区'}, {k:'stn', t:'最近港铁'}, {k:'h', t:'口岸站'}, {k:'iv', t:'收表'}
 ];
 function lval(s, k){
