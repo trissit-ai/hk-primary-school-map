@@ -727,6 +727,35 @@ input[type=search]:focus,select:focus{outline:2px solid var(--accent-soft);borde
 .stats b{color:var(--ink);font-size:14px;margin-right:3px}
 .stats span.hide{display:none}
 
+
+/* ---- 显示方式切换 / 选校清单 / 圆点首字 ---- */
+#listwrap{position:absolute;inset:0;background:var(--panel);display:none;flex-direction:column;z-index:700}
+.lbar{display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.ltit{font-size:14px;font-weight:600}
+.lcnt{font-size:12px;color:var(--sub)}
+.lcnt b{color:var(--accent)}
+.lsp{flex:1}
+.lbtn{border:1px solid var(--line);background:#fff;border-radius:7px;padding:6px 11px;font-size:12px;cursor:pointer;color:var(--ink);font-family:inherit}
+.lbtn.pri{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+.lscroll{flex:1;overflow:auto;-webkit-overflow-scrolling:touch}
+.ltable{width:100%;border-collapse:collapse;font-size:12.5px}
+.ltable th,.ltable td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle;white-space:nowrap}
+.ltable thead th{position:sticky;top:0;background:var(--panel);z-index:2;font-size:11.5px;color:var(--sub);cursor:pointer;user-select:none;border-bottom:1px solid #c9d4e0}
+.ltable thead th.on{color:var(--accent)}
+.ltable thead th.c,.ltable td.c{text-align:center;width:40px}
+.ltable tbody tr{cursor:pointer}
+.ltable tbody tr:hover{background:var(--accent-soft)}
+.ltable tbody tr.on{background:#eaf3ff}
+.ltable td.rk{font-weight:700;color:var(--accent)}
+.ltable td.nm small{display:block;font-size:10.5px;color:var(--sub);white-space:normal;max-width:250px}
+#selbar{position:absolute;z-index:800;top:10px;left:50%;transform:translateX(-50%);background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 8px 6px 14px;font-size:12px;color:var(--ink);box-shadow:0 2px 10px rgba(20,30,45,.15);display:none;white-space:nowrap}
+#selbar b{color:var(--accent)}
+#selbar button{margin-left:6px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:3px 10px;font-size:11px;cursor:pointer;color:var(--sub);font-family:inherit}
+.spw{width:22px;height:22px;display:flex;align-items:center;justify-content:center}
+.sp{width:13px;height:13px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:0;line-height:1;border:1px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.35);box-sizing:border-box;overflow:hidden}
+.zbig .sp{width:21px;height:21px;font-size:12.5px;font-weight:700;border-width:1.5px}
+.zbig .sp.rk{width:25px;height:25px;font-size:14px}
+
 @media(max-width:820px){
   #app{position:relative}
   #panel{position:absolute;z-index:900;left:0;top:0;bottom:0;width:85%;max-width:320px;transform:translateX(-100%);transition:transform .22s ease;box-shadow:0 0 24px rgba(20,30,45,.18)}
@@ -743,6 +772,7 @@ input[type=search]:focus,select:focus{outline:2px solid var(--accent-soft);borde
     <p class="sub">694 所小学（教育局官方名册，2026-09-30）· 97 个港铁站 · 校网取自教育局《2027 年度小一学校网名册》</p>
 
     <div id="count">显示 <b>0</b> / 0 所</div>
+    <div class="grp"><label>显示方式</label><div class="chips"><div class="chip on" id="vMap">地图</div><div class="chip" id="vList">选校清单</div></div></div>
 
     <div class="grp">
       <label>搜索校名／地址</label>
@@ -824,6 +854,24 @@ input[type=search]:focus,select:focus{outline:2px solid var(--accent-soft);borde
       <div><i style="background:#9aa3b0"></i>特殊学校</div>
       <div style="margin-top:4px"><i style="background:#26313f;border-radius:2px"></i>港铁站</div>
     </div>
+    <div id="selbar">只看已选 <b id="selN">0</b> 所 <button id="selClear" type="button">取消</button></div>
+    <div id="listwrap">
+      <div class="lbar">
+        <span class="ltit">选校清单</span>
+        <span class="lcnt" id="lcnt"></span>
+        <span class="lsp"></span>
+        <button class="lbtn" id="lAll" type="button">全选</button>
+        <button class="lbtn" id="lNone" type="button">清空</button>
+        <button class="lbtn" id="lCsv" type="button">导出 CSV</button>
+        <button class="lbtn pri" id="lOk" type="button">OK · 只看已选</button>
+      </div>
+      <div class="lscroll">
+        <table class="ltable">
+          <thead><tr id="lhead"></tr></thead>
+          <tbody id="lbody"></tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -867,11 +915,13 @@ var stnLayer = L.layerGroup([], {}).addTo(map);
 
 function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
 
-function schoolIcon(s){
-  return L.circleMarker([s.lat, s.lon], {
-    renderer: cvs, radius: s.r ? 7 : 5.5,
-    color: '#fff', weight: 1.2, opacity: .95,
-    fillColor: COLORS[s.t] || '#7b8794', fillOpacity: .92
+function schoolIcon(s, i){
+  var ch = (s.n || '?').charAt(0);
+  var cls = 'sp' + (s.r ? ' rk' : '') + ((F.onlySel && SEL[i]) ? ' sel' : '');
+  return L.marker([s.lat, s.lon], {
+    icon: L.divIcon({ className: '', iconSize: [22, 22], iconAnchor: [11, 11],
+      html: '<div class="spw"><div class="' + cls + '" style="background:'
+            + (COLORS[s.t] || '#7b8794') + '">' + esc(ch) + '</div></div>' })
   });
 }
 
@@ -924,7 +974,8 @@ function markerStation(t){
 }
 
 // ---------- 筛选 ----------
-var F = { q:'', net:'all', dist:'all', hops:'all', types:{}, tiers:{}, win:'all', top:false };
+var F = { q:'', net:'all', dist:'all', hops:'all', types:{}, tiers:{}, win:'all', top:false,
+          view:'map', onlySel:false, lsort:{k:'rank',dir:1} };
 TYPE_ORDER.forEach(function(t){ F.types[t] = true; });
 TIERS.forEach(function(t){ F.tiers[t] = true; });
 
@@ -996,7 +1047,8 @@ function fillSel(id, vals, allLabel){
     ww.appendChild(d);
   });
 
-  document.getElementById('q').oninput = function(){ F.q = this.value.trim(); apply(); };
+  var qT;
+  document.getElementById('q').oninput = function(){ F.q = this.value.trim(); clearTimeout(qT); qT = setTimeout(apply, 180); };
   document.getElementById('net').onchange = function(){ F.net = this.value; apply(); };
   document.getElementById('dist').onchange = function(){ F.dist = this.value; apply(); };
   document.getElementById('hops').onchange = function(){ F.hops = this.value; apply(); };
@@ -1008,7 +1060,8 @@ function fillSel(id, vals, allLabel){
     if (on) stnLayer.addTo(map); else map.removeLayer(stnLayer);
   };
   document.getElementById('cReset').onclick = function(){
-    F = { q:'', net:'all', dist:'all', hops:'all', types:{}, tiers:{}, win:'all', top:false };
+    F = { q:'', net:'all', dist:'all', hops:'all', types:{}, tiers:{}, win:'all', top:false,
+          view:F.view, onlySel:false, lsort:F.lsort };
     TYPE_ORDER.forEach(function(t){ F.types[t] = true; });
     TIERS.forEach(function(t){ F.tiers[t] = true; });
     document.getElementById('q').value = '';
@@ -1046,10 +1099,17 @@ function apply(){
   for (var i = 0; i < SCHOOLS.length; i++) {
     var s = SCHOOLS[i];
     if (!match(s)) continue;
+    if (F.onlySel && !SEL[i]) continue;
     n++;
-    schoolIcon(s).bindPopup(popupSchool(s), {maxWidth: 300, autoPanPadding: [24, 24]}).addTo(schLayer);
+    schoolIcon(s, i).bindPopup(popupSchool(s), {maxWidth: 300, autoPanPadding: [24, 24]}).addTo(schLayer);
   }
   document.getElementById('count').innerHTML = '显示 <b>' + n + '</b> / ' + SCHOOLS.length + ' 所';
+  var sb = document.getElementById('selbar');
+  if (sb) {
+    sb.style.display = (F.onlySel && F.view === 'map') ? '' : 'none';
+    document.getElementById('selN').textContent = selCount();
+  }
+  if (F.view === 'list') renderList();
 }
 
 
@@ -1078,6 +1138,116 @@ var FB_BODY = '1. 我是：\n（跨境学童家长 / 香港本地家长 / 升学
     } else { legacy(); }
   };
 })();
+
+
+// ---------- 选校清单 ----------
+var SEL = {};
+try { SEL = JSON.parse(localStorage.getItem('hkmap_sel') || '{}') || {}; } catch (e) { SEL = {}; }
+function selCount(){ var n = 0, k; for (k in SEL) if (SEL[k]) n++; return n; }
+function saveSel(){ try { localStorage.setItem('hkmap_sel', JSON.stringify(SEL)); } catch (e) {} }
+
+var LCOLS = [
+  {k:'rank', t:'#'}, {k:'n', t:'校名'}, {k:'t', t:'类别'}, {k:'k', t:'校网'},
+  {k:'d', t:'地区'}, {k:'stn', t:'最近港铁'}, {k:'h', t:'口岸站'}, {k:'iv', t:'收表'}
+];
+function lval(s, k){
+  if (k === 'rank') return s.r || '';
+  if (k === 'stn')  return (s.s || '') + (s.sd ? ' ' + s.sd + 'm' : '');
+  if (k === 'h')    return (s.h === null || s.h === undefined) ? '' : s.h + ' 站';
+  if (k === 'iv')   return s.iv || '未公布';
+  return s[k] || '';
+}
+function lcmp(a, b){
+  var k = F.lsort.k, d = F.lsort.dir, x, y;
+  if (k === 'rank'){ x = a.s.r || 9999; y = b.s.r || 9999; return (x - y) * d; }
+  if (k === 'stn'){  x = a.s.sd || 99999; y = b.s.sd || 99999; return (x - y) * d; }
+  if (k === 'h'){    x = (a.s.h == null) ? 9999 : a.s.h; y = (b.s.h == null) ? 9999 : b.s.h; return (x - y) * d; }
+  return String(lval(a.s, k)).localeCompare(String(lval(b.s, k)), 'zh-Hans-CN') * d;
+}
+function lrows(){
+  var out = [];
+  for (var i = 0; i < SCHOOLS.length; i++) if (match(SCHOOLS[i])) out.push({ s: SCHOOLS[i], i: i });
+  out.sort(lcmp);
+  return out;
+}
+function lhead(){
+  var h = '<tr><th class="c"></th>';
+  LCOLS.forEach(function(c){
+    h += '<th data-k="' + c.k + '"' + (F.lsort.k === c.k ? ' class="on"' : '') + '>'
+       + c.t + (F.lsort.k === c.k ? (F.lsort.dir > 0 ? ' ▲' : ' ▼') : '') + '</th>';
+  });
+  return h + '</tr>';
+}
+function renderList(){
+  var rows = lrows();
+  document.getElementById('lhead').innerHTML = lhead();
+  document.getElementById('lcnt').innerHTML = '符合条件 <b>' + rows.length + '</b> 所 · 已勾选 <b>' + selCount() + '</b> 所';
+  var h = '';
+  rows.forEach(function(o){
+    var s = o.s, on = !!SEL[o.i];
+    h += '<tr data-i="' + o.i + '" class="' + (on ? 'on' : '') + '">'
+      + '<td class="c"><input type="checkbox"' + (on ? ' checked' : '') + '></td>'
+      + '<td class="c rk">' + (s.r || '') + '</td>'
+      + '<td class="nm">' + esc(s.n) + '<small>' + esc(s.e || '') + '</small></td>'
+      + '<td>' + esc(s.t.replace('（小學）', '').replace('小學', '')) + '</td>'
+      + '<td class="c">' + esc(s.k === '不适用' ? '—' : s.k) + '</td>'
+      + '<td>' + esc(s.d) + '</td>'
+      + '<td>' + esc(lval(s, 'stn')) + '</td>'
+      + '<td class="c">' + esc(lval(s, 'h') || '—') + '</td>'
+      + '<td>' + esc(lval(s, 'iv')) + '</td></tr>';
+  });
+  document.getElementById('lbody').innerHTML = h;
+}
+function exportCsv(){
+  var sel = [];
+  for (var i = 0; i < SCHOOLS.length; i++) if (SEL[i]) sel.push(SCHOOLS[i]);
+  if (!sel.length) { alert('先在清单里勾选学校'); return; }
+  sel.sort(function(a, b){ return (a.r || 9999) - (b.r || 9999); });
+  function q(v){ v = (v == null ? '' : String(v)); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
+  var lines = [['排名','校名','英文名','类别','校网','地区','地址','电话','官网','最近港铁','距离(米)','圈层','口岸站数','插班收表'].map(q).join(',')];
+  sel.forEach(function(s){
+    lines.push([s.r||'', s.n, s.e, s.t, s.k, s.d, s.a, s.p, s.w, s.s, s.sd, s.ti, (s.h==null?'':s.h), s.iv||'未公布'].map(q).join(','));
+  });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob(['\ufeff' + lines.join('\n')], { type: 'text/csv;charset=utf-8' }));
+  a.download = '已选小学_' + new Date().toISOString().slice(0, 10) + '.csv';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+}
+function setView(v){
+  F.view = v;
+  var m = document.getElementById('map'), lw = document.getElementById('listwrap'),
+      lg = document.querySelector('.legend');
+  if (v === 'list') { m.style.display = 'none'; lg.style.display = 'none'; lw.style.display = 'flex'; }
+  else { lw.style.display = 'none'; m.style.display = ''; lg.style.display = ''; map.invalidateSize(); }
+  document.getElementById('vMap').classList.toggle('on', v === 'map');
+  document.getElementById('vList').classList.toggle('on', v === 'list');
+  apply();
+}
+document.getElementById('vMap').onclick  = function(){ setView('map'); };
+document.getElementById('vList').onclick = function(){ setView('list'); };
+document.getElementById('lbody').addEventListener('click', function(ev){
+  if (ev.target.tagName === 'A') return;
+  var tr = ev.target.closest('tr'); if (!tr) return;
+  var i = +tr.getAttribute('data-i');
+  if (SEL[i]) delete SEL[i]; else SEL[i] = true;
+  saveSel(); renderList(); if (F.onlySel) apply();
+});
+document.getElementById('lhead').addEventListener('click', function(ev){
+  var th = ev.target.closest('th'); if (!th || !th.getAttribute('data-k')) return;
+  var k = th.getAttribute('data-k');
+  if (F.lsort.k === k) F.lsort.dir *= -1; else F.lsort = { k: k, dir: 1 };
+  renderList();
+});
+document.getElementById('lAll').onclick  = function(){ lrows().forEach(function(o){ SEL[o.i] = true; }); saveSel(); renderList(); apply(); };
+document.getElementById('lNone').onclick = function(){ SEL = {}; saveSel(); renderList(); apply(); };
+document.getElementById('lCsv').onclick  = exportCsv;
+document.getElementById('lOk').onclick   = function(){
+  if (!selCount()) { alert('先在清单里勾选学校，再按 OK'); return; }
+  F.onlySel = true; setView('map');
+};
+document.getElementById('selClear').onclick = function(){ F.onlySel = false; apply(); };
+function zoomCls(){ var el = document.getElementById('map'); if (el) el.classList.toggle('zbig', map.getZoom() >= 13); }
+map.on('zoom zoomend', zoomCls);
 
 STATIONS.forEach(function(t){ markerStation(t).addTo(stnLayer); });
 stnLayer.addTo(map);
