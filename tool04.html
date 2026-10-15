@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>工具 04 · 自訂權重篩選器（北區・大埔・沙田）｜香港擇校工具超市</title>
+<meta name="description" content="把你在意的條件調成權重，幫你排序北區、大埔、沙田 35 所小學。全部欄位來自教育局《小學概覽 2026》與各校官網，可查證。這不是學校排名，是你自己權重下的排序。">
+<style>
+:root{
+  --bg:#F4F8FB; --card:#FFFFFF; --pri:#4F7BAB; --pri-d:#3A6188; --soft:#B7CCE0; --soft2:#E6EFF7;
+  --ink:#2C3B47; --ink2:#6B7C8A; --ink3:#94A4B1; --bar:#4E5A66; --line:#DCE6F0; --warn:#B5761B;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);
+  font:15px/1.68 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased}
+a{color:var(--pri-d)}
+b{font-weight:600}
+
+.top{background:var(--bar);color:#F2F6FA;padding:16px 22px 18px}
+.top .inner{max-width:1180px;margin:0 auto}
+.trow{display:flex;align-items:center;gap:14px}
+.home{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;flex:0 0 34px;border-radius:50%;background:#fff;color:#3A6188;box-shadow:0 1px 5px rgba(0,0,0,.18);text-decoration:none;font-size:17px;border:none;transition:.12s}
+.home:hover{transform:translateY(-1px);box-shadow:0 3px 8px rgba(0,0,0,.22);color:#2C5f86}
+.crumb{font-size:13px;color:#AFC0CE;margin-bottom:6px}
+.crumb a{color:#CBDCEB;text-decoration:none}
+.crumb a:hover{text-decoration:underline}
+.top h1{margin:0 0 6px;font-size:23px;letter-spacing:.4px;font-weight:600}
+.top p{margin:0;font-size:13.5px;color:#C3D2E0;max-width:900px}
+.badge04{display:inline-block;background:#5E7080;color:#EAF1F7;font-size:12px;padding:2px 9px;border-radius:99px;margin-right:8px;vertical-align:2px;letter-spacing:.5px}
+
+main{max-width:1180px;margin:0 auto;padding:18px 22px 40px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 3px rgba(44,59,71,.05);margin-bottom:16px}
+.panel-h{padding:14px 18px 12px;border-bottom:1px solid var(--line)}
+.panel-h h2{margin:0;font-size:16px;font-weight:600}
+.panel-h .sub{margin:4px 0 0;font-size:12.5px;color:var(--ink2)}
+.panel-b{padding:14px 18px}
+
+.lead{background:#FCF3E8;border-left:3px solid var(--warn);border-radius:0 8px 8px 0;padding:12px 16px;font-size:13.5px;color:#7a5512;line-height:1.85;margin-bottom:16px}
+.lead b{color:#5c3f0c}
+
+.presets{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.presets button{background:var(--soft2);color:var(--pri-d);border:1px solid var(--line);border-radius:99px;padding:6px 14px;font-size:13px;cursor:pointer;font-family:inherit}
+.presets button:hover{background:var(--soft);color:#fff;border-color:var(--soft)}
+.presets button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+
+.wgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px 22px}
+.w{display:grid;grid-template-columns:1fr 46px;align-items:center;gap:10px}
+.w .nm{font-size:13px;color:var(--ink)}
+.w .nm i{display:block;font-style:normal;font-size:11.5px;color:var(--ink3);line-height:1.5}
+.w .vv{font-size:13px;font-weight:600;color:var(--pri-d);text-align:right;font-variant-numeric:tabular-nums}
+.w input[type=range]{grid-column:1/3;width:100%;accent-color:var(--pri);margin:0}
+
+.filters{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end}
+.filters .g{display:flex;flex-direction:column;gap:5px}
+.filters label{font-size:12px;color:var(--ink2);font-weight:600}
+select,input[type=text]{font-size:14px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit}
+select:focus,input:focus{outline:2px solid var(--soft);border-color:var(--pri)}
+.btn{background:var(--pri);color:#fff;border:none;border-radius:8px;padding:9px 16px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
+.btn:hover{background:var(--pri-d)}
+.btn.ghost{background:#fff;color:var(--pri-d);border:1px solid var(--line);font-weight:500}
+
+.stat{font-size:12.5px;color:var(--ink2);margin:0 0 10px}
+.tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:#fff}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:1020px}
+th{background:var(--soft2);padding:9px 8px;text-align:left;font-weight:600;font-size:12px;color:var(--pri-d);white-space:nowrap;border-bottom:1px solid var(--line);cursor:pointer}
+th:hover{background:var(--soft);color:#fff}
+td{padding:8px;border-bottom:1px solid #F0F4F8;vertical-align:top;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#FBFCFE}
+.scor{font-weight:700;font-size:14px;color:var(--pri-d);font-variant-numeric:tabular-nums}
+.bar{height:4px;background:#EEF2F6;border-radius:3px;overflow:hidden;margin-top:3px;width:60px}
+.bar i{display:block;height:100%;background:var(--pri)}
+.nm b{font-weight:600}
+.tag{display:inline-block;padding:1px 7px;border-radius:99px;font-size:11px;margin-left:4px}
+.t-dss{background:#FCE7F3;color:#9D174D}
+.t-gov{background:#E5E7EB;color:#374151}
+.t-aid{background:#E0F2FE;color:#075985}
+.rk{color:#B45309;font-weight:600}
+.mut{color:var(--ink3)}
+.dim{font-variant-numeric:tabular-nums;text-align:right}
+
+.note{background:#FBFCFE;border:1px solid var(--line);border-radius:8px;padding:12px 16px;font-size:12.5px;color:var(--ink2);line-height:1.9;margin-top:16px}
+.note b{color:var(--ink)}
+footer{max-width:1180px;margin:0 auto;padding:0 22px 46px;font-size:12px;color:var(--ink3);line-height:1.9}
+footer .fx{border-top:1px solid var(--line);padding-top:14px}
+@media (max-width:640px){.top h1{font-size:19px}main{padding:14px}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="inner">
+    <div class="trow">
+      <a class="home" href="tools.html" title="工具超市首页">🏠</a>
+      <div>
+        <div class="crumb"><a href="tools.html">香港擇校工具超市</a> / 工具 04</div>
+        <h1><span class="badge04">工具 04</span>自訂權重篩選器（北區・大埔・沙田）</h1>
+      </div>
+    </div>
+    <p>把你在意的條件調成權重，右邊的排序會跟著變。每一欄都標了出處和等級，你可以自己核。</p>
+  </div>
+</header>
+
+<main>
+
+  <div class="lead">
+    <b>先講清楚：這不是學校排名。</b>香港教育局不公布官方小學排名。這張表的分數，是<b>你自己的權重</b>乘以<b>可查證的事實欄位</b>算出來的——換一個人調權重，順序就完全不同。它只能幫你縮小範圍、整理問題，不能替你做決定。
+  </div>
+
+  <div class="panel">
+    <div class="panel-h">
+      <h2>1 · 調權重</h2>
+      <div class="sub">拉桿是「相對重要度」，不是分數。全部拉到 0 的欄位不參與計算。</div>
+    </div>
+    <div class="panel-b">
+      <div class="presets" id="presets">
+        <button data-p="even" class="on">均衡</button>
+        <button data-p="q70">重質素 70 / 通勤 30</button>
+        <button data-p="cm">通勤優先</button>
+        <button data-p="sec">升中優先</button>
+        <button data-p="lang">英語／普通話授課優先</button>
+      </div>
+      <div class="wgrid" id="wgrid"></div>
+      <div class="stat" style="margin-top:12px">權重合計：<b id="wsum">—</b>（只看比例，不看絕對值）</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-h"><h2>2 · 篩選</h2></div>
+    <div class="panel-b">
+      <div class="filters">
+        <div class="g"><label for="fD">地區</label><select id="fD"><option value="">全部</option><option>北區</option><option>大埔區</option><option>沙田區</option></select></div>
+        <div class="g"><label for="fT">類別</label><select id="fT"><option value="">全部</option><option value="aid">資助</option><option value="gov">官立</option><option value="dss">直資</option></select></div>
+        <div class="g"><label for="fDoor">門到校上限</label><select id="fDoor"><option value="999">不限</option><option value="55">55 分鐘</option><option value="60">60 分鐘</option><option value="70">70 分鐘</option><option value="81">81 分鐘</option></select></div>
+        <div class="g"><label for="fL">升中關係</label><select id="fL"><option value="">全部</option><option value="1">只看一條龍／聯繫中學</option></select></div>
+        <div class="g"><label for="fQ">校名</label><input type="text" id="fQ" placeholder="輸入關鍵字" style="width:180px"></div>
+        <button class="btn ghost" id="btnReset">重置</button>
+        <button class="btn ghost" id="btnCsv">導出 CSV</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-h">
+      <h2>3 · 結果 <span id="cnt" style="font-weight:400;color:var(--ink2);font-size:13px"></span></h2>
+      <div class="sub">點表頭可排序。門到校是<b>推算值</b>（見下方說明），不是實測車程。</div>
+    </div>
+    <div class="panel-b">
+      <div class="tblwrap">
+        <table>
+          <thead><tr>
+            <th data-s="score">得分 ↕</th>
+            <th data-s="n">學校 ↕</th>
+            <th data-s="d">地區 ↕</th>
+            <th>校網</th><th>就近港鐵站</th>
+            <th data-s="door">門到校 ↕</th>
+            <th data-s="a" title="教育局《小學概覽2026》">升中路徑 ↕</th>
+            <th data-s="b" title="學校自行公布">升中結果 ↕</th>
+            <th data-s="c" title="教育局《小學概覽2026》授課語言欄">英語／普通話授課 ↕</th>
+            <th data-s="aw" title="教育局卓越教學獎（ATE）">教學獎 ↕</th>
+            <th data-s="e" title="概覽載明的跨境／新來港學童支援">跨境支援 ↕</th>
+            <th data-s="f" title="含推算成分">插班資訊 ↕</th>
+            <th>電話</th>
+          </tr></thead>
+          <tbody id="tb"></tbody>
+        </table>
+      </div>
+
+      <div class="note">
+        <b>每一欄是什麼、從哪裡來</b><br>
+        · <b>升中路徑</b>：一條龍 15／聯繫中學 10／無 0。<b>S 級</b>——教育局《小學概覽 2026》官方欄位。<br>
+        · <b>升中結果</b>：學校自行公布的升中數據換算。<b>A 級</b>，各校口徑不一，只能橫向粗看。<br>
+        · <b>英語／普通話授課</b>：概覽「授課語言」欄換算。<b>S 級</b>。這是事實，要不要重視是你的選擇——孩子粵語弱就調高，粵語沒問題就不用管。<br>
+        · <b>教學獎</b>：教育局「卓越教學獎」（ATE）獲獎數。<b>S 級</b>。沒獲獎不等於教得不好，很多學校沒申請。<br>
+        · <b>跨境支援</b>：概覽裡有沒有寫明跨境／新來港學童的支援安排。<b>S 級</b>。沒寫不等於沒有，建議打電話問。<br>
+        · <b>插班資訊</b>：學位與收表資訊的可得性，<b>含推算成分</b>，等級最低，當線索用。<br>
+        · <b>門到校</b>：35 分基準（到家門口到口岸 10 ＋ 過關 20 ＋ 到港鐵站 5）＋ 港鐵車程 ＋ 落站步行÷80 米／分。<b>推算值</b>，我們 12 月會實走採集替換。<br>
+        <br>
+        <b>兩個容易搞錯的制度事實</b><br>
+        1. <b>資助一條龍</b>的結龍中學，<b>必須</b>提供足夠學位全數收取附屬小學的小六生；<b>直資／私立一條龍可以設校內門檻</b>。想要升中不折騰，資助龍的制度保證更硬。<br>
+        2. <b>不存在能載學童過境的學校校車。</b>實際是兩套：跨境校巴（特別配額，文錦渡／深圳灣／落馬洲／香園圍），或只在香港一側接的本地校巴（上客點只有落馬洲支線管制站、羅湖道，須禁區紙）。申請窗口每年 5–6 月。<br>
+        <br>
+        <b>這張表的邊界</b><br>
+        只涵蓋<b>北區、大埔、沙田</b>共 <b>35 所</b>（自教育局官方名冊三區 91 所中，按「門到校 ≤ 81 分鐘」及「非私立／國際」篩出），<b>不是全港清單</b>。插班沒有統一申請系統，<b>要一所一所學校打電話問</b>。
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="fx">
+    數據來源：教育局《小學概覽 2026》（三區 91 所逐校抓取）· 教育局卓越教學獎名冊 · 各校官網 · 港鐵站點座標。等級：S＝官方、A＝學校自行公布、B＝媒體。<br>
+    工具免費、無廣告、免註冊、不收集任何個人資料。發現數據有錯，來小紅書找我們最方便：<b>小紅書號 183236193（愛欣）</b>。
+  </div>
+</footer>
+
+<script>
+const DATA = [{"n":"培僑书院","a":15,"b":10,"c":15,"aw":0,"e":5,"f":6,"door":72,"d":"沙田區","k":"—","station":"大圍","p":"2602 3166","t":"直接資助計劃小學","ns":"培侨书院"},{"n":"港九街坊婦女會孫方中小學","a":15,"b":10,"c":10,"aw":0,"e":5,"f":8,"door":67,"d":"大埔區","k":"84","station":"大埔墟","p":"2661 8896","t":"資助小學","ns":"港九街坊妇女会孙方中小学"},{"n":"鳳溪創新小學","a":0,"b":5,"c":13,"aw":8,"e":5,"f":6,"door":54,"d":"北區","k":"80","station":"上水","p":"2639 2201","t":"資助小學","ns":"凤溪创新小学"},{"n":"粉嶺官立小學","a":10,"b":5,"c":3,"aw":0,"e":10,"f":4,"door":49,"d":"北區","k":"81","station":"粉嶺","p":"2669 5890","t":"官立小學","ns":"粉岭官立小学"},{"n":"五旬節靳茂生小學","a":0,"b":10,"c":8,"aw":0,"e":5,"f":8,"door":49,"d":"北區","k":"81","station":"粉嶺","p":"2670 0103","t":"資助小學","ns":"五旬节靳茂生小学"},{"n":"香港浸會大學附屬學校王錦輝中小學","a":15,"b":10,"c":15,"aw":0,"e":5,"f":2,"door":81,"d":"沙田區","k":"—","station":"石門","p":"2637 2277","t":"直接資助計劃小學","ns":"香港浸会大学附属学校王锦辉中小学"},{"n":"東華三院馬錦燦紀念小學","a":0,"b":5,"c":10,"aw":0,"e":6,"f":10,"door":51,"d":"北區","k":"80","station":"上水","p":"2671 1071","t":"資助小學","ns":"东华三院马锦灿纪念小学"},{"n":"沙田崇真學校","a":10,"b":5,"c":6,"aw":0,"e":7,"f":9,"door":63,"d":"沙田區","k":"91","station":"沙田","p":"2691 8194","t":"資助小學","ns":"沙田崇真学校"},{"n":"培基小學","a":0,"b":10,"c":15,"aw":0,"e":5,"f":8,"door":68,"d":"沙田區","k":"91","station":"火炭","p":"2602 5353","t":"資助小學","ns":"培基小学"},{"n":"五旬節于良發小學","a":0,"b":10,"c":8,"aw":0,"e":5,"f":9,"door":57,"d":"北區","k":"81","station":"粉嶺","p":"2679 5626","t":"資助小學","ns":"五旬节于良发小学"},{"n":"大埔官立小學","a":10,"b":5,"c":3,"aw":0,"e":7,"f":2,"door":51,"d":"大埔區","k":"84","station":"太和","p":"2656 2382","t":"官立小學","ns":"大埔官立小学"},{"n":"石湖墟公立學校","a":0,"b":10,"c":3,"aw":0,"e":5,"f":6,"door":47,"d":"北區","k":"80","station":"上水","p":"2672 1225","t":"資助小學","ns":"石湖墟公立学校"},{"n":"上水宣道小學","a":0,"b":5,"c":10,"aw":0,"e":7,"f":6,"door":56,"d":"北區","k":"81","station":"粉嶺","p":"2670 2257","t":"資助小學","ns":"上水宣道小学"},{"n":"曾梅千禧學校","a":0,"b":5,"c":3,"aw":5,"e":3,"f":9,"door":51,"d":"北區","k":"80","station":"上水","p":"2670 3111","t":"資助小學","ns":"曾梅千禧学校"},{"n":"東莞學校","a":0,"b":5,"c":3,"aw":0,"e":9,"f":4,"door":44,"d":"北區","k":"80","station":"上水","p":"2670 0334","t":"資助小學","ns":"东莞学校"},{"n":"聖公會嘉福榮真小學","a":0,"b":7,"c":3,"aw":0,"e":5,"f":8,"door":48,"d":"北區","k":"81","station":"粉嶺","p":"2947 6888","t":"資助小學","ns":"圣公会嘉福荣真小学"},{"n":"聖公會阮鄭夢芹小學","a":0,"b":7,"c":6,"aw":0,"e":5,"f":9,"door":56,"d":"大埔區","k":"84","station":"大埔墟","p":"2658 9222","t":"資助小學","ns":"圣公会阮郑梦芹小学"},{"n":"大埔舊墟公立學校(寶湖道)","a":0,"b":5,"c":3,"aw":7,"e":3,"f":9,"door":57,"d":"大埔區","k":"84","station":"大埔墟","p":"2665 2333","t":"資助小學","ns":"大埔旧墟公立学校(宝湖道)"},{"n":"李志達紀念學校","a":0,"b":10,"c":3,"aw":0,"e":0,"f":9,"door":49,"d":"北區","k":"80","station":"上水","p":"2673 8581","t":"資助小學","ns":"李志达纪念学校"},{"n":"鳳溪第一小學","a":0,"b":5,"c":3,"aw":7,"e":3,"f":6,"door":53,"d":"北區","k":"80","station":"上水","p":"2670 9353","t":"資助小學","ns":"凤溪第一小学"},{"n":"保良局田家炳小學","a":0,"b":5,"c":8,"aw":0,"e":5,"f":8,"door":57,"d":"大埔區","k":"84","station":"大埔墟","p":"2652 1222","t":"資助小學","ns":"保良局田家炳小学"},{"n":"大埔舊墟公立學校","a":0,"b":5,"c":8,"aw":0,"e":3,"f":8,"door":56,"d":"大埔區","k":"84","station":"太和","p":"2665 4610","t":"資助小學","ns":"大埔旧墟公立学校"},{"n":"上水惠州公立學校","a":0,"b":5,"c":3,"aw":0,"e":3,"f":9,"door":49,"d":"北區","k":"80","station":"上水","p":"2673 1183","t":"資助小學","ns":"上水惠州公立学校"},{"n":"林村公立黃福鑾紀念學校","a":0,"b":5,"c":3,"aw":0,"e":5,"f":8,"door":51,"d":"大埔區","k":"84","station":"太和","p":"2650 3355","t":"資助小學","ns":"林村公立黄福銮纪念学校"},{"n":"聖公會榮真小學","a":0,"b":5,"c":3,"aw":0,"e":3,"f":8,"door":48,"d":"北區","k":"80","station":"上水","p":"2670 3338","t":"資助小學","ns":"圣公会荣真小学"},{"n":"育賢學校","a":0,"b":5,"c":3,"aw":0,"e":7,"f":2,"door":45,"d":"北區","k":"80","station":"上水","p":"2672 9917","t":"資助小學","ns":"育贤学校"},{"n":"東華三院港九電器商聯會小學","a":0,"b":5,"c":3,"aw":0,"e":5,"f":4,"door":46,"d":"北區","k":"80","station":"上水","p":"2672 3285","t":"資助小學","ns":"东华三院港九电器商联会小学"},{"n":"保良局蕭汉森小學","a":0,"b":10,"c":3,"aw":0,"e":5,"f":8,"door":63,"d":"沙田區","k":"91","station":"火炭","p":"2604 1966","t":"資助小學","ns":"保良局萧汉森小学"},{"n":"寶血會培靈學校","a":0,"b":5,"c":3,"aw":3,"e":3,"f":6,"door":53,"d":"北區","k":"81","station":"粉嶺","p":"2675 6617","t":"資助小學","ns":"宝血会培灵学校"},{"n":"大埔崇德黃建常紀念學校","a":0,"b":5,"c":6,"aw":3,"e":0,"f":8,"door":57,"d":"大埔區","k":"84","station":"大埔墟","p":"2653 5565","t":"資助小學","ns":"大埔崇德黄建常纪念学校"},{"n":"粉嶺公立學校","a":0,"b":5,"c":3,"aw":0,"e":3,"f":6,"door":50,"d":"北區","k":"81","station":"粉嶺","p":"2670 2297","t":"資助小學","ns":"粉岭公立学校"},{"n":"大埔浸信會公立學校","a":0,"b":5,"c":3,"aw":0,"e":5,"f":8,"door":58,"d":"大埔區","k":"84","station":"大埔墟","p":"2656 3933","t":"資助小學","ns":"大埔浸信会公立学校"},{"n":"聖公會主風小學","a":0,"b":5,"c":3,"aw":0,"e":5,"f":8,"door":64,"d":"沙田區","k":"91","station":"沙田","p":"2604 8987","t":"資助小學","ns":"圣公会主风小学"},{"n":"鳳溪廖潤琛紀念學校","a":0,"b":5,"c":3,"aw":0,"e":3,"f":4,"door":54,"d":"北區","k":"81","station":"粉嶺","p":"2677 2311","t":"資助小學","ns":"凤溪廖润琛纪念学校"},{"n":"方樹福堂基金方樹泉小學","a":0,"b":5,"c":3,"aw":0,"e":3,"f":2,"door":56,"d":"北區","k":"未列名册","station":"粉嶺","p":"2708 2211","t":"資助小學","ns":"方树福堂基金方树泉小学"}];
+
+/* 維度：key, 名稱, 說明, 滿分, 換算方式 */
+const DIMS = [
+  {k:'a',  nm:'升中路徑',            sub:'一條龍／聯繫中學 · S 級',        max:15, preset:{even:10,q70:15,cm:5, sec:30,lang:5}},
+  {k:'b',  nm:'升中結果',            sub:'學校自行公布 · A 級',            max:10, preset:{even:10,q70:10,cm:5, sec:20,lang:5}},
+  {k:'c',  nm:'英語／普通話授課',    sub:'概覽授課語言欄 · S 級',          max:15, preset:{even:10,q70:15,cm:5, sec:5, lang:30}},
+  {k:'aw', nm:'教育局卓越教學獎',    sub:'ATE 名冊 · S 級',                max:8,  preset:{even:10,q70:8, cm:5, sec:5, lang:5}},
+  {k:'e',  nm:'跨境／新來港支援',    sub:'概覽載明 · S 級',                max:12, preset:{even:10,q70:12,cm:5, sec:5, lang:5}},
+  {k:'f',  nm:'插班資訊可得性',      sub:'含推算 · 等級最低',              max:10, preset:{even:10,q70:10,cm:5, sec:5, lang:5}},
+  {k:'cm', nm:'通勤（門到校愈短愈高）', sub:'分鐘 · 推算值',               max:100,preset:{even:10,q70:30,cm:50,sec:10,lang:10}}
+];
+
+let W = {}, sk = 'score', asc = false, cur = 'even';
+
+function norm(r, d){
+  if(d.k === 'cm'){
+    const v = Math.max(0, Math.min(100, (100 - r.door) / 56 * 100));
+    return v;
+  }
+  return Math.max(0, Math.min(100, (r[d.k] || 0) / d.max * 100));
+}
+
+function score(r){
+  let s = 0, w = 0;
+  DIMS.forEach(d => {
+    const wi = W[d.k] || 0;
+    if(wi <= 0) return;
+    s += wi * norm(r, d); w += wi;
+  });
+  return w ? s / w : 0;
+}
+
+function buildW(){
+  document.getElementById('wgrid').innerHTML = DIMS.map(d =>
+    '<div class="w"><div class="nm">' + d.nm + '<i>' + d.sub + '</i></div>' +
+    '<div class="vv" id="v_' + d.k + '"></div>' +
+    '<input type="range" min="0" max="40" step="1" id="w_' + d.k + '"></div>'
+  ).join('');
+  DIMS.forEach(d => {
+    const el = document.getElementById('w_' + d.k);
+    el.oninput = () => { W[d.k] = +el.value; setPreset(null); render(); };
+  });
+}
+
+function setPreset(p){
+  cur = p;
+  document.querySelectorAll('#presets button').forEach(b => b.classList.toggle('on', b.dataset.p === p));
+}
+
+function applyPreset(p){
+  setPreset(p);
+  DIMS.forEach(d => { W[d.k] = d.preset[p]; document.getElementById('w_' + d.k).value = W[d.k]; });
+  render();
+}
+
+function render(){
+  DIMS.forEach(d => document.getElementById('v_' + d.k).textContent = W[d.k] || 0);
+  document.getElementById('wsum').textContent = DIMS.reduce((s, d) => s + (W[d.k] || 0), 0);
+
+  const d = document.getElementById('fD').value, t = document.getElementById('fT').value,
+        mx = +document.getElementById('fDoor').value, l = document.getElementById('fL').value,
+        q = document.getElementById('fQ').value.trim();
+
+  let rows = DATA.filter(r =>
+    (!d || r.d === d) && r.door <= mx && (!q || r.n.indexOf(q) >= 0 || r.ns.indexOf(q) >= 0) &&
+    (!l || r.a >= 10) &&
+    (!t || (t === 'dss' ? r.t.indexOf('直接') === 0 : t === 'gov' ? r.t.indexOf('官立') === 0 : r.t.indexOf('資助') === 0))
+  );
+
+  rows.forEach(r => r.score = score(r));
+
+  rows.sort((x, y) => {
+    let a1 = x[sk], b1 = y[sk];
+    if(sk === 'score'){ a1 = x.score; b1 = y.score; }
+    if(typeof a1 === 'string') return asc ? a1.localeCompare(b1, 'zh') : b1.localeCompare(a1, 'zh');
+    return asc ? a1 - b1 : b1 - a1;
+  });
+
+  document.getElementById('cnt').textContent = '共 ' + rows.length + ' 所';
+  document.getElementById('tb').innerHTML = rows.map(r => {
+    const pct = Math.max(4, Math.min(100, r.score));
+    const tt = r.t.indexOf('直接') === 0 ? '<span class="tag t-dss">直資</span>'
+             : r.t.indexOf('官立') === 0 ? '<span class="tag t-gov">官立</span>'
+             : '<span class="tag t-aid">資助</span>';
+    return '<tr>' +
+      '<td><span class="scor">' + r.score.toFixed(1) + '</span><div class="bar"><i style="width:' + pct + '%"></i></div></td>' +
+      '<td class="nm"><b>' + r.n + '</b>' + tt + '</td>' +
+      '<td>' + r.d + '</td>' +
+      '<td>' + (r.k === '不适用' ? '<span class="mut">—</span>' : r.k) + '</td>' +
+      '<td>' + (r.station || '—') + '</td>' +
+      '<td class="dim">' + r.door + ' 分</td>' +
+      '<td class="dim">' + (r.a >= 15 ? '<span class="rk">龍 15</span>' : r.a >= 10 ? '<span class="rk">聯 10</span>' : r.a) + '</td>' +
+      '<td class="dim">' + r.b + '</td>' +
+      '<td class="dim">' + r.c + '</td>' +
+      '<td class="dim">' + r.aw + '</td>' +
+      '<td class="dim">' + r.e + '</td>' +
+      '<td class="dim">' + r.f + '</td>' +
+      '<td class="mut">' + (r.p || '—') + '</td></tr>';
+  }).join('');
+}
+
+function csv(){
+  const head = ['得分','學校','類別','地區','校網','就近港鐵站','門到校(分)','升中路徑','升中結果','英語普通話授課','教學獎','跨境支援','插班資訊','電話'];
+  const rows = [...DATA].map(r => { r.score = score(r); return r; }).sort((a, b) => b.score - a.score);
+  const esc = v => '"' + String(v).replace(/"/g, '""') + '"';
+  const out = [head.map(esc).join(',')].concat(rows.map(r => [
+    r.score.toFixed(1), r.n, r.t, r.d, r.k, r.station || '', r.door, r.a, r.b, r.c, r.aw, r.e, r.f, r.p || ''
+  ].map(esc).join(','))).join('\r\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob(['\ufeff' + out], {type:'text/csv;charset=utf-8'}));
+  a.download = '择校自订权重筛选_北区大埔沙田.csv';
+  a.click();
+}
+
+document.querySelectorAll('#presets button').forEach(b => b.onclick = () => applyPreset(b.dataset.p));
+['fD','fT','fDoor','fL'].forEach(i => document.getElementById(i).onchange = render);
+document.getElementById('fQ').oninput = render;
+document.getElementById('btnReset').onclick = () => {
+  ['fD','fT','fL'].forEach(i => document.getElementById(i).value = '');
+  document.getElementById('fDoor').value = '999';
+  document.getElementById('fQ').value = '';
+  applyPreset('even');
+};
+document.getElementById('btnCsv').onclick = csv;
+document.querySelectorAll('th[data-s]').forEach(th => th.onclick = () => {
+  const k = th.dataset.s;
+  if(sk === k) asc = !asc; else { sk = k; asc = (k === 'n' || k === 'd'); }
+  render();
+});
+
+buildW();
+applyPreset('even');
+</script>
+</body>
+</html>
