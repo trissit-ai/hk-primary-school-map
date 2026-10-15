@@ -723,6 +723,7 @@ input[type=search]:focus,select:focus{outline:2px solid var(--accent-soft);borde
 .fb-acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}
 .fb-btn{display:inline-block;font-size:12px;padding:6px 11px;border-radius:7px;background:var(--accent);color:#fff;text-decoration:none;border:1px solid var(--accent);cursor:pointer;font-family:inherit;line-height:1.3}
 .fb-btn.alt{background:#fff;color:var(--accent)}
+.fb-btn.xhs{background:#ff2442;border-color:#ff2442}
 .fb-mailrow{display:flex;align-items:center;gap:8px;margin-top:9px;flex-wrap:wrap}
 .fb-mail{font-size:12px;font-weight:600;color:var(--ink);word-break:break-all;user-select:all}
 .fb-note{font-size:11px;color:var(--sub);margin-top:5px}
@@ -820,10 +821,19 @@ input[type=search]:focus,select:focus{outline:2px solid var(--accent-soft);borde
     <div class="grp">
       <label>反馈与联系</label>
       <div class="fb">
-        <div class="fb-lead">想让这地图更好用？写下你的意见，一键发给我：</div>
+        <div class="fb-lead">想让这地图更好用？来小红书找我们聊最方便：</div>
+        <div class="fb-acts">
+          <a class="fb-btn xhs" id="fbXhs" href="https://www.xiaohongshu.com/search_result?keyword=183236193" target="_blank" rel="noopener">去小红书聊聊</a>
+        </div>
+        <div class="fb-mailrow">
+          <span class="fb-mail">小红书号 183236193（爱欣）</span>
+          <button class="fb-btn alt" id="fbXhsCopy" type="button">复制小红书号</button>
+        </div>
+        <div class="grpnote">手机上点了没反应的话，打开小红书 App 搜上面这个号就行。评论区、私信都欢迎。</div>
+        <div class="fb-lead" style="margin-top:12px">习惯写邮件的话也可以：</div>
         <textarea id="fbText" rows="3" placeholder="想加什么功能、哪里不好用、数据有错……都可以写在这里"></textarea>
         <div class="fb-acts">
-          <button class="fb-btn" id="fbSend" type="button">发送意见</button>
+          <button class="fb-btn alt" id="fbSend" type="button">发送意见（邮件）</button>
         </div>
         <div class="fb-mailrow">
           <span class="fb-mail">trixin@agent.qq.com</span>
@@ -1112,7 +1122,29 @@ function apply(){
 
 // ---------- 反馈 ----------
 var FB_MAIL = 'trixin@agent.qq.com';
+var FB_XHS_ID = '183236193';
+var FB_XHS_URL = 'https://www.xiaohongshu.com/search_result?keyword=' + FB_XHS_ID; // TODO: 换成主页直链 https://www.xiaohongshu.com/user/profile/<UID>
+function bindCopy(btnId, text){
+  var b = document.getElementById(btnId);
+  b.onclick = function(){
+    var btn = this;
+    var done = function(){ var o = btn.textContent; btn.textContent = '已复制'; setTimeout(function(){ btn.textContent = o; }, 1600); };
+    var legacy = function(){
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(ta); done();
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, legacy);
+    } else { legacy(); }
+  };
+}
 (function(){
+  document.getElementById('fbXhs').href = FB_XHS_URL;
+  bindCopy('fbXhsCopy', FB_XHS_ID);
+  bindCopy('fbCopy', FB_MAIL);
   var send = document.getElementById('fbSend');
   send.onclick = function(){
     var t = document.getElementById('fbText').value.trim();
@@ -1121,21 +1153,6 @@ var FB_MAIL = 'trixin@agent.qq.com';
              + '?subject=' + encodeURIComponent('【全港小学地图意见】')
              + '&body=' + encodeURIComponent((t || '（未填写内容）') + '\n\n—— 来自 ' + page);
     window.location.href = href;
-  };
-  var b = document.getElementById('fbCopy');
-  b.onclick = function(){
-    var btn = this;
-    var done = function(){ var o = btn.textContent; btn.textContent = '已复制'; setTimeout(function(){ btn.textContent = o; }, 1600); };
-    var legacy = function(){
-      var ta = document.createElement('textarea');
-      ta.value = FB_MAIL; ta.style.position = 'fixed'; ta.style.opacity = '0';
-      document.body.appendChild(ta); ta.select();
-      try { document.execCommand('copy'); } catch (e) {}
-      document.body.removeChild(ta); done();
-    };
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(FB_MAIL).then(done, legacy);
-    } else { legacy(); }
   };
 })();
 
