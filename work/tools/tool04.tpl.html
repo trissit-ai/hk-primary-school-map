@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>工具 04 · 自訂權重篩選器（全港）｜香港擇校工具超市</title>
+<meta name="description" content="全港 502 所小學，把你在意的條件調成權重即時排序。一條龍／直屬／聯繫中學、授課語言、小三班數、學費、校車、門到校，全部來自教育局《小學概覽 2026》官方欄位。這不是學校排名。">
+<style>
+:root{
+  --bg:#F4F8FB; --card:#FFFFFF; --pri:#4F7BAB; --pri-d:#3A6188; --soft:#B7CCE0; --soft2:#E6EFF7;
+  --ink:#2C3B47; --ink2:#6B7C8A; --ink3:#94A4B1; --bar:#4E5A66; --line:#DCE6F0; --warn:#B5761B;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);
+  font:15px/1.68 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased}
+a{color:var(--pri-d)}
+b{font-weight:600}
+
+.top{background:var(--bar);color:#F2F6FA;padding:16px 22px 18px}
+.top .inner{max-width:1240px;margin:0 auto}
+.trow{display:flex;align-items:center;gap:14px}
+.home{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;flex:0 0 34px;border-radius:50%;background:#fff;color:#3A6188;box-shadow:0 1px 5px rgba(0,0,0,.18);text-decoration:none;font-size:17px;border:none;transition:.12s}
+.home:hover{transform:translateY(-1px);box-shadow:0 3px 8px rgba(0,0,0,.22);color:#2C5f86}
+.crumb{font-size:13px;color:#AFC0CE;margin-bottom:6px}
+.crumb a{color:#CBDCEB;text-decoration:none}
+.crumb a:hover{text-decoration:underline}
+.top h1{margin:0 0 6px;font-size:23px;letter-spacing:.4px;font-weight:600}
+.top p{margin:0;font-size:13.5px;color:#C3D2E0;max-width:900px}
+.badge04{display:inline-block;background:#5E7080;color:#EAF1F7;font-size:12px;padding:2px 9px;border-radius:99px;margin-right:8px;vertical-align:2px;letter-spacing:.5px}
+
+main{max-width:1240px;margin:0 auto;padding:18px 22px 40px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 3px rgba(44,59,71,.05);margin-bottom:16px}
+.panel-h{padding:14px 18px 12px;border-bottom:1px solid var(--line)}
+.panel-h h2{margin:0;font-size:16px;font-weight:600}
+.panel-h .sub{margin:4px 0 0;font-size:12.5px;color:var(--ink2)}
+.panel-b{padding:14px 18px}
+
+.lead{background:#FCF3E8;border-left:3px solid var(--warn);border-radius:0 8px 8px 0;padding:12px 16px;font-size:13.5px;color:#7a5512;line-height:1.85;margin-bottom:16px}
+.lead b{color:#5c3f0c}
+
+.presets{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.presets button{background:var(--soft2);color:var(--pri-d);border:1px solid var(--line);border-radius:99px;padding:6px 14px;font-size:13px;cursor:pointer;font-family:inherit}
+.presets button:hover{background:var(--soft);color:#fff;border-color:var(--soft)}
+.presets button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+
+.wgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px 22px}
+.w{display:grid;grid-template-columns:1fr 46px;align-items:center;gap:10px}
+.w .nm{font-size:13px;color:var(--ink)}
+.w .nm i{display:block;font-style:normal;font-size:11.5px;color:var(--ink3);line-height:1.5}
+.w .vv{font-size:13px;font-weight:600;color:var(--pri-d);text-align:right;font-variant-numeric:tabular-nums}
+.w input[type=range]{grid-column:1/3;width:100%;accent-color:var(--pri);margin:0}
+
+.filters{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end}
+.filters .g{display:flex;flex-direction:column;gap:5px}
+.filters label{font-size:12px;color:var(--ink2);font-weight:600}
+select,input[type=text]{font-size:14px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit}
+select:focus,input:focus{outline:2px solid var(--soft);border-color:var(--pri)}
+.btn{background:var(--pri);color:#fff;border:none;border-radius:8px;padding:9px 16px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
+.btn.ghost{background:#fff;color:var(--pri-d);border:1px solid var(--line);font-weight:500}
+.btn:hover{background:var(--pri-d);color:#fff}
+
+.stat{font-size:12.5px;color:var(--ink2);margin:0 0 10px}
+.tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:#fff;max-height:70vh;overflow-y:auto}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:1180px}
+th{background:var(--soft2);padding:9px 8px;text-align:left;font-weight:600;font-size:12px;color:var(--pri-d);white-space:nowrap;border-bottom:1px solid var(--line);cursor:pointer;position:sticky;top:0;z-index:2}
+th:hover{background:var(--soft);color:#fff}
+td{padding:8px;border-bottom:1px solid #F0F4F8;vertical-align:top;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#FBFCFE}
+.scor{font-weight:700;font-size:14px;color:var(--pri-d);font-variant-numeric:tabular-nums}
+.bar{height:4px;background:#EEF2F6;border-radius:3px;overflow:hidden;margin-top:3px;width:60px}
+.bar i{display:block;height:100%;background:var(--pri)}
+.nmc b{font-weight:600;white-space:normal}
+.tag{display:inline-block;padding:1px 7px;border-radius:99px;font-size:11px;margin-left:4px}
+.t-dss{background:#FCE7F3;color:#9D174D}.t-gov{background:#E5E7EB;color:#374151}
+.t-aid{background:#E0F2FE;color:#075985}.t-pri{background:#F3F4F6;color:#6B7280}
+.rk{color:#B45309;font-weight:600}
+.mut{color:var(--ink3)}
+.dim{font-variant-numeric:tabular-nums;text-align:right}
+.lg{font-size:12px;white-space:normal;max-width:170px;display:inline-block}
+
+.note{background:#FBFCFE;border:1px solid var(--line);border-radius:8px;padding:12px 16px;font-size:12.5px;color:var(--ink2);line-height:1.9;margin-top:16px}
+.note b{color:var(--ink)}
+footer{max-width:1240px;margin:0 auto;padding:0 22px 46px;font-size:12px;color:var(--ink3);line-height:1.9}
+footer .fx{border-top:1px solid var(--line);padding-top:14px}
+@media (max-width:640px){.top h1{font-size:19px}main{padding:14px}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="inner">
+    <div class="trow">
+      <a class="home" href="index.html" title="工具超市首頁">🏠</a>
+      <div>
+        <div class="crumb"><a href="index.html">香港擇校工具超市</a> / 工具 04</div>
+        <h1><span class="badge04">工具 04</span>自訂權重篩選器（全港）</h1>
+      </div>
+    </div>
+    <p>全港 <b>__N__ 所</b>小學，把你在意的條件調成權重，排序就跟著變。每一欄都標了出處，全部來自教育局官方《小學概覽 2026》，你可以自己核。</p>
+  </div>
+</header>
+
+<main>
+
+  <div class="lead">
+    <b>先講清楚：這不是學校排名。</b>香港教育局不公布官方小學排名。這張表的分數，是<b>你自己的權重</b>乘以<b>可查證的事實欄位</b>——換一個人調權重，順序就完全不同。它只能幫你縮小範圍、整理問題，不能替你做決定。
+  </div>
+
+  <div class="panel">
+    <div class="panel-h">
+      <h2>1 · 調權重</h2>
+      <div class="sub">拉桿是「相對重要度」，不是分數。拉到 0 的欄位不參與計算；某欄沒資料的學校，計算時自動跳過該欄（不會當成 0 分）。</div>
+    </div>
+    <div class="panel-b">
+      <div class="presets" id="presets">
+        <button data-p="even" class="on">均衡</button>
+        <button data-p="sec">升中優先</button>
+        <button data-p="lang">英語／普通話優先</button>
+        <button data-p="cm">通勤優先</button>
+        <button data-p="fee">免學費優先</button>
+        <button data-p="seat">插班機會優先（班數＋校車）</button>
+      </div>
+      <div class="wgrid" id="wgrid"></div>
+      <div class="stat" style="margin-top:12px">權重合計：<b id="wsum">—</b>（只看比例，不看絕對值）</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-h"><h2>2 · 篩選</h2></div>
+    <div class="panel-b">
+      <div class="filters">
+        <div class="g"><label for="fD">地區</label><select id="fD"><option value="">全部（18 區）</option></select></div>
+        <div class="g"><label for="fT">類別</label><select id="fT"><option value="">全部</option><option value="資助">資助</option><option value="官立">官立</option><option value="直資">直資</option><option value="私立">私立</option></select></div>
+        <div class="g"><label for="fDoor">門到校上限</label><select id="fDoor"><option value="999">不限</option><option value="55">55 分鐘</option><option value="60">60 分鐘</option><option value="70">70 分鐘</option><option value="80">80 分鐘</option></select></div>
+        <div class="g"><label for="fL">升中關係</label><select id="fL"><option value="">全部</option><option value="1">只看一條龍／直屬／聯繫</option><option value="2">只看一條龍</option></select></div>
+        <div class="g"><label for="fBus">校車</label><select id="fBus"><option value="">全部</option><option value="1">要有校車或保姆車</option></select></div>
+        <div class="g"><label for="fQ">校名</label><input type="text" id="fQ" placeholder="輸入關鍵字" style="width:180px"></div>
+        <button class="btn ghost" id="btnReset">重置</button>
+        <button class="btn ghost" id="btnCsv">導出 CSV</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-h">
+      <h2>3 · 結果 <span id="cnt" style="font-weight:400;color:var(--ink2);font-size:13px"></span></h2>
+      <div class="sub">點表頭可排序。門到校是<b>推算值</b>（見下方說明），不是實測車程；顯示「—」表示該校不在推算覆蓋範圍。</div>
+    </div>
+    <div class="panel-b">
+      <div class="tblwrap">
+        <table>
+          <thead><tr>
+            <th data-s="score">得分 ↕</th>
+            <th data-s="n">學校 ↕</th>
+            <th data-s="d">地區 ↕</th>
+            <th data-s="k">校網 ↕</th>
+            <th>類別</th>
+            <th>就近港鐵站</th>
+            <th data-s="wd">步行 ↕</th>
+            <th data-s="door">門到校 ↕</th>
+            <th data-s="a">升中關係 ↕</th>
+            <th data-s="c">授課語言 ↕</th>
+            <th data-s="p3">小三班數 ↕</th>
+            <th data-s="fee">全年學費 ↕</th>
+            <th data-s="bus">校車 ↕</th>
+            <th>電話</th>
+          </tr></thead>
+          <tbody id="tb"></tbody>
+        </table>
+      </div>
+
+      <div class="note">
+        <b>每一欄是什麼、從哪裡來（全部 S 級：教育局《小學概覽 2026》逐校抓取）</b><br>
+        · <b>升中關係</b>：一條龍 15／直屬中學 12／聯繫中學 10／無 0。取自概覽「一條龍中學／直屬中學／聯繫中學」欄。<br>
+        · <b>授課語言</b>：概覽「教學語言」欄換算（英文 15／中文含普通話＋英文 12／中文＋英文 9／中文含普通話 6／中文 2）。這是事實，要不要重視是你的選擇——孩子粵語弱就調高，粵語沒問題就不用管。<br>
+        · <b>小三班數</b>：2026/27 學年核准的小三班級數。班數多＝學位流動機會通常較多，只能當線索，不代表一定有插班位。<br>
+        · <b>全年學費</b>：概覽「學費」欄。「—」即免學費（資助／官立）。<br>
+        · <b>校車</b>：概覽「校車服務」欄。校車＋保姆車 10／只有校車 8／只有保姆車 6／無 0。<br>
+        · <b>門到校</b>：35 分基準（出門到口岸 10 ＋ 過關 20 ＋ 到港鐵站 5）＋ 港鐵車程 ＋ 落站步行÷80 米／分。東鐵沿線按站序（每站 3 分＋等車 3 分）推算；<b>非東鐵沿線按直線距離換算並加換乘罰時，誤差更大</b>。全部是推算值，我們 12 月會實走採集替換。<br>
+        <br>
+        <b>兩個容易搞錯的制度事實</b><br>
+        1. <b>資助一條龍</b>的結龍中學，<b>必須</b>提供足夠學位全數收取附屬小學的小六生；<b>直資／私立一條龍可以設校內門檻</b>。想要升中不折騰，資助龍的制度保證更硬。<br>
+        2. <b>不存在能載學童過境的學校校車。</b>實際是兩套：跨境校巴（特別配額，文錦渡／深圳灣／落馬洲／香園圍），或只在香港一側接的本地校巴（上客點只有落馬洲支線管制站、羅湖道，須禁區紙）。申請窗口每年 5–6 月。<br>
+        <br>
+        <b>這張表的邊界</b><br>
+        收錄 <b>__N__ 所</b>＝《小學概覽 2026》全港名冊（官立／資助／直資／私立），<b>不含</b>特殊學校、國際學校與英基學校；其中 <b>__DOOR__ 所</b>可推算門到校。插班沒有統一申請系統，<b>要一所一所學校打電話問</b>。
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="fx">
+    數據來源：教育局《小學概覽 2026》全港逐校抓取（sch_detail，S 級）· 教育局《學校位置及資料》名冊（2026-09-30）· 港鐵站點座標。<br>
+    工具免費、無廣告、免註冊、不收集任何個人資料。發現數據有錯，來小紅書找我們最方便：<b>小紅書號 183236193（愛欣）</b>。
+  </div>
+</footer>
+
+<script>
+const DATA = __DATA__;
+
+const DIMS = [
+  {k:'a',   nm:'升中關係',        sub:'一條龍／直屬／聯繫 · S 級',  max:15, preset:{even:10,sec:30,lang:5, cm:5, fee:5,  seat:5}},
+  {k:'c',   nm:'英語／普通話授課', sub:'概覽教學語言欄 · S 級',      max:15, preset:{even:10,sec:5, lang:30,cm:5, fee:5,  seat:5}},
+  {k:'p3v', nm:'小三班數',        sub:'班多＝流動機會多 · S 級',     max:100,preset:{even:10,sec:5, lang:5, cm:5, fee:5,  seat:20}},
+  {k:'feev',nm:'學費愈低愈好',    sub:'概覽學費欄 · S 級',           max:100,preset:{even:10,sec:5, lang:5, cm:5, fee:30, seat:5}},
+  {k:'busv',nm:'校車／保姆車',    sub:'概覽校車服務欄 · S 級',       max:100,preset:{even:10,sec:5, lang:5, cm:5, fee:5,  seat:20}},
+  {k:'cm',  nm:'通勤（門到校）',  sub:'分鐘 · 推算值',              max:100,preset:{even:10,sec:10,lang:10,cm:50,fee:10, seat:10}}
+];
+
+let W = {}, sk = 'score', asc = false, cur = 'even';
+
+function val(r, d){ return (r[d.k] === null || r[d.k] === undefined) ? null : r[d.k]; }
+
+function score(r){
+  let s = 0, w = 0;
+  DIMS.forEach(d => {
+    const wi = W[d.k] || 0;
+    if(wi <= 0) return;
+    const v = val(r, d);
+    if(v === null) return;                    // 沒資料的欄位跳過，不當 0 分
+    s += wi * Math.max(0, Math.min(100, v / d.max * 100));
+    w += wi;
+  });
+  return w ? s / w : null;
+}
+
+function buildW(){
+  document.getElementById('wgrid').innerHTML = DIMS.map(d =>
+    '<div class="w"><div class="nm">' + d.nm + '<i>' + d.sub + '</i></div>' +
+    '<div class="vv" id="v_' + d.k + '"></div>' +
+    '<input type="range" min="0" max="40" step="1" id="w_' + d.k + '"></div>'
+  ).join('');
+  DIMS.forEach(d => {
+    const el = document.getElementById('w_' + d.k);
+    el.oninput = () => { W[d.k] = +el.value; cur = null;
+      document.querySelectorAll('#presets button').forEach(b => b.classList.remove('on')); render(); };
+  });
+}
+
+function applyPreset(p){
+  cur = p;
+  document.querySelectorAll('#presets button').forEach(b => b.classList.toggle('on', b.dataset.p === p));
+  DIMS.forEach(d => { W[d.k] = d.preset[p]; document.getElementById('w_' + d.k).value = W[d.k]; });
+  render();
+}
+
+function tt(t){
+  return t === '資助' ? '<span class="tag t-aid">資助</span>'
+       : t === '官立' ? '<span class="tag t-gov">官立</span>'
+       : t === '直資' ? '<span class="tag t-dss">直資</span>'
+       : t === '私立' ? '<span class="tag t-pri">私立</span>' : (t || '—');
+}
+
+function render(){
+  DIMS.forEach(d => document.getElementById('v_' + d.k).textContent = W[d.k] || 0);
+  document.getElementById('wsum').textContent = DIMS.reduce((s, d) => s + (W[d.k] || 0), 0);
+
+  const d  = document.getElementById('fD').value, t = document.getElementById('fT').value,
+        mx = +document.getElementById('fDoor').value, l = document.getElementById('fL').value,
+        bs = document.getElementById('fBus').value, q = document.getElementById('fQ').value.trim();
+
+  let rows = DATA.filter(r =>
+    (!d || r.d === d) && (!t || r.t === t) && (!q || r.n.indexOf(q) >= 0 || r.ns.indexOf(q) >= 0) &&
+    (!bs || r.bus > 0) &&
+    (!l || (l === '1' ? r.a >= 10 : r.a >= 15)) &&
+    (mx >= 999 || (r.door !== null && r.door <= mx))
+  );
+
+  rows.forEach(r => r.score = score(r));
+
+  rows.sort((x, y) => {
+    let a1 = sk === 'score' ? x.score : x[sk], b1 = sk === 'score' ? y.score : y[sk];
+    if(a1 === null || a1 === undefined) return 1;      // 空值永遠排最後
+    if(b1 === null || b1 === undefined) return -1;
+    if(typeof a1 === 'string') return asc ? a1.localeCompare(b1, 'zh') : b1.localeCompare(a1, 'zh');
+    return asc ? a1 - b1 : b1 - a1;
+  });
+
+  document.getElementById('cnt').textContent = '共 ' + rows.length + ' 所';
+  document.getElementById('tb').innerHTML = rows.map(r => {
+    const pct = r.score === null ? 0 : Math.max(4, Math.min(100, r.score));
+    const rel = r.a >= 15 ? '<span class="rk">龍</span>' : r.a >= 12 ? '<span class="rk">直</span>'
+              : r.a >= 10 ? '<span class="rk">聯</span>' : '<span class="mut">—</span>';
+    return '<tr>' +
+      '<td>' + (r.score === null ? '<span class="mut">—</span>'
+                : '<span class="scor">' + r.score.toFixed(1) + '</span>') +
+        '<div class="bar"><i style="width:' + pct + '%"></i></div></td>' +
+      '<td class="nmc"><b>' + r.n + '</b>' + tt(r.t) + '</td>' +
+      '<td>' + r.d + '</td>' +
+      '<td>' + (r.k || '<span class="mut">—</span>') + '</td>' +
+      '<td>' + (r.st || '<span class="mut">—</span>') + '</td>' +
+      '<td class="dim">' + (r.wd === null || r.wd === undefined ? '<span class="mut">—</span>' : r.wd + ' m') + '</td>' +
+      '<td class="dim">' + (r.door === null ? '<span class="mut">—</span>' : r.door + ' 分') + '</td>' +
+      '<td class="dim">' + rel + '</td>' +
+      '<td><span class="lg">' + (r.lang || '—') + '</span></td>' +
+      '<td class="dim">' + (r.p3 || '—') + '</td>' +
+      '<td class="dim">' + (r.fee ? '$' + r.fee.toLocaleString() : '<span class="mut">免</span>') + '</td>' +
+      '<td class="dim">' + (r.bus || '<span class="mut">—</span>') + '</td>' +
+      '<td class="mut">' + (r.p || '—') + '</td></tr>';
+  }).join('');
+}
+
+function csv(){
+  const head = ['得分','學校','類別','地區','校網','就近港鐵站','步行米','門到校分','升中關係分','授課語言','小三班數','全年學費','校車分','電話'];
+  const rows = DATA.map(r => { r.score = score(r); return r; })
+    .sort((a, b) => (b.score === null ? -1 : a.score === null ? 1 : b.score - a.score));
+  const esc = v => '"' + String(v === null || v === undefined ? '' : v).replace(/"/g, '""') + '"';
+  const out = [head.map(esc).join(',')].concat(rows.map(r => [
+    r.score === null ? '' : r.score.toFixed(1), r.n, r.t, r.d, r.k, r.st || '', r.wd || '',
+    r.door === null ? '' : r.door, r.a, r.lang, r.p3 || '', r.fee || 0, r.bus || 0, r.p || ''
+  ].map(esc).join(','))).join('\r\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob(['\ufeff' + out], {type:'text/csv;charset=utf-8'}));
+  a.download = '择校自订权重筛选_全港.csv';
+  a.click();
+}
+
+(function initDists(){
+  const set = {};
+  DATA.forEach(r => { if(r.d) set[r.d] = 1; });
+  const el = document.getElementById('fD');
+  Object.keys(set).sort((a, b) => a.localeCompare(b, 'zh')).forEach(v => {
+    const o = document.createElement('option'); o.value = v; o.textContent = v; el.appendChild(o);
+  });
+})();
+
+document.querySelectorAll('#presets button').forEach(b => b.onclick = () => applyPreset(b.dataset.p));
+['fD','fT','fDoor','fL','fBus'].forEach(i => document.getElementById(i).onchange = render);
+document.getElementById('fQ').oninput = render;
+document.getElementById('btnReset').onclick = () => {
+  ['fD','fT','fL','fBus'].forEach(i => document.getElementById(i).value = '');
+  document.getElementById('fDoor').value = '999';
+  document.getElementById('fQ').value = '';
+  applyPreset('even');
+};
+document.getElementById('btnCsv').onclick = csv;
+document.querySelectorAll('th[data-s]').forEach(th => th.onclick = () => {
+  const k = th.dataset.s;
+  if(sk === k) asc = !asc; else { sk = k; asc = (k === 'n' || k === 'd' || k === 'k'); }
+  render();
+});
+
+buildW();
+applyPreset('even');
+</script>
+</body>
+</html>
