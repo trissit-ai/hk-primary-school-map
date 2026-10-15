@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""構建 tool04.html（工具 04 · 自訂權重篩選器）
+"""構建 personal01.html（自訂權重篩選器 · 北區／大埔／沙田）
 
-用法： python3 build_tool04.py
-輸入： work/tools/tool04.tpl.html + work/tools/tool04_data.json
-輸出： 倉庫根目錄 tool04.html
+用法： python3 build_personal01.py
+輸入： work/tools/personal01.tpl.html + work/tools/personal01_data.json
+輸出： 倉庫根目錄 personal01.html
+
+註：本頁不列入工具超市（tools.html），只作個人／直接分享用。
 """
 import json, os, re, sys
 
@@ -32,7 +34,7 @@ def fix_phone(p):
 
 
 def main():
-    with open(os.path.join(HERE, 'tool04_data.json'), encoding='utf-8') as f:
+    with open(os.path.join(HERE, 'personal01_data.json'), encoding='utf-8') as f:
         raw = json.load(f)
 
     keep = ('n', 'a', 'b', 'c', 'aw', 'e', 'f', 'door', 'd', 'k', 'station', 'p', 't')
@@ -46,13 +48,13 @@ def main():
         o['k'] = '—' if o['k'] in ('不适用', '不適用', None, '') else o['k']
         data.append(o)
 
-    with open(os.path.join(HERE, 'tool04.tpl.html'), encoding='utf-8') as f:
+    with open(os.path.join(HERE, 'personal01.tpl.html'), encoding='utf-8') as f:
         tpl = f.read()
 
     js = json.dumps(data, ensure_ascii=False, separators=(',', ':'))
     html = tpl.replace('__DATA__', js).replace('__N__', str(len(data)))
 
-    out = os.path.join(ROOT, 'tool04.html')
+    out = os.path.join(ROOT, 'personal01.html')
     with open(out, 'w', encoding='utf-8') as f:
         f.write(html)
 
