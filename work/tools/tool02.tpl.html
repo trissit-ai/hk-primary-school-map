@@ -98,6 +98,9 @@ select:focus,input:focus{border-color:var(--pri);box-shadow:0 0 0 3px rgba(79,12
 .btn.go:hover{background:var(--pri-d)}
 .btn.gh{background:#fff;border:1px solid var(--line);color:var(--ink2)}
 .btn.gh:hover{border-color:var(--soft);background:var(--soft2)}
+.selrow{display:flex;gap:6px;margin-top:7px}
+.btn.sm{padding:4px 11px;font-size:12px;line-height:1.45}
+.btn:disabled{opacity:.4;cursor:not-allowed}
 
 /* ---------- 右栏 ---------- */
 #right{min-width:0}
@@ -177,9 +180,9 @@ footer .fx{border-top:1px solid var(--line);padding-top:14px}
 <header class="top">
   <div class="inner">
     <div class="trow">
-      <a class="home" href="tools.html" title="工具超市首页">🏠</a>
+      <a class="home" href="index.html" title="工具超市首页">🏠</a>
       <div>
-        <div class="crumb"><a href="tools.html">香港擇校工具超市</a> / 工具 02</div>
+        <div class="crumb"><a href="index.html">香港擇校工具超市</a> / 工具 02</div>
         <h1><span class="badge02">工具 02</span>校區篩選工具</h1>
       </div>
     </div>
@@ -252,12 +255,30 @@ footer .fx{border-top:1px solid var(--line);padding-top:14px}
         <div class="grp">
           <label>地區（十八區，可多選）</label>
           <div class="dots" id="fDist"></div>
+          <div class="selrow">
+            <button class="btn gh sm" id="bDistAll" type="button">全選</button>
+            <button class="btn gh sm" id="bDistNone" type="button">全不選</button>
+          </div>
         </div>
 
         <div class="grp">
           <label>校網號（可多選）</label>
           <div class="dots" id="fNets"></div>
+          <div class="selrow">
+            <button class="btn gh sm" id="bNetAll" type="button">全選</button>
+            <button class="btn gh sm" id="bNetNone" type="button">全不選</button>
+          </div>
           <div class="note" id="nNetMulti"></div>
+        </div>
+
+        <div class="grp">
+          <label>一條龍（可多選）</label>
+          <div class="dots" id="fTT"></div>
+          <div class="selrow">
+            <button class="btn gh sm" id="bTTAll" type="button">全選</button>
+            <button class="btn gh sm" id="bTTNone" type="button">全不選</button>
+          </div>
+          <div class="note">「一條龍」＝小學與中學採用接龍辦學模式（小六可免派位直升高中）。依 <b>教育局 2026/27 官方名單</b>（資助學校）標註；<b>直資／私立學校的接龍安排不在此官方名單內</b>，歸入「非一條龍」，請向個別學校查詢。名單內共 17 所資助小學。</div>
         </div>
 
         <div class="grp">
@@ -406,6 +427,7 @@ function defaults(){
     walk:900,
     dists:{},           // 空 = 不限
     nets:{},            // 空 = 不限
+    tt:{},              // 空 = 不限（一條龍）
     stn:'',
     oNow:false, oPub:false, oNoU:false, oTop:false, oNoSp:true,
     sort:'mix',
@@ -471,6 +493,13 @@ function reject(s, f){
     if(f.netOne){ if(String(s.k)!==String(f.netOne)) return true; }
     var anyNet = Object.keys(f.nets).length>0;
     if(anyNet && !f.nets[String(s.k)]) return true;
+  }
+
+  // 一條龍（所有入學途徑通用）
+  var anyTT = Object.keys(f.tt).length>0;
+  if(anyTT){
+    var cat = s.tt ? '一條龍' : '非一條龍';
+    if(!f.tt[cat]) return true;
   }
 
   // 口岸站數
@@ -645,6 +674,7 @@ function render(){
     if(s.h!=null) html += '<span class="tg met">口岸 '+s.h+' 站</span>';
     html += '<span class="tg '+pl.c+'">'+pl.t+'</span>';
     if(s.r) html += '<span class="tg non">競爭力榜 '+s.r+'（非官方）</span>';
+    if(s.tt) html += '<span class="tg met">一條龍</span>';
     html += '</div>';
     html += '<div class="why">';
     var wl = whyLines(s,f,sc);
@@ -662,6 +692,7 @@ function render(){
     html += '<div class="det'+(SEL[it.i]?' show':'')+'" id="det'+it.i+'">'+
             '<b>地址：</b>'+esc(s.a||'—')+'<br>'+
             '<b>2027/28 插班（抓取原文明細）：</b>'+esc(s.c27||'—（無資料，需致電）')+'<br>'+
+            (s.tt?('<b>一條龍接龍中學：</b>'+esc(s.tt)+'<br>'):'')+
             '<b>可信度：</b>'+esc(s.cf||'—')+
             '</div>';
     html += '</div></div>';
@@ -704,10 +735,10 @@ function currentList(){
 }
 function csv(){
   var L = currentList(), rows=[];
-  rows.push(['#','校名','英文名','類別','地區','校網','最近港鐵站','步行m','口岸站數','收表狀態','競爭力榜(非官方)','匹配度','電話','地址','官網']);
+  rows.push(['#','校名','英文名','類別','地區','校網','一條龍','最近港鐵站','步行m','口岸站數','收表狀態','競爭力榜(非官方)','匹配度','電話','地址','官網']);
   for(var i=0;i<L.length;i++){
     var s=L[i].s, pl=pubLabel(s);
-    rows.push([i+1, s.n, s.e||'', TYPE_OF[s.t]||'', s.d, s.k||'', s.s||'', s.sd==null?'':s.sd, s.h==null?'':s.h,
+    rows.push([i+1, s.n, s.e||'', TYPE_OF[s.t]||'', s.d, s.k||'', (s.tt?('一條龍→'+s.tt):'非一條龍'), s.s||'', s.sd==null?'':s.sd, s.h==null?'':s.h,
                pl.t, s.r||'', L[i].sc.total, s.p||'', s.a||'', s.w||'']);
   }
   var csv = rows.map(function(r){
@@ -739,7 +770,8 @@ function condText(){
   var pt=(PORTS.filter(function(p){return p.v===F.port;})[0]||{t:''}).t;
   return (F.path==='p1'?'小一入學':(F.path==='p6'?'小六插班':(F.path==='p3'?'小三插班':'插班')))
     +'｜住址：'+(F.addr==='none'?'暫無香港住址':(F.addr==='other'?'其他區／不限':F.addr))
-    +'｜類別：'+ty+'｜口岸：'+pt+'｜站數：'+(F.hops?('≤'+F.hops):'不限')+'｜步行：'+(F.walk?(F.walk+'m'):'不限');
+    +'｜類別：'+ty+'｜口岸：'+pt+'｜站數：'+(F.hops?('≤'+F.hops):'不限')+'｜步行：'+(F.walk?(F.walk+'m'):'不限')
+    + (Object.keys(F.tt).length ? ('｜一條龍：'+Object.keys(F.tt).join('/')) : '');
 }
 function copyQ(){
   var t='打電話問學校（'+condText()+'）\n\n開場：你好，我想問 2027 年 9 月入学的小三插班，我們家住深圳，孩子是香港籍。\n\n';
@@ -779,6 +811,9 @@ function buildForm(){
   // 地區
   $('fDist').innerHTML = META.dists.map(function(d){ return '<div class="chip" data-dist="'+esc(d)+'">'+esc(d)+'</div>'; }).join('');
 
+  // 一條龍
+  $('fTT').innerHTML = META.tts.map(function(v){ return '<div class="chip" data-tt="'+esc(v)+'">'+esc(v)+'</div>'; }).join('');
+
   // 港鐵站
   $('fStn').innerHTML = '<option value="">不限</option>' + META.stns.map(function(s){ return '<option value="'+esc(s)+'">'+esc(s)+'</option>'; }).join('');
 
@@ -793,6 +828,7 @@ function syncForm(){
    ['fWalk','data-walk',function(el){ return F.walk===+el.getAttribute('data-walk'); }],
    ['fDist','data-dist',function(el){ return F.dists[el.getAttribute('data-dist')]?1:0; }],
    ['fNets','data-net',function(el){ return F.nets[el.getAttribute('data-net')]?1:0; }],
+   ['fTT','data-tt',function(el){ return F.tt[el.getAttribute('data-tt')]?1:0; }],
    ['fChk','data-chk',function(el){ return F.chk[el.getAttribute('data-chk')]?1:0; }]
   ].forEach(function(g){
     var ns = $(g[0]).children;
@@ -839,6 +875,9 @@ function syncForm(){
   var nn = $('fNets').children;
   for(var k=0;k<nn.length;k++) nn[k].className = 'chip' + (F.nets[nn[k].getAttribute('data-net')]&&F.path==='p1' ? ' on':(F.path==='p1'?'':' dis'));
 
+  $('bNetAll').disabled = (F.path!=='p1');
+  $('bNetNone').disabled = (F.path!=='p1');
+
   var n1 = $('fNetOne');
   n1.disabled = (F.path!=='p1');
 }
@@ -869,7 +908,21 @@ function bind(){
   chipGroup('fWalk','data-walk',function(v){ F.walk=+v; });
   chipGroup('fDist','data-dist',function(v){ if(F.dists[v]) delete F.dists[v]; else F.dists[v]=1; });
   chipGroup('fNets','data-net',function(v){ if(F.path!=='p1') return; if(F.nets[v]) delete F.nets[v]; else F.nets[v]=1; });
+  chipGroup('fTT','data-tt',function(v){ if(F.tt[v]) delete F.tt[v]; else F.tt[v]=1; });
   chipGroup('fChk','data-chk',function(v){ if(F.chk[v]) delete F.chk[v]; else F.chk[v]=1; });
+
+  function selectAll(id, attr, set){
+    $(id).querySelectorAll('['+attr+']').forEach(function(el){
+      if(el.className.indexOf('dis')>-1) return;
+      set[el.getAttribute(attr)] = 1;
+    });
+  }
+  $('bDistAll').onclick=function(){ selectAll('fDist','data-dist',F.dists); syncForm(); kick(); };
+  $('bDistNone').onclick=function(){ F.dists={}; syncForm(); kick(); };
+  $('bNetAll').onclick=function(){ if(F.path!=='p1') return; selectAll('fNets','data-net',F.nets); syncForm(); kick(); };
+  $('bNetNone').onclick=function(){ if(F.path!=='p1') return; F.nets={}; syncForm(); kick(); };
+  $('bTTAll').onclick=function(){ selectAll('fTT','data-tt',F.tt); syncForm(); kick(); };
+  $('bTTNone').onclick=function(){ F.tt={}; syncForm(); kick(); };
 
   $('oNow').onclick=function(){ F.oNow=!F.oNow; syncForm(); kick(); };
   $('oPub').onclick=function(){ F.oPub=!F.oPub; syncForm(); kick(); };

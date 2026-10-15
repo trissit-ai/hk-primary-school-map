@@ -11,7 +11,7 @@ DATA = os.path.join(ROOT, 'data.json')
 TPL = os.path.join(ROOT, 'work', 'tools', 'tool02.tpl.html')
 OUT = os.path.join(ROOT, 'tool02.html')
 
-KEEP = ['n', 'e', 't', 'd', 'a', 'p', 'w', 'k', 'r', 's', 'sd', 'ti', 'h', 'iv', 'cf', 'c27']
+KEEP = ['n', 'e', 't', 'd', 'a', 'p', 'w', 'k', 'r', 's', 'sd', 'ti', 'h', 'iv', 'cf', 'c27', 'tt']
 
 
 def pub_state(x):
@@ -39,6 +39,8 @@ def main():
     recs = []
     for x in schools:
         r = {k: x.get(k) for k in KEEP}
+        if r.get('tt') is None:
+            r.pop('tt', None)   # 只保留真正的一條龍學校，其餘不掛此欄
         c27 = (x.get('c27') or '').strip()
         if len(c27) > 220:
             c27 = c27[:220] + '…'
@@ -53,7 +55,7 @@ def main():
     dists = sorted({x.get('d') for x in schools if x.get('d')})
     stns = sorted({x.get('s') for x in schools if x.get('s')})
 
-    meta = {'nets': nets, 'dists': dists, 'stns': stns}
+    meta = {'nets': nets, 'dists': dists, 'stns': stns, 'tts': ['一條龍', '非一條龍']}
 
     tpl = io.open(TPL, encoding='utf-8').read()
     data_js = json.dumps(recs, ensure_ascii=False, separators=(',', ':'))
