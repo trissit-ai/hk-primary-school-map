@@ -25,6 +25,9 @@ b{font-weight:600}
 /* ---------- 顶栏 ---------- */
 .top{background:var(--bar);color:#F2F6FA;padding:16px 22px 18px}
 .top .inner{max-width:1500px;margin:0 auto}
+.trow{display:flex;align-items:center;gap:14px}
+.home{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;flex:0 0 34px;border-radius:50%;background:#fff;color:#3A6188;box-shadow:0 1px 5px rgba(0,0,0,.18);text-decoration:none;font-size:17px;border:none;transition:.12s}
+.home:hover{transform:translateY(-1px);box-shadow:0 3px 8px rgba(0,0,0,.22);color:#2C5f86}
 .crumb{font-size:13px;color:#AFC0CE;margin-bottom:6px}
 .crumb a{color:#CBDCEB;text-decoration:none}
 .crumb a:hover{text-decoration:underline}
@@ -173,8 +176,13 @@ footer .fx{border-top:1px solid var(--line);padding-top:14px}
 
 <header class="top">
   <div class="inner">
-    <div class="crumb"><a href="tools.html">香港擇校工具超市</a> / 工具 02</div>
-    <h1><span class="badge02">工具 02</span>校區篩選工具</h1>
+    <div class="trow">
+      <a class="home" href="tools.html" title="工具超市首页">🏠</a>
+      <div>
+        <div class="crumb"><a href="tools.html">香港擇校工具超市</a> / 工具 02</div>
+        <h1><span class="badge02">工具 02</span>校區篩選工具</h1>
+      </div>
+    </div>
     <p>左邊填你家情況，右邊即時排出推薦學校順序。數據：教育局《學校位置及資料》名冊（2026-09-30，S 級官方）＋ 各校官網 2027/28 插班公告（逐校標可信度）。不評價學校好壞，只按你填的條件排序。</p>
   </div>
 </header>
