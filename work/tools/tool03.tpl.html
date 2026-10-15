@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>工具 03 · 口岸通勤時間試算｜香港擇校工具超市</title>
+<meta name="description" content="選跨境口岸＋學校，推算每天來回通勤時間與孩子要幾點起床。鐵路口岸（羅湖／落馬洲／福田）按港鐵站數與步行推算；公路口岸暫無接駁數據，需實走採集。">
+<style>
+:root{
+  --bg:#F4F8FB; --card:#FFFFFF; --pri:#4F7BAB; --pri-d:#3A6188; --soft:#B7CCE0; --soft2:#E6EFF7;
+  --ink:#2C3B47; --ink2:#6B7C8A; --ink3:#94A4B1; --bar:#4E5A66; --line:#DCE6F0; --req:#C0563A;
+  --ok:#3F6212; --warn:#B5761B;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);
+  font:15px/1.68 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased}
+a{color:var(--pri-d)}
+b{font-weight:600}
+
+/* 頂欄 */
+.top{background:var(--bar);color:#F2F6FA;padding:16px 22px 18px}
+.top .inner{max-width:1180px;margin:0 auto}
+.trow{display:flex;align-items:center;gap:14px}
+.home{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;flex:0 0 34px;border-radius:50%;background:#fff;color:#3A6188;box-shadow:0 1px 5px rgba(0,0,0,.18);text-decoration:none;font-size:17px;border:none;transition:.12s}
+.home:hover{transform:translateY(-1px);box-shadow:0 3px 8px rgba(0,0,0,.22);color:#2C5f86}
+.crumb{font-size:13px;color:#AFC0CE;margin-bottom:6px}
+.crumb a{color:#CBDCEB;text-decoration:none}
+.crumb a:hover{text-decoration:underline}
+.top h1{margin:0 0 6px;font-size:23px;letter-spacing:.4px;font-weight:600}
+.top p{margin:0;font-size:13.5px;color:#C3D2E0;max-width:900px}
+.badge03{display:inline-block;background:#5E7080;color:#EAF1F7;font-size:12px;padding:2px 9px;border-radius:99px;margin-right:8px;vertical-align:2px;letter-spacing:.5px}
+
+/* 主體兩欄 */
+main{max-width:1180px;margin:0 auto;padding:18px 22px 40px;display:grid;grid-template-columns:minmax(320px,38%) 1fr;gap:18px;align-items:start}
+@media (max-width:1000px){main{grid-template-columns:1fr;padding:14px}}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 3px rgba(44,59,71,.05)}
+.panel-h{padding:14px 18px 12px;border-bottom:1px solid var(--line)}
+.panel-h h2{margin:0;font-size:16px;font-weight:600}
+.panel-h .sub{margin:4px 0 0;font-size:12.5px;color:var(--ink2)}
+#left{position:sticky;top:0;max-height:100vh;overflow:auto;padding-bottom:6px}
+@media (max-width:1000px){#left{position:static;max-height:none;overflow:visible}}
+.sec{padding:14px 18px;border-bottom:1px solid var(--line)}
+.sec:last-child{border-bottom:0}
+.sec-t{display:flex;align-items:center;gap:8px;margin:0 0 12px;font-size:13px;font-weight:600;letter-spacing:.4px;color:var(--pri-d)}
+.sec-t .tagreq{background:var(--req);color:#fff;font-size:11px;padding:1px 7px;border-radius:99px;font-weight:500}
+label.lbl{display:block;font-size:12px;font-weight:600;color:var(--ink2);margin:0 0 6px}
+.req{color:var(--req)}
+input[type=text],input[type=time],select,input[list]{width:100%;font-size:14px;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;box-sizing:border-box}
+input:focus,select:focus{outline:2px solid var(--soft);border-color:var(--pri)}
+.row2{display:flex;gap:10px}
+.row2>*{flex:1}
+.hint{font-size:11.5px;color:var(--ink3);margin-top:6px;line-height:1.6}
+.calc{margin-top:4px;width:100%;background:var(--pri);color:#fff;border:none;border-radius:9px;padding:11px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit}
+.calc:hover{background:var(--pri-d)}
+
+/* 結果 */
+#right .panel-h{background:var(--soft2)}
+.sch-name{font-size:19px;font-weight:600;margin:2px 0 2px}
+.sch-meta{font-size:12.5px;color:var(--ink2);margin-bottom:10px}
+.sch-meta span{margin-right:10px}
+.bd{border-top:1px dashed var(--line);margin:12px 0;padding-top:12px}
+.bd-t{font-size:13px;font-weight:600;color:var(--pri-d);margin:0 0 8px}
+.rows{font-size:13.5px}
+.rows .r{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #F0F4F8}
+.rows .r .k{color:var(--ink2)}
+.rows .r .v{font-weight:600}
+.rows .r.total{font-size:15px;margin-top:4px;padding-top:8px;border-bottom:none}
+.rows .r.total .v{color:var(--pri-d);font-size:17px}
+.wake{background:var(--soft2);border-radius:8px;padding:12px 14px;margin-top:12px}
+.wake .line{display:flex;justify-content:space-between;padding:3px 0;font-size:13.5px}
+.wake .line.big{font-size:15px;font-weight:600;color:var(--pri-d);margin-top:4px}
+.warnbox{background:#FCF3E8;border-left:3px solid var(--warn);border-radius:0 8px 8px 0;padding:11px 14px;font-size:13px;color:#7a5512;line-height:1.7;margin-top:10px}
+.note{background:#FBFCFE;border:1px solid var(--line);border-radius:8px;padding:11px 14px;font-size:12px;color:var(--ink2);line-height:1.8;margin-top:12px}
+.note b{color:var(--ink)}
+.empty{color:var(--ink3);font-size:13.5px;padding:18px 4px;text-align:center}
+footer{max-width:1180px;margin:0 auto;padding:0 22px 46px;font-size:12px;color:var(--ink3);line-height:1.9}
+footer .fx{border-top:1px solid var(--line);padding-top:14px}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="inner">
+    <div class="trow">
+      <a class="home" href="tools.html" title="工具超市首页">🏠</a>
+      <div>
+        <div class="crumb"><a href="tools.html">香港擇校工具超市</a> / 工具 03</div>
+        <h1><span class="badge03">工具 03</span>口岸通勤時間試算</h1>
+      </div>
+    </div>
+    <p>選跨境口岸＋學校，推算每天來回通勤時間，和孩子要幾點起床。鐵路口岸（羅湖／落馬洲／福田）按港鐵站數與落站步行推算；公路口岸暫無接駁數據，需實走採集。</p>
+  </div>
+</header>
+
+<main>
+  <div class="panel" id="left">
+    <div class="sec">
+      <div class="sec-t"><span class="tagreq">必填</span>輸入條件</div>
+      <label class="lbl" for="fPort">1 · 跨境口岸 <span class="req">*</span></label>
+      <select id="fPort"></select>
+      <div class="hint" id="portHint"></div>
+    </div>
+    <div class="sec">
+      <label class="lbl" for="fSchool">2 · 學校 <span class="req">*</span></label>
+      <input type="text" id="fSchool" list="schList" placeholder="輸入或選學校名，例如：上水惠州公立學校" autocomplete="off">
+      <datalist id="schList"></datalist>
+      <div class="hint">全港 694 所都可選；輸入時自動聯想。</div>
+    </div>
+    <div class="sec">
+      <label class="lbl">3 · 上學時間（默認 08:00）</label>
+      <div class="row2">
+        <div><input type="time" id="fStart" value="08:00"></div>
+        <div><label class="lbl" for="fDays" style="margin:0 0 6px">每週幾天</label><select id="fDays"><option>5</option><option>6</option><option>4</option><option>3</option></select></div>
+      </div>
+      <div class="hint">上學時間影響「幾點起床」；每週天數影響每週總通勤時長。</div>
+    </div>
+    <div class="sec">
+      <button class="calc" id="btnCalc">試算通勤</button>
+    </div>
+  </div>
+
+  <div class="panel" id="right">
+    <div class="panel-h"><h2>推算結果</h2><div class="sub">全部為推算值，實走會不同</div></div>
+    <div class="sec" id="out">
+      <div class="empty">左邊選好口岸和學校，按「試算通勤」就會顯示：單程拆解、每天來回時間、每週總時長，以及孩子要幾點起床。</div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="fx">
+    數據來源：教育局《學校位置及資料》名冊（2026-09-30）· 各校官網 2027/28 插班公告。<br>
+    推算假設：過關＋緩衝 15 分、港鐵每站約 3 分（含停站）＋等車 3 分、步速 80 米/分（帶娃慢走）、到校到教室緩衝 10 分。站數與步行為推算值（站序／直線距離），非實際車程與實際路程。<br>
+    公路口岸（新皇崗／蓮塘／深圳灣／文錦渡）無港鐵接駁數據，無法估算全程，需實走採集——這正是工具 03 下一版要補的。本工具免費、不商業化、不收集個人資料。
+  </div>
+</footer>
+
+<script>
+/* ================= 數據 ================= */
+var SCHOOLS = /*__DATA__*/;
+var META = /*__META__*/;
+
+/* ================= 口岸 ================= */
+var PORTS = [
+  {v:'lo',  t:'羅湖'},
+  {v:'lok', t:'落馬洲'},
+  {v:'ft',  t:'福田口岸'},
+  {v:'hg',  t:'新皇崗（2026-10-12 開通）'},
+  {v:'lt',  t:'蓮塘／香園圍'},
+  {v:'sw',  t:'深圳灣'},
+  {v:'mk',  t:'文錦渡'},
+  {v:'any', t:'不限／還沒定'}
+];
+var RAIL = {lo:1, lok:1, ft:1};   // 有港鐵站序的口岸（羅湖/落馬洲/福田共用東鐵）
+var PORT_HAS_DATA = {lo:1, lok:1, ft:1};
+
+/* ================= 推算常數 ================= */
+var BORDER = 15;      // 過關＋兩邊緩衝（分）
+var PER_HOP = 3;      // 港鐵每站（分，含停站）
+var TRAIN_WAIT = 3;   // 等車（分）
+var WALK_SPEED = 80;  // 步速（米/分，帶娃慢走）
+var SCHOOL_BUF = 10;  // 到校到教室緩衝（分）
+var LEAVE_BUF = 10;   // 出門到上學的額外緩衝（分）
+var PREP = 35;        // 起床到出門（更衣早餐收拾，分）
+
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+function ceil(x){ return Math.ceil(x); }
+function mm(m){ m=Math.round(m); var h=Math.floor((m+1440)%1440/60), mm=m%60; return (h<10?'0':'')+h+':'+(mm<10?'0':'')+mm; }
+function parseTime(t){ var p=(t||'08:00').split(':'); return (+p[0])*60+(+p[1]); }
+
+function buildUI(){
+  $('fPort').innerHTML = PORTS.map(function(p){ return '<option value="'+p.v+'">'+esc(p.t)+'</option>'; }).join('');
+  var sorted = SCHOOLS.slice().sort(function(a,b){ return a.n<b.n?-1:1; });
+  $('schList').innerHTML = sorted.map(function(s){ return '<option value="'+esc(s.n)+'">'; }).join('');
+}
+
+function portLabel(v){ var p=PORTS.filter(function(x){return x.v===v;})[0]; return p?p.t:''; }
+
+function calc(){
+  var port = $('fPort').value;
+  var name = $('fSchool').value.trim();
+  var s = null;
+  for(var i=0;i<SCHOOLS.length;i++){ if(SCHOOLS[i].n===name){ s=SCHOOLS[i]; break; } }
+  var out = $('out');
+  if(!s){
+    out.innerHTML = '<div class="empty">找不到這所學校，請從聯想清單裡選，或檢查名稱。</div>';
+    return;
+  }
+  var start = parseTime($('fStart').value);
+  var days = +$('fDays').value || 5;
+
+  var head = '<div class="sch-name">'+esc(s.n)+'</div>'
+    + '<div class="sch-meta"><span>'+esc(s.t)+'</span><span>'+esc(s.d)+'</span>'
+    + (s.k&&s.k!=='不适用'?'<span>校網 '+esc(s.k)+'</span>':'')
+    + '<span>最近港鐵：'+esc(s.s||'—')+'</span></div>';
+
+  // 公路口岸：無接駁數據
+  if(!RAIL[port]){
+    out.innerHTML = head
+      + '<div class="warnbox"><b>'+esc(portLabel(port))+' 是公路口岸，暫無港鐵接駁數據</b>，無法估算到學校的全程車程。'
+      + '目前只能估：過關＋緩衝約 '+BORDER+' 分。實際到學校要幾站車、多久，需實走一次記錄——這正是工具 03 下一版要補的（口岸通勤實測）。</div>'
+      + '<div class="note">提示：若你主要看通勤，先試<b>羅湖／落馬洲／福田</b>三個鐵路口岸，它們有港鐵站序，能排出具體時間。</div>';
+    return;
+  }
+
+  // 鐵路口岸：需學校有站序 + 步行數據
+  if(s.h==null || s.sd==null){
+    out.innerHTML = head
+      + '<div class="warnbox">這所學校不在東鐵站序範圍內（或暫無步行數據），無法按站數推算。'
+      + '最近港鐵站：'+esc(s.s||'—')+'。建議改選離鐵路近的學校，或等資料補齊。</div>';
+    return;
+  }
+
+  var train = s.h*PER_HOP + TRAIN_WAIT;
+  var walk = s.sd / WALK_SPEED;
+  var oneway = BORDER + train + walk + SCHOOL_BUF;
+  var onewayC = ceil(oneway);
+  var round = onewayC*2;
+  var weekly = round*days;
+  var leave = start - onewayC - LEAVE_BUF;
+  var wake = leave - PREP;
+  var tooEarly = (onewayC + LEAVE_BUF) > start;
+
+  var rows = ''
+    + row('過關＋兩邊緩衝', BORDER)
+    + row('港鐵（'+s.h+' 站 ×'+PER_HOP+' 分＋等車 '+TRAIN_WAIT+' 分）', ceil(train))
+    + row('落站步行（'+s.sd+'m ÷ '+WALK_SPEED+' 米/分）', ceil(walk))
+    + row('到校到教室緩衝', SCHOOL_BUF)
+    + '<div class="r total"><span>單程合計</span><span>'+onewayC+' 分</span></div>';
+
+  var wk = (weekly/60);
+  var wkTxt = (wk>=10? wk.toFixed(0) : wk.toFixed(1)) + ' 小時';
+
+  var wakeHtml = '<div class="wake">'
+    + '<div class="line"><span>上學時間</span><span>'+mm(start)+'</span></div>'
+    + '<div class="line"><span>出家門（含 '+LEAVE_BUF+' 分緩衝）</span><span>'+mm(leave)+'</span></div>'
+    + '<div class="line big"><span>孩子起床</span><span>'+mm(wake)+'</span></div>'
+    + '</div>';
+
+  var warn = tooEarly
+    ? '<div class="warnbox"><b>上學時間偏早：</b>單程就要 '+ceil(oneway)+' 分，加上緩衝後出家門得 '+mm(leave)+'，起床 '+mm(wake)+'。若起不來，可考慮更近口岸／學校，或申請校車。</div>'
+    : '';
+
+  out.innerHTML = head
+    + '<div class="bd"><div class="bd-t">單程時間拆解（推算）</div><div class="rows">'+rows+'</div></div>'
+    + '<div class="bd"><div class="bd-t">每天／每週總通勤</div><div class="rows">'
+    + row('每天來回', ceil(round)+' 分（约 '+(round/60).toFixed(1)+' 小時）')
+    + row('每週 '+days+' 天', wkTxt)
+    + '</div></div>'
+    + wakeHtml + warn
+    + '<div class="note">以上均為<b>推算值</b>：過關 15 分、每站 3 分、步速 80 米/分、到校緩衝 10 分。站數是站序推算、步行是直線距離，實際車程與路程會更長。公路口岸請見上方說明。</div>';
+}
+
+function row(k,v){ return '<div class="r"><span class="k">'+k+'</span><span class="v">'+v+'</span></div>'; }
+
+/* 口岸提示 */
+$('fPort').onchange = function(){
+  var v=this.value;
+  $('portHint').innerHTML = RAIL[v]
+    ? '鐵路口岸，按港鐵站數與步行推算具體時間。'
+    : (v==='any' ? '還沒定口岸：先用羅湖／落馬洲／福田試算，它們有港鐵站序。' : '公路口岸，暫無港鐵接駁數據，只能估過關時間，全程需實走採集。');
+};
+
+buildUI();
+$('portHint').innerHTML = '鐵路口岸，按港鐵站數與步行推算具體時間。';
+$('btnCalc').onclick = calc;
+$('fSchool').addEventListener('keydown', function(e){ if(e.key==='Enter') calc(); });
+</script>
+
+</body>
+</html>
