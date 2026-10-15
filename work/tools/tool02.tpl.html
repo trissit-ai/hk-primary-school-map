@@ -1,0 +1,892 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>工具 02 · 校區篩選工具｜香港擇校工具超市</title>
+<meta name="description" content="按你家情況（入學途徑、住址落點、學校類別、口岸與通勤）從全港 694 所小學篩出推薦排序，數據來自教育局官方名冊與各校官網。">
+<style>
+:root{
+  --bg:#F4F8FB; --card:#FFFFFF; --pri:#4F7BAB; --pri-d:#3A6188; --soft:#B7CCE0; --soft2:#E6EFF7;
+  --ink:#2C3B47; --ink2:#6B7C8A; --ink3:#94A4B1; --bar:#4E5A66; --line:#DCE6F0; --req:#C0563A;
+  --ok:#3F6212; --warn:#B5761B;
+  --t-aid:#2f7fd1; --t-gov:#3f6212; --t-dss:#e08a2e; --t-pri:#8e5bc7; --t-int:#d14f8a; --t-esf:#2aa198; --t-sp:#9aa3b0;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--ink);
+  font:15px/1.68 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--pri-d)}
+b{font-weight:600}
+
+/* ---------- 顶栏 ---------- */
+.top{background:var(--bar);color:#F2F6FA;padding:16px 22px 18px}
+.top .inner{max-width:1500px;margin:0 auto}
+.crumb{font-size:13px;color:#AFC0CE;margin-bottom:6px}
+.crumb a{color:#CBDCEB;text-decoration:none}
+.crumb a:hover{text-decoration:underline}
+.top h1{margin:0 0 6px;font-size:23px;letter-spacing:.4px;font-weight:600}
+.top p{margin:0;font-size:13.5px;color:#C3D2E0;max-width:900px}
+.badge02{display:inline-block;background:#5E7080;color:#EAF1F7;font-size:12px;padding:2px 9px;border-radius:99px;margin-right:8px;vertical-align:2px;letter-spacing:.5px}
+
+/* ---------- 主体两栏 ---------- */
+main{max-width:1500px;margin:0 auto;padding:18px 22px 40px;display:grid;grid-template-columns:minmax(360px,45%) 1fr;gap:18px;align-items:start}
+@media (max-width:1000px){main{grid-template-columns:1fr;padding:14px}}
+
+.panel{background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 3px rgba(44,59,71,.05)}
+.panel-h{padding:14px 18px 12px;border-bottom:1px solid var(--line)}
+.panel-h h2{margin:0;font-size:16px;font-weight:600}
+.panel-h .sub{margin:4px 0 0;font-size:12.5px;color:var(--ink2)}
+
+#left{position:sticky;top:0;max-height:100vh;overflow:auto;padding-bottom:6px}
+@media (max-width:1000px){#left{position:static;max-height:none;overflow:visible}}
+#left::-webkit-scrollbar{width:8px}
+#left::-webkit-scrollbar-thumb{background:#CFDCE8;border-radius:8px}
+
+.sec{padding:14px 18px;border-bottom:1px solid var(--line)}
+.sec:last-child{border-bottom:0}
+.sec-t{display:flex;align-items:center;gap:8px;margin:0 0 12px;font-size:13px;font-weight:600;letter-spacing:.4px;color:var(--pri-d);text-transform:none}
+.sec-t .tagreq{background:var(--req);color:#fff;font-size:11px;padding:1px 7px;border-radius:99px;font-weight:500;letter-spacing:0}
+.sec-t .tagopt{background:#9AA9B6;color:#fff;font-size:11px;padding:1px 7px;border-radius:99px;font-weight:500;letter-spacing:0}
+.sec-t .sp{flex:1}
+.sec-t .fold{font-size:12px;color:var(--ink2);cursor:pointer;font-weight:400;user-select:none}
+.sec-t .fold:hover{color:var(--pri-d)}
+
+.grp{margin-bottom:14px}
+.grp:last-child{margin-bottom:0}
+.grp>label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:var(--ink)}
+.grp>label .r{color:var(--req);margin-left:3px;font-weight:700}
+.grp>label .hint{font-weight:400;color:var(--ink3);font-size:12px;margin-left:6px}
+
+select,input[type=search],input[type=text]{
+  width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#FBFDFF;
+  font-size:14px;color:var(--ink);font-family:inherit;outline:none
+}
+select:focus,input:focus{border-color:var(--pri);box-shadow:0 0 0 3px rgba(79,123,171,.12)}
+
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{
+  border:1px solid var(--line);background:#FBFDFF;border-radius:99px;padding:5px 12px;font-size:13px;
+  cursor:pointer;user-select:none;color:var(--ink2);transition:.12s;white-space:nowrap
+}
+.chip:hover{border-color:var(--soft);background:var(--soft2)}
+.chip.on{background:var(--pri);border-color:var(--pri);color:#fff;font-weight:500}
+.chip.dis{opacity:.4;cursor:not-allowed}
+.chip .dot{display:inline-block;width:8px;height:8px;border-radius:99px;margin-right:5px;vertical-align:1px}
+
+.dots{display:flex;flex-wrap:wrap;gap:5px 8px}
+.dots .chip{padding:4px 10px;font-size:12.5px}
+
+.note{
+  margin-top:7px;padding:8px 10px;background:var(--soft2);border-left:3px solid var(--soft);
+  border-radius:0 6px 6px 0;font-size:12px;line-height:1.6;color:var(--ink2)
+}
+.note.warn{background:#FBF1E6;border-left-color:#E0A44E;color:#7A5410}
+.note b{color:var(--ink)}
+
+.acts{display:flex;gap:8px;padding:14px 18px;flex-wrap:wrap}
+.btn{
+  border:0;border-radius:9px;padding:9px 16px;font-size:14px;cursor:pointer;font-family:inherit;font-weight:500
+}
+.btn.go{background:var(--pri);color:#fff;flex:1;min-width:120px}
+.btn.go:hover{background:var(--pri-d)}
+.btn.gh{background:#fff;border:1px solid var(--line);color:var(--ink2)}
+.btn.gh:hover{border-color:var(--soft);background:var(--soft2)}
+
+/* ---------- 右栏 ---------- */
+#right{min-width:0}
+.rbar{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 18px;border-bottom:1px solid var(--line)
+}
+.rbar .n{font-size:14px}
+.rbar .n b{color:var(--pri-d);font-size:19px;margin:0 3px}
+.rbar .sp{flex:1}
+.rbar .sortsel{padding:5px 9px;font-size:13px;width:auto}
+.rbar .mini{
+  border:1px solid var(--line);background:#fff;border-radius:8px;padding:5px 11px;font-size:13px;cursor:pointer;color:var(--ink2)
+}
+.rbar .mini:hover{border-color:var(--soft);background:var(--soft2)}
+
+.empty{padding:52px 30px;text-align:center;color:var(--ink2)}
+.empty .big{font-size:15px;margin-bottom:8px;color:var(--ink)}
+.empty .sm{font-size:13px;line-height:1.8}
+
+.cards{padding:8px 12px 14px;max-height:none}
+.card{
+  display:grid;grid-template-columns:38px 1fr;gap:10px;padding:12px 8px;border-bottom:1px solid #EEF3F8
+}
+.card:last-child{border-bottom:0}
+.card .no{
+  width:30px;height:30px;border-radius:8px;background:var(--soft2);color:var(--pri-d);
+  display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;margin-top:2px
+}
+.card .no.top{background:var(--pri);color:#fff}
+.nm{font-size:15.5px;font-weight:600;line-height:1.4}
+.nm .en{display:block;font-size:11.5px;color:var(--ink3);font-weight:400;letter-spacing:.2px;margin-top:1px}
+.card .top2{display:flex;align-items:flex-start;gap:10px}
+.sc{
+  margin-left:auto;text-align:center;min-width:52px;background:#F7FAFD;border:1px solid var(--line);
+  border-radius:9px;padding:3px 6px;flex-shrink:0
+}
+.sc .v{font-size:17px;font-weight:700;color:var(--pri-d);line-height:1.1}
+.sc .l{font-size:10px;color:var(--ink3);letter-spacing:.3px}
+
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin:7px 0 0}
+.tg{
+  font-size:11.5px;padding:2px 8px;border-radius:5px;background:#F1F5F9;color:var(--ink2);border:1px solid #E4EBF2;
+  white-space:nowrap
+}
+.tg.ty{color:#fff;border-color:transparent}
+.tg.net{background:#EEF4FB;color:var(--pri-d);border-color:#D9E6F3}
+.tg.met{background:#EAF4EC;color:#33691E;border-color:#D6E9D9}
+.tg.hot{background:#FDF0E6;color:#8A4B08;border-color:#F6E0CB}
+.tg.cool{background:#F1F5F9;color:#7B8A97}
+.tg.non{background:#F7F0F4;color:#8C4A6E;border-color:#EFDDE7}
+
+.why{margin-top:8px;font-size:12.5px;line-height:1.75;color:var(--ink2)}
+.why .k{color:var(--pri-d);font-weight:600}
+.why .risk{color:var(--warn)}
+.why .good{color:var(--ok)}
+
+.cact{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap}
+.cact a,.cact button{
+  font-size:12px;padding:4px 10px;border-radius:7px;border:1px solid var(--line);background:#fff;
+  color:var(--ink2);text-decoration:none;cursor:pointer;font-family:inherit
+}
+.cact a:hover,.cact button:hover{border-color:var(--soft);background:var(--soft2)}
+.cact button.on{background:var(--pri);border-color:var(--pri);color:#fff}
+
+.det{
+  margin-top:8px;padding:8px 10px;background:#FAFCFE;border:1px solid #EBF1F7;border-radius:8px;
+  font-size:12px;line-height:1.7;color:var(--ink2);display:none
+}
+.det.show{display:block}
+
+footer{max-width:1500px;margin:0 auto;padding:0 22px 40px;font-size:12px;color:var(--ink3);line-height:1.9}
+footer .fx{border-top:1px solid var(--line);padding-top:14px}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="inner">
+    <div class="crumb"><a href="tools.html">香港擇校工具超市</a> / 工具 02</div>
+    <h1><span class="badge02">工具 02</span>校區篩選工具</h1>
+    <p>左邊填你家情況，右邊即時排出推薦學校順序。數據：教育局《學校位置及資料》名冊（2026-09-30，S 級官方）＋ 各校官網 2027/28 插班公告（逐校標可信度）。不評價學校好壞，只按你填的條件排序。</p>
+  </div>
+</header>
+
+<main>
+  <!-- ============ 左：條件 ============ -->
+  <section id="left" class="panel">
+    <div class="panel-h">
+      <h2>你家情況</h2>
+      <p class="sub">改任何一項，右邊立刻重排。帶 <span style="color:var(--req);font-weight:700">*</span> 的是必填，其餘選填。</p>
+    </div>
+
+    <!-- 必填 -->
+    <div class="sec">
+      <div class="sec-t">必填 <span class="tagreq">6 項</span><span class="sp"></span></div>
+
+      <div class="grp">
+        <label>1 · 入學途徑 <span class="r">*</span></label>
+        <select id="fPath">
+          <option value="p3" selected>插班 · 小三（2027 年 9 月入學）</option>
+          <option value="p1">小一入學 · 經 POA 小一入學統籌辦法</option>
+          <option value="p24">插班 · 小二至小五（其他年級）</option>
+          <option value="p6">插班 · 小六</option>
+        </select>
+        <div class="note" id="nPath"></div>
+      </div>
+
+      <div class="grp">
+        <label>2 · 香港住址證明能落在哪裡 <span class="r">*</span><span class="hint">當前第一卡點</span></label>
+        <select id="fAddr"></select>
+        <div class="grp" id="netWrap" style="margin-top:8px;display:none">
+          <label>已確定的校網號</label>
+          <select id="fNetOne"></select>
+        </div>
+        <div class="note" id="nAddr"></div>
+      </div>
+
+      <div class="grp">
+        <label>3 · 學校類別（可多選）<span class="r">*</span></label>
+        <div class="chips" id="fTypes"></div>
+        <div class="note" id="nTypes"></div>
+      </div>
+
+      <div class="grp">
+        <label>4 · 跨境口岸 <span class="r">*</span></label>
+        <select id="fPort"></select>
+        <div class="note" id="nPort"></div>
+      </div>
+
+      <div class="grp">
+        <label>5 · 到口岸最多幾站 <span class="r">*</span></label>
+        <div class="chips" id="fHops"></div>
+      </div>
+
+      <div class="grp">
+        <label>6 · 落站後到學校 <span class="r">*</span></label>
+        <div class="chips" id="fWalk"></div>
+        <div class="note">站數＝港鐵東鐵線站序（羅湖／落馬洲起算，兩者站數相同）。步行距離為學校到最近港鐵站的直線距離推算值，非實際路程。</div>
+      </div>
+    </div>
+
+    <!-- 選填 -->
+    <div class="sec">
+      <div class="sec-t">選填 <span class="tagopt">不填也出結果</span><span class="sp"></span><span class="fold" id="foldOpt">展開 ▾</span></div>
+      <div id="optBody" style="display:none">
+
+        <div class="grp">
+          <label>地區（十八區，可多選）</label>
+          <div class="dots" id="fDist"></div>
+        </div>
+
+        <div class="grp">
+          <label>校網號（可多選）</label>
+          <div class="dots" id="fNets"></div>
+          <div class="note" id="nNetMulti"></div>
+        </div>
+
+        <div class="grp">
+          <label>最近港鐵站</label>
+          <select id="fStn"></select>
+        </div>
+
+        <div class="grp">
+          <label>收表與資料狀態</label>
+          <div class="chips">
+            <div class="chip" id="oNow">只要現在就能遞表</div>
+            <div class="chip" id="oPub">只要已公布 2027/28 時間表</div>
+            <div class="chip" id="oNoU">排除資料「待核」</div>
+          </div>
+        </div>
+
+        <div class="grp">
+          <label>其他</label>
+          <div class="chips">
+            <div class="chip" id="oTop" title="商業機構榜單，非教育局官方">只看競爭力百強</div>
+            <div class="chip" id="oNoSp" title="特殊學校不在一般插班範圍">排除特殊學校</div>
+          </div>
+          <div class="note">「競爭力百強」＝商業升學機構《全港小學教育競爭力100強》的名次，<b>不是教育局官方排名</b>，口徑不公開，只適合當線索；不在榜不等於不好。</div>
+        </div>
+
+        <div class="grp">
+          <label>排序偏好</label>
+          <select id="fSort">
+            <option value="mix" selected>綜合（通勤＋資料完備＋匹配）</option>
+            <option value="trip">通勤優先（口岸站數最少）</option>
+            <option value="info">資料完備優先（已公布時間表）</option>
+            <option value="rank">榜單優先（競爭力百強）</option>
+          </select>
+        </div>
+
+        <div class="grp">
+          <label>顯示前幾所</label>
+          <select id="fTop">
+            <option value="10">前 10 所</option>
+            <option value="20" selected>前 20 所</option>
+            <option value="50">前 50 所</option>
+            <option value="0">全部</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- 核對清單 -->
+    <div class="sec">
+      <div class="sec-t">打電話要問的事 <span class="tagopt">不影響篩選</span><span class="sp"></span><span class="fold" id="foldChk">展開 ▾</span></div>
+      <div id="chkBody" style="display:none">
+        <div class="dots" id="fChk"></div>
+        <div class="note">勾了的項目會疊加到下面的清單，打電話時照著問。</div>
+        <div class="acts" style="padding:10px 0 0">
+          <button class="btn gh" id="copyQ" type="button">複製問話清單</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="acts">
+      <button class="btn go" id="btnGo" type="button">篩選 ▸</button>
+      <button class="btn gh" id="btnMine" type="button">用我家預設</button>
+      <button class="btn gh" id="btnReset" type="button">重置</button>
+    </div>
+  </section>
+
+  <!-- ============ 右：結果 ============ -->
+  <section id="right" class="panel">
+    <div class="rbar">
+      <div class="n">符合 <b id="cnt">0</b> 所</div>
+      <span class="sp"></span>
+      <select class="sortsel" id="q" style="width:auto;min-width:150px;display:none"></select>
+      <button class="mini" id="btnCsv" type="button">導出 CSV</button>
+      <button class="mini" id="btnCopy" type="button">複製清單</button>
+    </div>
+    <div id="out"></div>
+  </section>
+</main>
+
+<footer>
+  <div class="fx">
+    數據來源：教育局《學校位置及資料》名冊（2026-09-30）· 教育局《2027 年度小一入學 · 各小一學校網小學名冊》· 各校官網 2027/28 插班公告（逐校抓取，標 S官方／A已公布月份／B二手／待核）。<br>
+    口岸站數與步行距離為<b>推算值</b>（直線距離／站序），不是實際車程，實走會不同。香港教育局不公布官方小學排名，「競爭力百強」為商業機構榜單。<br>
+    本工具只做條件排序，<b>不評價任何學校、校網或地區的好壞</b>；收表時間以學校官網與校方答覆為準。<br>
+    工具免費、不收費、不收集任何個人資料。有意見來小紅書找我們：<b>小紅書號 183236193（愛欣）</b>。
+  </div>
+</footer>
+
+<script>
+/* ================= 數據 ================= */
+var SCHOOLS = /*__DATA__*/;
+var META = /*__META__*/;
+
+/* ================= 常量 ================= */
+var TYPES = [
+  {k:'官立',  v:'官立小學',            c:'var(--t-gov)'},
+  {k:'資助',  v:'資助小學',            c:'var(--t-aid)'},
+  {k:'直資',  v:'直接資助計劃小學',    c:'var(--t-dss)'},
+  {k:'私立',  v:'私立小學',            c:'var(--t-pri)'},
+  {k:'國際',  v:'國際學校（小學）',    c:'var(--t-int)'},
+  {k:'英基',  v:'英基學校協會（小學）',c:'var(--t-esf)'},
+  {k:'特殊',  v:'資助特殊學校',        c:'var(--t-sp)'}
+];
+var TYPE_OF = {};              // 原始類別字串 -> 短名
+TYPES.forEach(function(t){ TYPE_OF[t.v] = t.k; });
+var IN_POA = {官立:1, 資助:1, 特殊:1};        // 在 POA 之內（受校網約束）
+var SELF_APPLY = {直資:1, 私立:1, 國際:1, 英基:1}; // 自主招生，不看校網
+
+var PORTS = [
+  {v:'lo',  t:'羅湖'},
+  {v:'lok', t:'落馬洲（福田口岸）'},
+  {v:'hg',  t:'新皇崗（2026-10-12 開通）'},
+  {v:'lt',  t:'蓮塘／香園圍'},
+  {v:'sw',  t:'深圳灣'},
+  {v:'any', t:'不限／還沒定'}
+];
+var PORT_HAS_DATA = {lo:1, lok:1};
+
+var HOPS = [ {v:0,t:'不限'}, {v:2,t:'≤ 2 站'}, {v:4,t:'≤ 4 站'}, {v:6,t:'≤ 6 站'} ];
+var WALK = [ {v:0,t:'不限'}, {v:900,t:'步行可達 ≤900m'}, {v:3000,t:'一程駁乘內 ≤3km'} ];
+
+var CHECKS = [
+  {v:'2027 年 9 月入學的小三插班，什麼時候開始收表？', t:'收表時間'},
+  {v:'住址證明怎麼認定？住深圳（跨境）可以嗎？',       t:'住址證明'},
+  {v:'有沒有跨境校車？走哪個口岸？幾點發車？',         t:'跨境校車'},
+  {v:'筆試和面試考什麼科目、什麼形式？家長要不要一起面？', t:'筆試面試'},
+  {v:'學費／雜費多少？有沒有學費減免？',               t:'學費'},
+  {v:'繁體字書寫有沒有額外支援或銜接安排？',           t:'繁體書寫'},
+  {v:'英文科進度落差怎麼補？有沒有課後支援？',         t:'學科英文'},
+  {v:'班上插班生多嗎？孩子適應期一般多久？',           t:'適應'},
+  {v:'若這一輪沒申到，有沒有候補或下一輪？',           t:'Plan B'}
+];
+
+/* ================= 狀態 ================= */
+var F = {};
+function defaults(){
+  return {
+    path:'p3',
+    addr:'none',
+    netOne:'',
+    types:{官立:1, 資助:1, 直資:1, 私立:0, 國際:0, 英基:0, 特殊:0},
+    port:'lo',
+    hops:6,
+    walk:900,
+    dists:{},           // 空 = 不限
+    nets:{},            // 空 = 不限
+    stn:'',
+    oNow:false, oPub:false, oNoU:false, oTop:false, oNoSp:true,
+    sort:'mix',
+    top:20,
+    chk:{}
+  };
+}
+function myPreset(){
+  var f = defaults();
+  f.path='p3'; f.addr='none'; f.port='lo'; f.hops=6; f.walk=900;
+  f.types={官立:1, 資助:1, 直資:1, 私立:0, 國際:0, 英基:0, 特殊:0};
+  f.oNoSp=true; f.top=20; f.sort='mix';
+  return f;
+}
+var SEL = {};   // 選校清單（本地暫存）
+
+/* ================= 工具 ================= */
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+function num(x){ return x==null ? null : x; }
+
+function hopScore(h){
+  if(h==null) return 6;
+  var m={0:20,1:18,2:16,3:14,4:12,5:10,6:8,7:6,8:4};
+  return m[h]!=null ? m[h] : 2;
+}
+function walkScore(sd){
+  if(sd==null) return 5;
+  if(sd<=400) return 15;
+  if(sd<=900) return 12;
+  if(sd<=1500) return 9;
+  if(sd<=3000) return 6;
+  return 3;
+}
+function pubScore(s){
+  // 資料完備度（0-30）
+  if(s.y) return 30;                 // 全年收表，現在就能遞
+  if(s.pu==='D') return 28;          // 已公布確切日期
+  if(s.pu==='M') return 20;          // 有資料／已公布月份
+  if(s.pu==='U') return 8;           // 待核
+  return 8;
+}
+function pubLabel(s){
+  if(s.y)      return {t:'全年收表', c:'met'};
+  if(s.pu==='D') return {t:'已公布確切日期', c:'met'};
+  if(s.pu==='M') return {t:'已公布月份／有資料', c:'hot'};
+  return {t:'待核：未公布', c:'cool'};
+}
+
+/* 硬淘汰 */
+function reject(s, f){
+  var ty = TYPE_OF[s.t] || '其他';
+  if(ty==='其他') return true;
+  if(!f.types[ty]) return true;
+  if(f.oNoSp && ty==='特殊') return true;
+
+  // 地區
+  var anyDist = Object.keys(f.dists).length>0;
+  if(anyDist && !f.dists[s.d]) return true;
+
+  // 校網（僅小一派位生效）
+  if(f.path==='p1'){
+    if(f.netOne){ if(String(s.k)!==String(f.netOne)) return true; }
+    var anyNet = Object.keys(f.nets).length>0;
+    if(anyNet && !f.nets[String(s.k)]) return true;
+  }
+
+  // 口岸站數
+  if(f.hops>0 && PORT_HAS_DATA[f.port]){
+    if(s.h==null) return true;              // 該校無東鐵直達數據
+    if(s.h>f.hops) return true;
+  }
+  // 步行
+  if(f.walk>0){
+    if(s.sd==null) return true;
+    if(s.sd>f.walk) return true;
+  }
+  // 收表狀態
+  if(f.oNow && !s.y) return true;
+  if(f.oPub && !(s.pu==='D'||s.pu==='M')) return true;
+  if(f.oNoU && s.pu==='U') return true;
+  if(f.oTop && !s.r) return true;
+  if(f.stn && s.s!==f.stn) return true;
+  return false;
+}
+
+/* 軟評分 0-100 */
+function score(s, f){
+  var ty = TYPE_OF[s.t] || '其他';
+  var trip = hopScore(s.h) + walkScore(s.sd);              // 0-35
+  var info = pubScore(s);                                   // 0-30
+  var match = 0;                                            // 0-25
+  if(SELF_APPLY[ty]){
+    match = 25;                                             // 自主招生，不看住址／校網
+  }else{
+    if(f.addr==='none'){
+      match = 0;                                            // 無香港住址：資助/官立走不通
+    }else if(f.addr==='other'){
+      match = 16;
+    }else if(s.d === f.addr){
+      match = 25;
+    }else{
+      match = 10;                                           // 跨區，需學校另行確認
+    }
+  }
+  var rk = s.r ? (10*(101-s.r)/100) : 0;                    // 0-10（非官方榜單，權重最低）
+  if(f.oTop) rk = s.r ? rk : -100;
+
+  var total = trip + info + match + rk;
+  total = Math.max(0, Math.min(100, Math.round(total)));
+  return {total:total, trip:trip, info:info, match:match, rk:Math.round(rk*10)/10};
+}
+
+function whyLines(s, f, sc){
+  var ty = TYPE_OF[s.t] || '其他';
+  var out = [];
+  // 通勤
+  if(s.h==null){
+    out.push(['risk','不在東鐵／口岸站序範圍內，需要另行查路線']);
+  }else{
+    out.push(['k','口岸 '+s.h+' 站']);
+    if(s.sd!=null && s.sd<=900) out.push(['good','落站步行約 '+s.sd+'m（推算）']);
+    else if(s.sd!=null) out.push(['k','落站直線 '+s.sd+'m（推算，非實際路程）']);
+  }
+  // 收表
+  var pl = pubLabel(s);
+  if(s.y) out.push(['good','全年收表，現在就能遞']);
+  else if(s.pu==='D') out.push(['good','已公布確切收表日期']);
+  else if(s.pu==='M') out.push(['k','已公布月份／有資料，日期待確認']);
+  else out.push(['risk','2027/28 未公布，需致電問']);
+  // 類型 / 住址
+  if(SELF_APPLY[ty]) out.push(['k','自主招生，不受校網限制']);
+  else{
+    if(f.addr==='none') out.push(['risk','暫無香港住址：資助／官立申請需住址證明，這是最大卡點']);
+    else if(s.d===f.addr) out.push(['good','與你填的住址落點同區']);
+    else out.push(['risk','跨區，住址證明能否被接受要問學校']);
+  }
+  if(f.path==='p1' && IN_POA[ty]) out.push(['k','小一走 POA：統一派位乙部受校網限制，甲部不受限']);
+  if(s.r) out.push(['k','競爭力榜第 '+s.r+'（非官方）']);
+  return out;
+}
+
+/* 矛盾／風險提醒：把「條件互相打架」這件事明說，不要默默列出走不通的學校 */
+function alerts(f, list){
+  var out = [], poaCnt = 0, noHopCnt = 0;
+  for(var i=0;i<SCHOOLS.length;i++){
+    var s = SCHOOLS[i];
+    var ty = TYPE_OF[s.t];
+    if(IN_POA[ty]) poaCnt++;
+    if(s.h==null) noHopCnt++;
+  }
+  var inList = {poa:0, self:0};
+  for(var j=0;j<list.length;j++){
+    var t2 = TYPE_OF[list[j].s.t];
+    if(IN_POA[t2]) inList.poa++; else inList.self++;
+  }
+
+  if(f.addr==='none' && inList.poa>0){
+    out.push(['warn',
+      '<b>這裡有個死結要先知道：</b>你選了「還沒有香港住址」，但下面 '+inList.poa+' 所是資助／官立——'+
+      '這兩類申請要交住址證明。也就是說：<b>要麼先解決住址證明，要麼改看直資／私立（自主招生，不受住址限制）</b>。'+
+      '把「到口岸站數」放寬成「不限」，就能看到全港 23 所直資。']);
+  }
+  if(f.hops>0 && PORT_HAS_DATA[f.port] && inList.self===0){
+    out.push(['warn',
+      '<b>直資／私立一所都沒出現</b>：因為它們幾乎都不在東鐵站序範圍內（全港 '+noHopCnt+' 所沒有口岸站數數據）。'+
+      '想看直資就把「到口岸站數」改成「不限」。']);
+  }
+  if(f.path==='p6'){
+    out.push(['warn','<b>小六基本不收插班</b>，且臨近呈分試。這條路大概率走不通，建議改看小五或更早。']);
+  }
+  if(f.path==='p1' && f.addr!=='none' && f.addr!=='other' && f.addr!=='net'){
+    out.push(['info','小一派位：校網才生效（統一派位乙部，按申報住址所屬網）。<b>跨境生另有專用選校名單</b>，不適用普通校網名單——這一點要向教育局或學校確認。']);
+  }
+  return out;
+}
+
+/* ================= 渲染 ================= */
+function render(){
+  var f = F;
+  var list = [];
+  for(var i=0;i<SCHOOLS.length;i++){
+    var s = SCHOOLS[i];
+    if(reject(s,f)) continue;
+    var sc = score(s,f);
+    list.push({s:s, sc:sc, i:i});
+  }
+  var cmp = {
+    mix:  function(a,b){ return b.sc.total-a.sc.total || (a.s.h==null?99:a.s.h)-(b.s.h==null?99:b.s.h) || (a.s.sd||9999)-(b.s.sd||9999); },
+    trip: function(a,b){ return (a.s.h==null?99:a.s.h)-(b.s.h==null?99:b.s.h) || (a.s.sd||9999)-(b.s.sd||9999) || b.sc.total-a.sc.total; },
+    info: function(a,b){ return b.sc.info-a.sc.info || b.sc.total-a.sc.total; },
+    rank: function(a,b){ return (a.s.r||9999)-(b.s.r||9999) || b.sc.total-a.sc.total; }
+  }[f.sort];
+  list.sort(cmp);
+
+  var all = list.length;
+  $('cnt').textContent = all;
+  var shown = f.top>0 ? list.slice(0, f.top) : list;
+
+  if(all===0){
+    $('out').innerHTML =
+      '<div class="empty"><div class="big">沒有學校符合現在的條件</div>'+
+      '<div class="sm">最常見的兩個原因：<br>① 「到口岸站數」或「步行」收得太緊 —— 放寬到「不限」試一次；<br>'+
+      '② 選了「暫無香港住址」又只勾資助／官立 —— 資助官立申請需要住址證明。<br><br>'+
+      '也可以點「重置」回到預設。</div></div>';
+    return;
+  }
+
+  var al = alerts(f, list);
+  var html = '';
+  if(al.length){
+    html += '<div style="padding:12px 16px 0">';
+    for(var a=0;a<al.length;a++){
+      var bg = al[a][0]==='warn' ? '#FBF1E6' : '#EEF5FB';
+      var bd = al[a][0]==='warn' ? '#E0A44E' : '#9CC0DC';
+      html += '<div style="background:'+bg+';border-left:3px solid '+bd+';border-radius:0 8px 8px 0;padding:10px 13px;margin-bottom:8px;font-size:12.5px;line-height:1.75;color:var(--ink2)">'+al[a][1]+'</div>';
+    }
+    html += '</div>';
+  }
+  html += '<div style="padding:6px 18px 0;font-size:12px;color:var(--ink3)">目前條件：'+esc(condText())+'</div>';
+  html += '<div class="cards">';
+  for(var j=0;j<shown.length;j++){
+    var it = shown[j], s = it.s, sc = it.sc;
+    var ty = TYPE_OF[s.t] || '其他';
+    var tc = (TYPES.filter(function(t){return t.k===ty;})[0]||{c:'#999'}).c;
+    var pl = pubLabel(s);
+    html += '<div class="card">';
+    html += '<div class="no'+(j<3?' top':'')+'">'+(j+1)+'</div>';
+    html += '<div>';
+    html += '<div class="top2"><div class="nm">'+esc(s.n)+'<span class="en">'+esc(s.e||'')+'</span></div>'+
+            '<div class="sc"><div class="v">'+sc.total+'</div><div class="l">匹配度</div></div></div>';
+    html += '<div class="tags">';
+    html += '<span class="tg ty" style="background:'+tc+'">'+ty+'</span>';
+    html += '<span class="tg">'+esc(s.d)+'</span>';
+    html += '<span class="tg net">校網 '+(s.k==='不适用'||s.k==='未列名册' ? esc(s.k) : (s.k||'—'))+'</span>';
+    if(s.s) html += '<span class="tg">'+esc(s.s)+' 站'+(s.sd!=null?(' · '+s.sd+'m'):'')+'</span>';
+    if(s.h!=null) html += '<span class="tg met">口岸 '+s.h+' 站</span>';
+    html += '<span class="tg '+pl.c+'">'+pl.t+'</span>';
+    if(s.r) html += '<span class="tg non">競爭力榜 '+s.r+'（非官方）</span>';
+    html += '</div>';
+    html += '<div class="why">';
+    var wl = whyLines(s,f,sc);
+    for(var q=0;q<wl.length;q++){
+      var cls = wl[q][0]==='k' ? 'k' : (wl[q][0]==='risk'?'risk':'good');
+      html += '<span class="'+cls+'">· '+esc(wl[q][1])+'</span>　';
+    }
+    html += '</div>';
+    html += '<div class="cact">';
+    if(s.p) html += '<a href="tel:'+esc(String(s.p).replace(/\s/g,''))+'">打電話 '+esc(s.p)+'</a>';
+    if(s.w) html += '<a href="'+esc(s.w)+'" target="_blank" rel="noopener">學校官網</a>';
+    html += '<button type="button" data-det="'+it.i+'">插班詳情</button>';
+    html += '<button type="button" class="'+(SEL[it.i]?'on':'')+'" data-sel="'+it.i+'">'+(SEL[it.i]?'已加入清單':'加入清單')+'</button>';
+    html += '</div>';
+    html += '<div class="det'+(SEL[it.i]?' show':'')+'" id="det'+it.i+'">'+
+            '<b>地址：</b>'+esc(s.a||'—')+'<br>'+
+            '<b>2027/28 插班（抓取原文明細）：</b>'+esc(s.c27||'—（無資料，需致電）')+'<br>'+
+            '<b>可信度：</b>'+esc(s.cf||'—')+
+            '</div>';
+    html += '</div></div>';
+  }
+  html += '</div>';
+  if(f.top>0 && all>f.top){
+    html += '<div style="padding:10px 18px 16px;font-size:12.5px;color:var(--ink3)">只顯示前 '+f.top+' 所（共 '+all+' 所符合）。左邊「顯示前幾所」改為「全部」可看完整名單，或導出 CSV。</div>';
+  }
+  $('out').innerHTML = html;
+
+  var cards = $('out').querySelectorAll('[data-sel]');
+  for(var c=0;c<cards.length;c++){
+    cards[c].onclick = function(){
+      var i = +this.getAttribute('data-sel');
+      if(SEL[i]) delete SEL[i]; else SEL[i]=1;
+      this.className = SEL[i]?'on':'';
+      this.textContent = SEL[i]?'已加入清單':'加入清單';
+      var d=$('det'+i); if(d) d.className = 'det'+(SEL[i]?' show':'');
+    };
+  }
+  var dets = $('out').querySelectorAll('[data-det]');
+  for(var d2=0;d2<dets.length;d2++){
+    dets[d2].onclick = function(){
+      var i = +this.getAttribute('data-det');
+      var el=$('det'+i); if(el) el.className = 'det'+(el.className.indexOf('show')>-1?'':' show');
+    };
+  }
+  try{ localStorage.setItem('hkmap_sel', JSON.stringify(SEL)); }catch(e){}
+}
+
+/* ================= CSV / 複製 ================= */
+function currentList(){
+  var f=F, list=[];
+  for(var i=0;i<SCHOOLS.length;i++){
+    var s=SCHOOLS[i]; if(reject(s,f)) continue;
+    list.push({s:s, sc:score(s,f), i:i});
+  }
+  list.sort(function(a,b){ return b.sc.total-a.sc.total || (a.s.h==null?99:a.s.h)-(b.s.h==null?99:b.s.h); });
+  return list;
+}
+function csv(){
+  var L = currentList(), rows=[];
+  rows.push(['#','校名','英文名','類別','地區','校網','最近港鐵站','步行m','口岸站數','收表狀態','競爭力榜(非官方)','匹配度','電話','地址','官網']);
+  for(var i=0;i<L.length;i++){
+    var s=L[i].s, pl=pubLabel(s);
+    rows.push([i+1, s.n, s.e||'', TYPE_OF[s.t]||'', s.d, s.k||'', s.s||'', s.sd==null?'':s.sd, s.h==null?'':s.h,
+               pl.t, s.r||'', L[i].sc.total, s.p||'', s.a||'', s.w||'']);
+  }
+  var csv = rows.map(function(r){
+    return r.map(function(v){ v=String(v==null?'':v); return /[",\n]/.test(v) ? '"'+v.replace(/"/g,'""')+'"' : v; }).join(',');
+  }).join('\r\n');
+  var blob = new Blob(['\ufeff'+csv], {type:'text/csv;charset=utf-8'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = '香港小學校區篩選_'+ (F.path==='p1'?'小一':(F.path==='p6'?'小六插班':(F.path==='p3'?'小三插班':'插班'))) +'_'+Object.keys(F.types).filter(function(k){return F.types[k];}).join('')+'.csv';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+}
+function copyText(t){
+  var ta=document.createElement('textarea'); ta.value=t; ta.style.position='fixed'; ta.style.left='-9999px';
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand('copy'); }catch(e){}
+  document.body.removeChild(ta);
+}
+function copyList(){
+  var L=currentList(), t='香港小學校區篩選結果（'+L.length+' 所）\n條件：'+condText()+'\n\n';
+  for(var i=0;i<Math.min(L.length,50);i++){
+    var s=L[i].s;
+    t += (i+1)+'. '+s.n+'｜'+(TYPE_OF[s.t]||'')+'｜'+s.d+'｜口岸'+(s.h==null?'—':s.h+'站')+'｜'+(s.sd==null?'':s.sd+'m')+'｜'+pubLabel(s).t+'\n';
+  }
+  copyText(t);
+  alert('已複製前 '+Math.min(L.length,50)+' 所到剪貼簿。');
+}
+function condText(){
+  var ty=Object.keys(F.types).filter(function(k){return F.types[k];}).join('/');
+  var pt=(PORTS.filter(function(p){return p.v===F.port;})[0]||{t:''}).t;
+  return (F.path==='p1'?'小一入學':(F.path==='p6'?'小六插班':(F.path==='p3'?'小三插班':'插班')))
+    +'｜住址：'+(F.addr==='none'?'暫無香港住址':(F.addr==='other'?'其他區／不限':F.addr))
+    +'｜類別：'+ty+'｜口岸：'+pt+'｜站數：'+(F.hops?('≤'+F.hops):'不限')+'｜步行：'+(F.walk?(F.walk+'m'):'不限');
+}
+function copyQ(){
+  var t='打電話問學校（'+condText()+'）\n\n開場：你好，我想問 2027 年 9 月入学的小三插班，我們家住深圳，孩子是香港籍。\n\n';
+  var n=1, any=false;
+  CHECKS.forEach(function(c){ if(F.chk[c.t]){ t += (n++)+'. '+c.v+'\n'; any=true; } });
+  if(!any){ CHECKS.slice(0,5).forEach(function(c){ t += (n++)+'. '+c.v+'\n'; }); }
+  t += '\n記錄：日期／學校／答覆原文／對方身份（校務處 or 招生處）／是否公布\n';
+  copyText(t); alert('已複製問話清單。');
+}
+
+/* ================= 表單構建 ================= */
+function buildForm(){
+  // 住址落點
+  var ad = $('fAddr'), opts='';
+  opts += '<option value="none" selected>還沒有香港住址（只能申自主招生）</option>';
+  META.dists.forEach(function(d){ opts += '<option value="'+esc(d)+'">'+esc(d)+'</option>'; });
+  opts += '<option value="other">其他區／不限定</option>';
+  opts += '<option value="net">我已經確定校網號</option>';
+  ad.innerHTML = opts;
+
+  // 校網號
+  $('fNetOne').innerHTML = '<option value="">— 請選校網號 —</option>' + META.nets.map(function(n){ return '<option value="'+esc(n)+'">'+esc(n)+'</option>'; }).join('');
+  $('fNets').innerHTML = META.nets.map(function(n){ return '<div class="chip" data-net="'+esc(n)+'">'+esc(n)+'</div>'; }).join('');
+
+  // 類別
+  $('fTypes').innerHTML = TYPES.map(function(t){
+    return '<div class="chip" data-ty="'+t.k+'"><span class="dot" style="background:'+t.c+'"></span>'+t.k+'</div>';
+  }).join('');
+
+  // 口岸
+  $('fPort').innerHTML = PORTS.map(function(p){ return '<option value="'+p.v+'">'+p.t+'</option>'; }).join('');
+
+  // 站數 / 步行
+  $('fHops').innerHTML = HOPS.map(function(h){ return '<div class="chip" data-hop="'+h.v+'">'+h.t+'</div>'; }).join('');
+  $('fWalk').innerHTML = WALK.map(function(w){ return '<div class="chip" data-walk="'+w.v+'">'+w.t+'</div>'; }).join('');
+
+  // 地區
+  $('fDist').innerHTML = META.dists.map(function(d){ return '<div class="chip" data-dist="'+esc(d)+'">'+esc(d)+'</div>'; }).join('');
+
+  // 港鐵站
+  $('fStn').innerHTML = '<option value="">不限</option>' + META.stns.map(function(s){ return '<option value="'+esc(s)+'">'+esc(s)+'</option>'; }).join('');
+
+  // 核對清單
+  $('fChk').innerHTML = CHECKS.map(function(c){ return '<div class="chip" data-chk="'+esc(c.t)+'">'+esc(c.t)+'</div>'; }).join('');
+}
+
+function syncForm(){
+  // chips 高亮
+  [['fTypes','data-ty',function(el){ return F.types[el.getAttribute('data-ty')]?1:0; }],
+   ['fHops','data-hop',function(el){ return F.hops===+el.getAttribute('data-hop'); }],
+   ['fWalk','data-walk',function(el){ return F.walk===+el.getAttribute('data-walk'); }],
+   ['fDist','data-dist',function(el){ return F.dists[el.getAttribute('data-dist')]?1:0; }],
+   ['fNets','data-net',function(el){ return F.nets[el.getAttribute('data-net')]?1:0; }],
+   ['fChk','data-chk',function(el){ return F.chk[el.getAttribute('data-chk')]?1:0; }]
+  ].forEach(function(g){
+    var ns = $(g[0]).children;
+    for(var i=0;i<ns.length;i++) ns[i].className = 'chip' + (g[2](ns[i])?' on':'');
+  });
+  $('fPath').value = F.path;
+  $('fAddr').value = F.addr;
+  $('fNetOne').value = F.netOne;
+  $('netWrap').style.display = (F.addr==='net') ? '' : 'none';
+  $('fPort').value = F.port;
+  $('fStn').value = F.stn;
+  $('fSort').value = F.sort;
+  $('fTop').value = String(F.top);
+  $('oNow').className = 'chip'+(F.oNow?' on':'');
+  $('oPub').className = 'chip'+(F.oPub?' on':'');
+  $('oNoU').className = 'chip'+(F.oNoU?' on':'');
+  $('oTop').className = 'chip'+(F.oTop?' on':'');
+  $('oNoSp').className = 'chip'+(F.oNoSp?' on':'');
+
+  // 動態說明
+  var np='';
+  if(F.path==='p1') np='小一入學走 POA：約 50% 自行分配學位（不受校網限制）、約 50% 統一派位（甲部不受網限、乙部受住址所屬校網限制）。<b>跨境生另有專用選校名單</b>，不適用普通校網名單。直資／私立小一不在 POA 之內。';
+  else if(F.path==='p6') np='<b>小六基本不收插班</b>（且臨近呈分試）。這條路大概率走不通，建議改看小五或更早。';
+  else np='<b>插班不經 POA，逕向學校申請</b>，也不適用統一派位校網（校網只對小一統一派位乙部生效）。但仍要備住址證明，各校認定有差異，必須逐校問。';
+  $('nPath').innerHTML = np;
+
+  var na='資助／官立與住址綁定；插班申請也需要住址證明（各校認定不同）。'+
+         (F.addr==='none' ? '<br><b>你選了「還沒有香港住址」</b>：資助／官立基本走不通，結果只會留自主招生的直資／私立／國際。'
+                          : (F.addr==='other' ? '<br>不限制地區，結果更寬，但同區學校的住址匹配分更高。'
+                                              : '<br>已按 <b>'+esc(F.addr)+'</b> 計匹配分：同區最高，跨區減分。'));
+  $('nAddr').innerHTML = na;
+
+  var nt='預算口徑常用：官立／資助／直資。'+
+         (F.addr==='none' ? ' <b>目前勾了資助或官立但無香港住址，這兩類會被扣除匹配分。</b>' : '');
+  $('nTypes').innerHTML = nt;
+
+  $('nPort').innerHTML = PORT_HAS_DATA[F.port]
+    ? '羅湖與落馬洲到同一批東鐵站的站數完全相同，兩關通用。（新皇崗／蓮塘／深圳灣暫無站序數據，選它們時「站數」條件會自動放寬為不限。）'
+    : '<b>此口岸暫無站序數據</b>，站數條件已自動放寬為不限。新皇崗 2026-10-12 才開通，實際到東鐵的接駁方式待實地核實。';
+
+  $('nNetMulti').innerHTML = F.path==='p1'
+    ? '小一派位：校網生效，可多選。跨境生另有專用選校名單。'
+    : '<b>插班不適用校網</b>，此處選項不生效（置灰）。';
+  var nn = $('fNets').children;
+  for(var k=0;k<nn.length;k++) nn[k].className = 'chip' + (F.nets[nn[k].getAttribute('data-net')]&&F.path==='p1' ? ' on':(F.path==='p1'?'':' dis'));
+
+  var n1 = $('fNetOne');
+  n1.disabled = (F.path!=='p1');
+}
+
+/* ================= 事件 ================= */
+var tmr=null;
+function kick(){ clearTimeout(tmr); tmr=setTimeout(render, 120); }
+
+function bind(){
+  $('fPath').onchange = function(){ F.path=this.value; syncForm(); kick(); };
+  $('fAddr').onchange = function(){ F.addr=this.value; syncForm(); kick(); };
+  $('fNetOne').onchange = function(){ F.netOne=this.value; syncForm(); kick(); };
+  $('fPort').onchange = function(){ F.port=this.value; syncForm(); kick(); };
+  $('fStn').onchange = function(){ F.stn=this.value; kick(); };
+  $('fSort').onchange = function(){ F.sort=this.value; kick(); };
+  $('fTop').onchange = function(){ F.top=+this.value; kick(); };
+
+  function chipGroup(id, attr, fn){
+    $(id).onclick = function(e){
+      var el = e.target.closest ? e.target.closest('['+attr+']') : null;
+      if(!el) return;
+      if(el.className.indexOf('dis')>-1) return;
+      fn(el.getAttribute(attr)); syncForm(); kick();
+    };
+  }
+  chipGroup('fTypes','data-ty',function(v){ if(F.types[v]) delete F.types[v]; else F.types[v]=1; });
+  chipGroup('fHops','data-hop',function(v){ F.hops=+v; });
+  chipGroup('fWalk','data-walk',function(v){ F.walk=+v; });
+  chipGroup('fDist','data-dist',function(v){ if(F.dists[v]) delete F.dists[v]; else F.dists[v]=1; });
+  chipGroup('fNets','data-net',function(v){ if(F.path!=='p1') return; if(F.nets[v]) delete F.nets[v]; else F.nets[v]=1; });
+  chipGroup('fChk','data-chk',function(v){ if(F.chk[v]) delete F.chk[v]; else F.chk[v]=1; });
+
+  $('oNow').onclick=function(){ F.oNow=!F.oNow; syncForm(); kick(); };
+  $('oPub').onclick=function(){ F.oPub=!F.oPub; syncForm(); kick(); };
+  $('oNoU').onclick=function(){ F.oNoU=!F.oNoU; syncForm(); kick(); };
+  $('oTop').onclick=function(){ F.oTop=!F.oTop; syncForm(); kick(); };
+  $('oNoSp').onclick=function(){ F.oNoSp=!F.oNoSp; syncForm(); kick(); };
+
+  $('foldOpt').onclick=function(){ var b=$('optBody'); var on=b.style.display!=='none'; b.style.display=on?'none':''; this.textContent=on?'展開 ▾':'收起 ▴'; };
+  $('foldChk').onclick=function(){ var b=$('chkBody'); var on=b.style.display!=='none'; b.style.display=on?'none':''; this.textContent=on?'展開 ▾':'收起 ▴'; };
+
+  $('btnGo').onclick=function(){ render(); if(window.innerWidth<=1000) $('right').scrollIntoView({behavior:'smooth'}); };
+  $('btnReset').onclick=function(){ F=defaults(); syncForm(); render(); };
+  $('btnMine').onclick=function(){ F=myPreset(); syncForm(); render(); };
+  $('btnCsv').onclick=csv;
+  $('btnCopy').onclick=copyList;
+  $('copyQ').onclick=copyQ;
+}
+
+/* ================= 啟動 ================= */
+(function init(){
+  try{ var v=localStorage.getItem('hkmap_sel'); if(v) SEL=JSON.parse(v)||{}; }catch(e){}
+  F = myPreset();
+  buildForm();
+  syncForm();
+  bind();
+  render();
+})();
+</script>
+</body>
+</html>
