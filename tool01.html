@@ -828,35 +828,14 @@ input[type=search]:focus,select:focus{outline:2px solid var(--accent-soft);borde
     </div>
 
     <div class="grp">
-      <label>反馈与联系</label>
-      <div class="fb">
-        <div class="fb-lead">想让这地图更好用？来小红书找我们聊最方便：</div>
-        <div class="fb-acts">
-          <a class="fb-btn xhs" id="fbXhs" href="https://www.xiaohongshu.com/search_result?keyword=183236193" target="_blank" rel="noopener">去小红书聊聊</a>
-        </div>
-        <div class="fb-mailrow">
-          <span class="fb-mail">小红书号 183236193（爱欣）</span>
-          <button class="fb-btn alt" id="fbXhsCopy" type="button">复制小红书号</button>
-        </div>
-        <div class="grpnote">手机上点了没反应的话，打开小红书 App 搜上面这个号就行。评论区、私信都欢迎。</div>
-        <div class="fb-lead" style="margin-top:12px">习惯写邮件的话也可以：</div>
-        <textarea id="fbText" rows="3" placeholder="想加什么功能、哪里不好用、数据有错……都可以写在这里"></textarea>
-        <div class="fb-acts">
-          <button class="fb-btn alt" id="fbSend" type="button">发送意见（邮件）</button>
-        </div>
-        <div class="fb-mailrow">
-          <span class="fb-mail">aixinxin@agent.qq.com</span>
-          <button class="fb-btn alt" id="fbCopy" type="button">复制邮箱</button>
-        </div>
-        <div class="fb-note">免费帮你定制同类地图，只为交朋友。</div>
+      <label>关于 · 反馈</label>
+      <div class="grpnote">
+        數據來源：教育局《學校位置及資料》名冊（2026-09-30）· 教育局《2027 年度小一入學 · 各小一學校網小學名冊》。<br><br>
+        工具免費、不收費、不收集任何個人資料。有意見來小紅書找我們：<b>小紅書號 183236193（愛欣）</b>。
       </div>
-    </div>
-
-    <div class="grp">
-      <label>访问统计</label>
       <div class="stats">
-        <span id="busuanzi_container_site_uv">访客 <b id="busuanzi_value_site_uv">&ndash;</b></span>
-        <span id="busuanzi_container_site_pv">浏览 <b id="busuanzi_value_site_pv">&ndash;</b></span>
+        <span id="busuanzi_container_page_pv">本頁訪問 <b id="busuanzi_value_page_pv">&ndash;</b> 次</span>
+        <span id="busuanzi_container_site_uv">訪客 <b id="busuanzi_value_site_uv">&ndash;</b> 人</span>
       </div>
     </div>
   </aside>
@@ -1129,41 +1108,7 @@ function apply(){
 }
 
 
-// ---------- 反馈 ----------
-var FB_MAIL = 'aixinxin@agent.qq.com';
-var FB_XHS_ID = '183236193';
-var FB_XHS_URL = 'https://www.xiaohongshu.com/search_result?keyword=' + FB_XHS_ID; // TODO: 换成主页直链 https://www.xiaohongshu.com/user/profile/<UID>
-function bindCopy(btnId, text){
-  var b = document.getElementById(btnId);
-  b.onclick = function(){
-    var btn = this;
-    var done = function(){ var o = btn.textContent; btn.textContent = '已复制'; setTimeout(function(){ btn.textContent = o; }, 1600); };
-    var legacy = function(){
-      var ta = document.createElement('textarea');
-      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
-      document.body.appendChild(ta); ta.select();
-      try { document.execCommand('copy'); } catch (e) {}
-      document.body.removeChild(ta); done();
-    };
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(done, legacy);
-    } else { legacy(); }
-  };
-}
-(function(){
-  document.getElementById('fbXhs').href = FB_XHS_URL;
-  bindCopy('fbXhsCopy', FB_XHS_ID);
-  bindCopy('fbCopy', FB_MAIL);
-  var send = document.getElementById('fbSend');
-  send.onclick = function(){
-    var t = document.getElementById('fbText').value.trim();
-    var page = location.href.split('#')[0];
-    var href = 'mailto:' + FB_MAIL
-             + '?subject=' + encodeURIComponent('【全港小学地图意见】')
-             + '&body=' + encodeURIComponent((t || '（未填写内容）') + '\n\n—— 来自 ' + page);
-    window.location.href = href;
-  };
-})();
+// ---------- 反馈（面板已移除，改用側欄「关于 · 反馈」；保留 busuanzi 統計） ----------
 
 
 // ---------- 选校清单 ----------
