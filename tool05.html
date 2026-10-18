@@ -68,13 +68,6 @@ body{background:#e9eef3;color:var(--ink);
   resize:vertical;min-height:38px;font-family:inherit;color:var(--ink);padding:0;margin-top:2px}
 .wish textarea:focus{outline:none}
 
-/* 致學校 */
-.to-line{display:flex;align-items:flex-end;gap:10px;margin:10px 0;border-bottom:1px solid var(--line);padding-bottom:6px}
-.to-line .lab{flex:0 0 auto}
-.school-in{flex:1;min-width:160px;border:none;border-bottom:1.5px solid var(--ink);padding:4px 6px;
-  font-size:15px;font-weight:600;color:var(--ink);background:transparent;font-family:inherit}
-.school-in:focus{outline:none;border-color:var(--pri)}
-
 .sec-t{font-size:15px;font-weight:700;margin:16px 0 8px;padding-left:8px;border-left:4px solid var(--pri)}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 22px}
 .fld{display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--line);padding:5px 2px}
@@ -95,7 +88,7 @@ body{background:#e9eef3;color:var(--ink);
 
 /* 主題差異細節 */
 .page.theme-2 .photo-box{background:var(--soft)}
-.page.theme-2 .fld input,.page.theme-2 .fld select,.page.theme-2 .big textarea,.page.theme-2 .school-in,.page.theme-2 .grade-in{border-radius:8px}
+.page.theme-2 .fld input,.page.theme-2 .fld select,.page.theme-2 .big textarea,.page.theme-2 .grade-in{border-radius:8px}
 .page.theme-3 .cn-in,.page.theme-3 .head .ttl{font-family:var(--serif)}
 .page.theme-3 .head{border-bottom:3px double var(--pri2);padding-bottom:6px}
 
@@ -175,12 +168,6 @@ body{background:#e9eef3;color:var(--ink);
         <textarea id="hope" data-req data-label="Wish note">I sincerely hope my child could join your school and would be grateful for the opportunity to sit for an interview.</textarea>
       </div>
     </div>
-  </div>
-
-  <!-- 致學校 -->
-  <div class="to-line">
-    <div class="lab"><span class="en">To (School)<span class="req">*</span></span><span class="zh">致（學校）</span></div>
-    <input class="school-in" id="school" data-req data-label="School Name" placeholder="e.g. Pui Ching Primary School">
   </div>
 
   <div class="sec-t"><span class="en">Student Particulars</span> <span class="zh" style="font-size:11px;color:#9aa7b3;font-weight:400">學生基本資料</span></div>
