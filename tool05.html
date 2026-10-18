@@ -3,60 +3,87 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Primary School Transfer Application Form（可下载 PDF）</title>
+<title>Primary School Application Letter（可下载 PDF）</title>
 <script defer src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <style>
-:root{--ink:#232a31;--ink2:#5a6672;--line:#cdd6df;--pri:#4F7BAB;--soft:#eef3f8;--req:#d8453b}
+:root{
+  --ink:#232a31;--ink2:#5a6672;--line:#cdd6df;--req:#d8453b;--radius:4px;
+  --pri:#2f6fb0;--pri2:#1f4f80;--soft:#eef4fa;--name:#1f4f80;--serif:inherit;
+}
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
 body{background:#e9eef3;color:var(--ink);
   font:14px/1.6 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
-  -webkit-font-smoothing:antialiased;padding:18px 12px 60px}
+  -webkit-font-smoothing:antialiased;padding:18px 12px 86px}
 
-/* A4 列印區 */
+/* A4 */
 .page{width:210mm;min-height:297mm;margin:0 auto;background:#fff;
-  padding:14mm 14mm 12mm;border:1px solid #d4dbe2;box-shadow:0 2px 10px rgba(0,0,0,.08)}
-.head{border-bottom:3px double #2c3b47;padding-bottom:10px;margin-bottom:14px}
-.head h1{margin:0;font-size:21px;letter-spacing:.3px;text-align:center}
-.head .sub{text-align:center;color:var(--ink2);font-size:12.5px;margin-top:4px}
-.head .sub .zh{display:block;font-size:10.5px;color:#9aa7b3;margin-top:1px}
+  padding:13mm 14mm 12mm;border:1px solid #d4dbe2;box-shadow:0 2px 10px rgba(0,0,0,.08);
+  position:relative;--radius:4px}
+.page-accent{height:7px;background:linear-gradient(90deg,var(--pri),var(--pri2));border-radius:4px;margin-bottom:10px}
+
+/* 三套主题 */
+.page.theme-1{--pri:#2f6fb0;--pri2:#1f4f80;--soft:#eef4fa;--name:#1f4f80}
+.page.theme-2{--pri:#e8843a;--pri2:#2bb3a3;--soft:#fff3e9;--name:#c9661f;--radius:11px}
+.page.theme-3{--pri:#8a5a2b;--pri2:#a8823c;--soft:#fbf6ec;--name:#7a4e1f;--serif:Georgia,"Times New Roman",serif;--radius:3px}
 
 /* 標籤：英文為主 + 中文小字 */
 .lab{display:flex;flex-direction:column;line-height:1.15}
-.lab .en{font-size:13.5px;font-weight:600;color:#232a31}
+.lab .en{font-size:13px;font-weight:600;color:#232a31}
 .lab .zh{font-size:10.5px;color:#9aa7b3;font-weight:400;margin-top:1px}
+.req{color:var(--req);font-weight:700;margin-left:3px}
 
-.line{display:flex;align-items:flex-end;gap:10px;margin:10px 0;flex-wrap:wrap}
-.line .lab{flex:0 0 auto}
-.school-in{flex:1;min-width:160px;border:none;border-bottom:1.5px solid var(--ink);
-  padding:4px 6px;font-size:16px;font-weight:600;color:var(--ink);background:transparent;font-family:inherit}
+/* 頂部標題 */
+.head{text-align:center;margin-bottom:12px}
+.head .ttl{font-size:12.5px;letter-spacing:3px;text-transform:uppercase;color:var(--ink2)}
+.head .ttl .zh{letter-spacing:0;text-transform:none;font-size:11px;margin-left:6px}
+
+/* HERO：照片左上 + 大字姓名 */
+.hero{display:flex;gap:16px;align-items:flex-start;margin-bottom:6px}
+.photo-box{width:42mm;height:55mm;border:1.5px dashed #9aa7b3;border-radius:var(--radius);
+  position:relative;display:flex;align-items:center;justify-content:center;cursor:pointer;
+  overflow:hidden;flex:0 0 auto;background:#fafbfc}
+.photo-box .ph{color:#9aa7b3;font-size:11.5px;text-align:center;line-height:1.5;padding:6px}
+.photo-box img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.photo-box input{display:none}
+.hero-name{flex:1;padding-top:1mm;min-width:0}
+.cn-in{width:100%;border:none;border-bottom:2.5px solid var(--pri);font-size:30px;font-weight:800;
+  color:var(--name);font-family:var(--serif);padding:1px 0;background:transparent;line-height:1.15}
+.cn-in:focus{outline:none}
+.en-in{width:100%;border:none;font-size:14px;color:var(--ink2);margin-top:3px;background:transparent}
+.en-in:focus{outline:none}
+.gr{margin-top:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.gr .lab{flex:0 0 auto}
+.grade-in{width:150px;border:none;border-bottom:1.5px solid var(--ink);font-size:14px;padding:3px 4px;font-family:inherit;color:var(--ink)}
+.grade-in:focus{outline:none;border-color:var(--pri)}
+
+/* 開場白（願望語） */
+.lead{background:var(--soft);border-left:4px solid var(--pri);border-radius:0 var(--radius) var(--radius) 0;
+  padding:10px 14px;margin:8px 0 14px}
+.lead .lab{margin-bottom:4px}
+.lead textarea{width:100%;border:none;background:transparent;font-size:14px;resize:vertical;
+  min-height:46px;font-family:inherit;color:var(--ink)}
+.lead textarea:focus{outline:none}
+
+/* 致學校 */
+.to-line{display:flex;align-items:flex-end;gap:10px;margin:10px 0;border-bottom:1px solid var(--line);padding-bottom:6px}
+.to-line .lab{flex:0 0 auto}
+.school-in{flex:1;min-width:160px;border:none;border-bottom:1.5px solid var(--ink);padding:4px 6px;
+  font-size:15px;font-weight:600;color:var(--ink);background:transparent;font-family:inherit}
 .school-in:focus{outline:none;border-color:var(--pri)}
-.grade-in{width:150px;border:none;border-bottom:1.5px solid var(--ink);font-size:14px;padding:4px 6px;font-family:inherit;color:var(--ink)}
-.hope{width:100%;border:1px solid var(--line);border-radius:6px;padding:8px 10px;font-size:13px;
-  resize:vertical;min-height:54px;font-family:inherit;color:var(--ink)}
 
-.sec-t{font-size:15px;font-weight:700;margin:18px 0 8px;padding-left:8px;border-left:4px solid var(--pri)}
+.sec-t{font-size:15px;font-weight:700;margin:16px 0 8px;padding-left:8px;border-left:4px solid var(--pri)}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 22px}
 .fld{display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--line);padding:5px 2px}
 .fld .lab{flex:0 0 150px}
 .fld input,.fld select{flex:1;border:none;background:transparent;font-size:13px;padding:3px 2px;color:var(--ink);font-family:inherit}
 .fld input:focus,.fld select:focus{outline:none}
 .fld.full{grid-column:1 / -1}
-.req{color:var(--req);font-weight:700;margin-left:3px}
-
-.photo-row{display:flex;gap:18px;align-items:flex-start;margin:14px 0}
-.photo-box{width:42mm;height:55mm;border:1.5px dashed #9aa7b3;border-radius:4px;position:relative;
-  display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;flex:0 0 auto;background:#fafbfc}
-.photo-box .ph{color:#9aa7b3;font-size:12px;text-align:center;line-height:1.5;padding:6px}
-.photo-box img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.photo-box input{display:none}
-.photo-note{flex:1;font-size:12px;color:var(--ink2);line-height:1.8}
-.photo-note .zh{display:block;font-size:10.5px;color:#9aa7b3;margin-top:2px}
 
 .big{margin:12px 0}
 .big .lab{margin-bottom:4px}
-.big textarea{width:100%;border:1px solid var(--line);border-radius:6px;padding:8px 10px;
+.big textarea{width:100%;border:1px solid var(--line);border-radius:var(--radius);padding:8px 10px;
   font-size:13px;resize:vertical;min-height:60px;font-family:inherit;color:var(--ink)}
 .big textarea:focus{outline:none;border-color:var(--pri)}
 
@@ -64,12 +91,35 @@ body{background:#e9eef3;color:var(--ink);
 .date-line .lab{display:inline-flex;flex-direction:row;gap:6px;align-items:baseline}
 .date-line input{border:none;border-bottom:1px solid var(--ink);width:140px;font-size:13px;text-align:center;font-family:inherit}
 
+/* 主題差異細節 */
+.page.theme-2 .photo-box{background:var(--soft)}
+.page.theme-2 .fld input,.page.theme-2 .fld select,.page.theme-2 .big textarea,.page.theme-2 .school-in,.page.theme-2 .grade-in{border-radius:8px}
+.page.theme-3 .cn-in,.page.theme-3 .head .ttl{font-family:var(--serif)}
+.page.theme-3 .head{border-bottom:3px double var(--pri2);padding-bottom:6px}
+
+/* 浮動按鈕 + 模版浮窗 */
 .float-btn{position:fixed;right:22px;bottom:22px;z-index:50;
   background:var(--pri);color:#fff;border:none;border-radius:50px;padding:14px 22px;font-size:15px;font-weight:600;
-  box-shadow:0 4px 14px rgba(79,123,171,.45);cursor:pointer;font-family:inherit}
+  box-shadow:0 4px 14px rgba(0,0,0,.25);cursor:pointer;font-family:inherit}
 .float-btn:active{transform:translateY(1px)}
 .float-btn:disabled{opacity:.6;cursor:default}
+.tpl-btn{position:fixed;left:22px;bottom:22px;z-index:50;background:#fff;color:var(--pri);
+  border:1.5px solid var(--pri);border-radius:50px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;
+  box-shadow:0 4px 14px rgba(0,0,0,.12);font-family:inherit}
+.tpl-panel{position:fixed;left:22px;bottom:76px;z-index:60;background:#fff;border-radius:14px;
+  box-shadow:0 10px 40px rgba(0,0,0,.22);padding:13px;width:244px;display:none}
+.tpl-panel.show{display:block}
+.tpl-panel h4{margin:0 0 9px;font-size:13px;color:var(--ink2)}
+.tpl-card{display:flex;align-items:center;gap:10px;padding:9px 10px;border:1.5px solid var(--line);
+  border-radius:10px;margin-bottom:8px;cursor:pointer}
+.tpl-card:last-child{margin-bottom:0}
+.tpl-card:hover{border-color:var(--pri)}
+.tpl-card.active{border-color:var(--pri);background:var(--soft)}
+.tpl-card .sw{width:26px;height:26px;border-radius:7px;flex:0 0 auto}
+.tpl-card b{font-size:13px}
+.tpl-card small{display:block;color:var(--ink2);font-size:11px;margin-top:1px}
 
+/* 缺項彈窗 */
 .modal-mask{position:fixed;inset:0;background:rgba(20,28,36,.5);z-index:80;display:none;align-items:center;justify-content:center;padding:20px}
 .modal-mask.show{display:flex}
 .modal{background:#fff;border-radius:14px;max-width:420px;width:100%;padding:22px 22px 18px;box-shadow:0 10px 40px rgba(0,0,0,.25)}
@@ -90,34 +140,50 @@ body{background:#e9eef3;color:var(--ink);
   @page{size:A4;margin:0}
   html,body{background:#fff;padding:0}
   .page{width:auto;min-height:auto;margin:0;border:none;box-shadow:none;padding:10mm 12mm}
-  .float-btn,.modal-mask,.site-footer{display:none !important}
+  .float-btn,.tpl-btn,.tpl-panel,.modal-mask,.site-footer{display:none !important}
 }
 </style>
 </head>
 <body>
 
-<div class="page">
+<div class="page theme-1">
+  <div class="page-accent"></div>
+
   <div class="head">
-    <h1>Primary School Transfer Application Form</h1>
-    <div class="sub">Fill in and download as PDF to submit to the school<span class="zh">小學插班入學申請表（填妥後下載 PDF 交學校）</span></div>
+    <div class="ttl">Application Letter<span class="zh">申請信</span></div>
   </div>
 
-  <div class="line">
-    <div class="lab"><span class="en">School Name<span class="req">*</span></span><span class="zh">申請學校</span></div>
-    <input class="school-in" id="school" data-req data-label="School Name" placeholder="e.g. Pui Ching Primary School">
-    <div class="lab"><span class="en">Applying for Grade<span class="req">*</span></span><span class="zh">申請入讀年級</span></div>
-    <input class="grade-in" id="grade" data-req data-label="Applying for Grade" placeholder="e.g. Primary 3">
+  <!-- HERO：照片左上 + 大字姓名 -->
+  <div class="hero">
+    <div class="photo-box" id="photoBox" title="Click to upload a 2-inch photo">
+      <span class="ph">Click to upload<br>2-inch photo</span>
+      <img id="photoImg" alt="" style="display:none">
+      <input type="file" id="photoFile" accept="image/*">
+    </div>
+    <div class="hero-name">
+      <input class="cn-in" id="cn" data-req data-label="Full Name (Chinese)" placeholder="學生中文姓名">
+      <input class="en-in" id="en" placeholder="NAME (English)">
+      <div class="gr">
+        <div class="lab"><span class="en">Applying for Grade<span class="req">*</span></span><span class="zh">申請入讀年級</span></div>
+        <input class="grade-in" id="grade" data-req data-label="Applying for Grade" placeholder="e.g. Primary 3">
+      </div>
+    </div>
   </div>
 
-  <div class="big">
+  <!-- 開場白 -->
+  <div class="lead">
     <div class="lab"><span class="en">A short note expressing your wish to join<span class="req">*</span></span><span class="zh">一句願望語（表達希望加入貴校）</span></div>
-    <textarea id="hope" data-req data-label="Wish note">I sincerely hope to join your school and would be grateful for the opportunity to sit for an interview.</textarea>
+    <textarea id="hope" data-req data-label="Wish note">I sincerely hope my child could join your school and would be grateful for the opportunity to sit for an interview.</textarea>
+  </div>
+
+  <!-- 致學校 -->
+  <div class="to-line">
+    <div class="lab"><span class="en">To (School)<span class="req">*</span></span><span class="zh">致（學校）</span></div>
+    <input class="school-in" id="school" data-req data-label="School Name" placeholder="e.g. Pui Ching Primary School">
   </div>
 
   <div class="sec-t"><span class="en">Student Particulars</span> <span class="zh" style="font-size:11px;color:#9aa7b3;font-weight:400">學生基本資料</span></div>
   <div class="grid">
-    <div class="fld"><div class="lab"><span class="en">Full Name (Chinese)<span class="req">*</span></span><span class="zh">中文姓名</span></div><input id="cn" data-req data-label="Full Name (Chinese)" placeholder="姓名"></div>
-    <div class="fld"><div class="lab"><span class="en">Full Name (English)</span><span class="zh">英文姓名</span></div><input id="en" placeholder="NAME"></div>
     <div class="fld"><div class="lab"><span class="en">Gender<span class="req">*</span></span><span class="zh">性別</span></div>
       <select id="sex" data-req data-label="Gender"><option value="">Please select</option><option>Male</option><option>Female</option></select></div>
     <div class="fld"><div class="lab"><span class="en">Date of Birth<span class="req">*</span></span><span class="zh">出生日期</span></div><input type="date" id="dob" data-req data-label="Date of Birth"></div>
@@ -129,18 +195,6 @@ body{background:#e9eef3;color:var(--ink);
     <div class="fld"><div class="lab"><span class="en">Email</span><span class="zh">電郵</span></div><input id="email" placeholder="optional"></div>
     <div class="fld"><div class="lab"><span class="en">Parent / Guardian Name<span class="req">*</span></span><span class="zh">家長姓名</span></div><input id="pname" data-req data-label="Parent / Guardian Name" placeholder="Guardian name"></div>
     <div class="fld"><div class="lab"><span class="en">Relationship to Student</span><span class="zh">與學生關係</span></div><input id="rel" placeholder="e.g. Father / Mother"></div>
-  </div>
-
-  <div class="photo-row">
-    <div class="photo-box" id="photoBox" title="Click to upload a 2-inch photo">
-      <span class="ph">Click to upload<br>2-inch photo</span>
-      <img id="photoImg" alt="" style="display:none">
-      <input type="file" id="photoFile" accept="image/*">
-    </div>
-    <div class="photo-note">
-      <b>Photo:</b> attach a recent 2-inch colour passport-style photo (front view, plain background).
-      <span class="zh">照片說明：近期 2 吋彩色免冠證件相，建議白底正面。點左側方框從電腦選圖，只存在本機瀏覽器，不上傳任何伺服器。</span>
-    </div>
   </div>
 
   <div class="big">
@@ -160,6 +214,15 @@ body{background:#e9eef3;color:var(--ink);
 </div>
 
 <button class="float-btn" id="genBtn">Download PDF</button>
+
+<!-- 模版浮窗 -->
+<button class="tpl-btn" id="tplBtn">换模版 / Templates</button>
+<div class="tpl-panel" id="tplPanel">
+  <h4>選擇模版風格（已填內容會保留）</h4>
+  <div class="tpl-card" data-theme="theme-1"><span class="sw" style="background:linear-gradient(135deg,#2f6fb0,#1f4f80)"></span><div><b>Fresh Blue</b><small>清新蓝 · 正式大方</small></div></div>
+  <div class="tpl-card" data-theme="theme-2"><span class="sw" style="background:linear-gradient(135deg,#e8843a,#2bb3a3)"></span><div><b>Warm Sunshine</b><small>暖阳橙 · 親切活潑</small></div></div>
+  <div class="tpl-card" data-theme="theme-3"><span class="sw" style="background:linear-gradient(135deg,#8a5a2b,#a8823c)"></span><div><b>Elegant Gold</b><small>雅致金 · 典雅雋永</small></div></div>
+</div>
 
 <!-- 缺項彈窗 -->
 <div class="modal-mask" id="modal">
@@ -186,73 +249,77 @@ body{background:#e9eef3;color:var(--ink);
 
 <script>
 (function(){
-  var today = new Date();
-  var iso = today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0');
-  document.getElementById('fdate').value = iso;
+  var THEMES=['theme-1','theme-2','theme-3'];
+  var page=document.querySelector('.page');
 
-  var box = document.getElementById('photoBox');
-  var file = document.getElementById('photoFile');
-  var img = document.getElementById('photoImg');
+  function applyTheme(t){
+    THEMES.forEach(function(x){ page.classList.remove(x); });
+    page.classList.add(t);
+    document.querySelectorAll('.tpl-card').forEach(function(c){
+      c.classList.toggle('active', c.dataset.theme===t);
+    });
+    try{ localStorage.setItem('tool05_theme', t); }catch(e){}
+  }
+  document.querySelectorAll('.tpl-card').forEach(function(c){
+    c.addEventListener('click', function(){ applyTheme(c.dataset.theme); });
+  });
+  document.getElementById('tplBtn').addEventListener('click', function(){
+    document.getElementById('tplPanel').classList.toggle('show');
+  });
+  var saved=null; try{ saved=localStorage.getItem('tool05_theme'); }catch(e){}
+  applyTheme(saved && THEMES.indexOf(saved)>=0 ? saved : 'theme-1');
+
+  // 日期預填
+  var today=new Date();
+  var iso=today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0');
+  document.getElementById('fdate').value=iso;
+
+  // 照片上傳（本機）
+  var box=document.getElementById('photoBox'), file=document.getElementById('photoFile'), img=document.getElementById('photoImg');
   box.addEventListener('click', function(){ file.click(); });
   file.addEventListener('change', function(){
-    var f = file.files && file.files[0];
-    if(!f) return;
-    var r = new FileReader();
-    r.onload = function(e){ img.src = e.target.result; img.style.display='block'; };
+    var f=file.files && file.files[0]; if(!f) return;
+    var r=new FileReader();
+    r.onload=function(e){ img.src=e.target.result; img.style.display='block'; };
     r.readAsDataURL(f);
   });
 
-  var modal = document.getElementById('modal');
-  var missList = document.getElementById('missList');
-  var btn = document.getElementById('genBtn');
+  // 缺項校驗 + PDF
+  var modal=document.getElementById('modal'), missList=document.getElementById('missList');
+  var btn=document.getElementById('genBtn');
   document.getElementById('btnCancel').addEventListener('click', function(){ modal.classList.remove('show'); });
-
-  function val(el){ return (el.value || '').trim(); }
-
+  function val(el){ return (el.value||'').trim(); }
   function getMissing(){
-    var miss = [];
+    var miss=[];
     document.querySelectorAll('[data-req]').forEach(function(el){
-      if(!val(el)) miss.push(el.getAttribute('data-label') || el.id);
+      if(!val(el)) miss.push(el.getAttribute('data-label')||el.id);
     });
     return miss;
   }
-
   function generatePDF(){
     modal.classList.remove('show');
-    btn.disabled = true; var old = btn.textContent; btn.textContent = 'Generating…';
-    var page = document.querySelector('.page');
+    btn.disabled=true; var old=btn.textContent; btn.textContent='Generating…';
     if(window.html2canvas && window.jspdf){
-      html2canvas(page, {scale:2, backgroundColor:'#ffffff', logging:false}).then(function(canvas){
+      html2canvas(page,{scale:2,backgroundColor:'#ffffff',logging:false}).then(function(canvas){
         try{
-          var pdf = new window.jspdf.jsPDF('p','mm','a4');
-          var pw = pdf.internal.pageSize.getWidth();
-          var ph = pdf.internal.pageSize.getHeight();
-          var iw = pw, ih = canvas.height * iw / canvas.width;
-          var pos = 0, left = ih;
-          pdf.addImage(canvas.toDataURL('image/png'),'PNG',0,pos,iw,ih);
-          left -= ph;
-          while(left > 0){
-            pos -= ph; pdf.addPage(); pdf.addImage(canvas.toDataURL('image/png'),'PNG',0,pos,iw,ih); left -= ph;
-          }
+          var pdf=new window.jspdf.jsPDF('p','mm','a4');
+          var pw=pdf.internal.pageSize.getWidth(), ph=pdf.internal.pageSize.getHeight();
+          var iw=pw, ih=canvas.height*iw/canvas.width, pos=0, left=ih;
+          pdf.addImage(canvas.toDataURL('image/png'),'PNG',0,pos,iw,ih); left-=ph;
+          while(left>0){ pos-=ph; pdf.addPage(); pdf.addImage(canvas.toDataURL('image/png'),'PNG',0,pos,iw,ih); left-=ph; }
           pdf.save('primary-school-application.pdf');
         }catch(e){ window.print(); }
-        btn.disabled = false; btn.textContent = old;
-      }).catch(function(){ window.print(); btn.disabled = false; btn.textContent = old; });
-    } else {
-      window.print();
-      btn.disabled = false; btn.textContent = old;
-    }
+        btn.disabled=false; btn.textContent=old;
+      }).catch(function(){ window.print(); btn.disabled=false; btn.textContent=old; });
+    } else { window.print(); btn.disabled=false; btn.textContent=old; }
   }
-
   document.getElementById('btnOk').addEventListener('click', generatePDF);
-
   btn.addEventListener('click', function(){
-    var miss = getMissing();
+    var miss=getMissing();
     if(miss.length){
-      missList.innerHTML = '';
+      missList.innerHTML='';
       miss.forEach(function(m){ var li=document.createElement('li'); li.textContent=m; missList.appendChild(li); });
-      modal.classList.add('show');
-      return;
+      modal.classList.add('show'); return;
     }
     generatePDF();
   });
