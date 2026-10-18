@@ -34,6 +34,10 @@ body{background:#e9eef3;color:var(--ink);
 .lab .zh{font-size:10.5px;color:#9aa7b3;font-weight:400;margin-top:1px}
 .req{color:var(--req);font-weight:700;margin-left:3px}
 
+[contenteditable]{outline:none;cursor:text;border-bottom:1px dashed transparent}
+[contenteditable]:hover{border-bottom-color:var(--line)}
+[contenteditable]:focus{border-bottom-color:var(--pri)}
+
 /* 頂部標題 */
 .head{text-align:center;margin-bottom:12px}
 .head .ttl{font-size:12.5px;letter-spacing:3px;text-transform:uppercase;color:var(--ink2)}
@@ -145,7 +149,7 @@ body{background:#e9eef3;color:var(--ink);
   <div class="page-accent"></div>
 
   <div class="head">
-    <div class="ttl">Application Letter<span class="zh">申請信</span></div>
+    <div class="ttl"><span contenteditable="true" spellcheck="false">Application Letter</span><span class="zh" contenteditable="true" spellcheck="false">申請信</span></div>
   </div>
 
   <!-- HERO：照片左上 + 大字姓名 -->
@@ -170,7 +174,7 @@ body{background:#e9eef3;color:var(--ink);
     </div>
   </div>
 
-  <div class="sec-t"><span class="en">Student Particulars</span> <span class="zh" style="font-size:11px;color:#9aa7b3;font-weight:400">學生基本資料</span></div>
+  <div class="sec-t"><span class="en" contenteditable="true" spellcheck="false">Student Particulars</span> <span class="zh" style="font-size:11px;color:#9aa7b3;font-weight:400" contenteditable="true" spellcheck="false">學生基本資料</span></div>
   <div class="grid">
     <div class="fld"><div class="lab"><span class="en">Gender<span class="req">*</span></span><span class="zh">性別</span></div>
       <select id="sex" data-req data-label="Gender"><option value="">Please select</option><option>Male</option><option>Female</option></select></div>
@@ -186,15 +190,15 @@ body{background:#e9eef3;color:var(--ink);
   </div>
 
   <div class="big">
-    <div class="lab"><span class="en">Hobbies &amp; Extracurricular Activities</span><span class="zh">嗜好與課外活動</span></div>
+    <div class="lab"><span class="en" contenteditable="true" spellcheck="false">Hobbies &amp; Extracurricular Activities</span><span class="zh" contenteditable="true" spellcheck="false">嗜好與課外活動</span></div>
     <textarea id="hobby" placeholder="e.g. Piano (Grade 5), swimming, reading, basketball..."></textarea>
   </div>
   <div class="big">
-    <div class="lab"><span class="en">Awards &amp; Competitions</span><span class="zh">獲獎與比賽成績</span></div>
+    <div class="lab"><span class="en" contenteditable="true" spellcheck="false">Awards &amp; Competitions</span><span class="zh" contenteditable="true" spellcheck="false">獲獎與比賽成績</span></div>
     <textarea id="award" placeholder="e.g. 2025 Inter-school Speech Festival 2nd runner-up..."></textarea>
   </div>
   <div class="big">
-    <div class="lab"><span class="en">Certificates &amp; Other Attachments</span><span class="zh">證書與其他附件</span></div>
+    <div class="lab"><span class="en" contenteditable="true" spellcheck="false">Certificates &amp; Other Attachments</span><span class="zh" contenteditable="true" spellcheck="false">證書與其他附件</span></div>
     <textarea id="cert" placeholder="e.g. music grade certificates, service records..."></textarea>
   </div>
 
@@ -207,6 +211,7 @@ body{background:#e9eef3;color:var(--ink);
 <button class="tpl-btn" id="tplBtn">换模版 / Templates</button>
 <div class="tpl-panel" id="tplPanel">
   <h4>選擇模版風格（已填內容會保留）</h4>
+  <div style="font-size:11px;color:#9aa7b3;margin:-3px 0 9px">提示：點擊頁面上任何欄目標題可直接改字</div>
   <div class="tpl-card" data-theme="theme-1"><span class="sw" style="background:linear-gradient(135deg,#2f6fb0,#1f4f80)"></span><div><b>Fresh Blue</b><small>清新蓝 · 正式大方</small></div></div>
   <div class="tpl-card" data-theme="theme-2"><span class="sw" style="background:linear-gradient(135deg,#e8843a,#2bb3a3)"></span><div><b>Warm Sunshine</b><small>暖阳橙 · 親切活潑</small></div></div>
   <div class="tpl-card" data-theme="theme-3"><span class="sw" style="background:linear-gradient(135deg,#8a5a2b,#a8823c)"></span><div><b>Elegant Gold</b><small>雅致金 · 典雅雋永</small></div></div>
@@ -256,6 +261,16 @@ body{background:#e9eef3;color:var(--ink);
   });
   var saved=null; try{ saved=localStorage.getItem('tool05_theme'); }catch(e){}
   applyTheme(saved && THEMES.indexOf(saved)>=0 ? saved : 'theme-1');
+
+  // 欄目標題可編輯：禁 Enter 換行、粘貼轉純文本
+  document.querySelectorAll('[contenteditable]').forEach(function(el){
+    el.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); el.blur(); } });
+    el.addEventListener('paste',function(e){
+      e.preventDefault();
+      var t=(e.clipboardData||window.clipboardData).getData('text');
+      document.execCommand('insertText',false,t);
+    });
+  });
 
   // 日期預填
   var today=new Date();
