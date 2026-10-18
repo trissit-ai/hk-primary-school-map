@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>小學插班入學申請表（可生成 PDF）</title>
+<style>
+:root{--ink:#232a31;--ink2:#5a6672;--line:#cdd6df;--pri:#4F7BAB;--soft:#eef3f8;--req:#d8453b}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#e9eef3;color:var(--ink);
+  font:14px/1.6 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased;padding:18px 12px 60px}
+
+/* A4 列印區 */
+.page{width:210mm;min-height:297mm;margin:0 auto;background:#fff;
+  padding:14mm 14mm 12mm;border:1px solid #d4dbe2;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+.head{border-bottom:3px double #2c3b47;padding-bottom:10px;margin-bottom:14px}
+.head h1{margin:0;font-size:22px;letter-spacing:1px;text-align:center}
+.head .sub{text-align:center;color:var(--ink2);font-size:12.5px;margin-top:4px}
+
+/* 學校 + 年級 + 一句話 */
+.line{display:flex;align-items:flex-end;gap:10px;margin:10px 0}
+.line .lab{flex:0 0 auto;font-weight:600;white-space:nowrap}
+.school-in{font-size:18px;font-weight:600;flex:1;border:none;border-bottom:1.5px solid var(--ink);
+  padding:4px 6px;color:var(--ink);background:transparent}
+.school-in:focus{outline:none;border-color:var(--pri)}
+.grade-in{width:120px;border:none;border-bottom:1.5px solid var(--ink);font-size:15px;padding:4px 6px}
+.hope{width:100%;border:1px solid var(--line);border-radius:6px;padding:8px 10px;font-size:13.5px;
+  resize:vertical;min-height:52px;font-family:inherit;color:var(--ink)}
+
+.sec-t{font-size:15px;font-weight:700;margin:18px 0 8px;padding-left:8px;border-left:4px solid var(--pri)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 22px}
+.fld{display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--line);padding:5px 2px}
+.fld .k{flex:0 0 96px;color:var(--ink2);font-size:12.5px}
+.fld input,.fld select{flex:1;border:none;background:transparent;font-size:13.5px;padding:3px 2px;color:var(--ink);font-family:inherit}
+.fld input:focus,.fld select:focus{outline:none}
+.fld.full{grid-column:1 / -1}
+.req{color:var(--req);font-weight:700;margin-left:2px}
+
+/* 照片 */
+.photo-row{display:flex;gap:18px;align-items:flex-start;margin:14px 0}
+.photo-box{width:42mm;height:55mm;border:1.5px dashed #9aa7b3;border-radius:4px;position:relative;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;flex:0 0 auto;background:#fafbfc}
+.photo-box .ph{color:#9aa7b3;font-size:13px;text-align:center;line-height:1.5;padding:6px}
+.photo-box img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.photo-box input{display:none}
+.photo-note{flex:1;font-size:12.5px;color:var(--ink2);line-height:1.8}
+
+/* 大欄 */
+.big{margin:12px 0}
+.big label{display:block;font-weight:600;margin-bottom:4px;font-size:13.5px}
+.big textarea{width:100%;border:1px solid var(--line);border-radius:6px;padding:8px 10px;
+  font-size:13.5px;resize:vertical;min-height:60px;font-family:inherit;color:var(--ink)}
+.big textarea:focus{outline:none;border-color:var(--pri)}
+
+.date-line{margin-top:16px;font-size:13px;color:var(--ink2);text-align:right}
+.date-line input{border:none;border-bottom:1px solid var(--ink);width:130px;font-size:13px;text-align:center}
+
+/* 浮空按鈕 */
+.float-btn{position:fixed;right:22px;bottom:22px;z-index:50;
+  background:var(--pri);color:#fff;border:none;border-radius:50px;padding:14px 22px;font-size:15px;font-weight:600;
+  box-shadow:0 4px 14px rgba(79,123,171,.45);cursor:pointer;font-family:inherit}
+.float-btn:active{transform:translateY(1px)}
+
+/* 彈窗 */
+.modal-mask{position:fixed;inset:0;background:rgba(20,28,36,.5);z-index:80;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-mask.show{display:flex}
+.modal{background:#fff;border-radius:14px;max-width:420px;width:100%;padding:22px 22px 18px;box-shadow:0 10px 40px rgba(0,0,0,.25)}
+.modal h3{margin:0 0 6px;font-size:17px}
+.modal p{margin:0 0 10px;font-size:13px;color:var(--ink2)}
+.modal ul{margin:0 0 16px;padding-left:20px;max-height:200px;overflow:auto;font-size:13.5px;color:var(--ink)}
+.modal li{margin:3px 0}
+.modal-btns{display:flex;gap:10px}
+.modal-btns button{flex:1;border:none;border-radius:9px;padding:11px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
+.b-cancel{background:#eef1f5;color:#46525e}
+.b-ok{background:var(--pri);color:#fff}
+
+/* 站點 footer（螢幕用，不列印） */
+.site-footer{max-width:820px;margin:26px auto 0;font-size:12px;color:#7a8896;line-height:1.9;text-align:center}
+.site-footer a.xhs{display:inline-block;background:#ff2442;color:#fff;font-size:12px;padding:5px 13px;border-radius:999px;text-decoration:none;font-weight:600;margin:6px 0}
+.site-footer .disc{margin-top:6px}
+
+@media print{
+  @page{size:A4;margin:0}
+  html,body{background:#fff;padding:0}
+  .page{width:auto;min-height:auto;margin:0;border:none;box-shadow:none;padding:10mm 12mm}
+  .float-btn,.modal-mask,.site-footer{display:none !important}
+  .photo-box{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="head">
+    <h1>小學插班入學申請表</h1>
+    <div class="sub">填妥後直接列印或存成 PDF，交予申請學校</div>
+  </div>
+
+  <div class="line">
+    <span class="lab">申請學校</span>
+    <input class="school-in" id="school" data-req data-label="申請學校" placeholder="請填寫學校全名">
+    <span class="lab">申請入讀年級</span>
+    <input class="grade-in" id="grade" data-req data-label="申請入讀年級" placeholder="如 小三">
+  </div>
+
+  <div class="big">
+    <label>一句話（表達加入貴校的願望）<span class="req">*</span></label>
+    <textarea id="hope" data-req data-label="一句話願望">本人十分希望能加入貴校，懇請考慮我的申請，盼能獲得面試機會。</textarea>
+  </div>
+
+  <div class="sec-t">學生基本資料</div>
+  <div class="grid">
+    <div class="fld"><span class="k">中文姓名<span class="req">*</span></span><input id="cn" data-req data-label="中文姓名" placeholder="姓名"></div>
+    <div class="fld"><span class="k">英文姓名</span><input id="en" placeholder="NAME"></div>
+    <div class="fld"><span class="k">性別<span class="req">*</span></span>
+      <select id="sex" data-req data-label="性別"><option value="">請選</option><option>男</option><option>女</option></select></div>
+    <div class="fld"><span class="k">出生日期<span class="req">*</span></span><input type="date" id="dob" data-req data-label="出生日期"></div>
+    <div class="fld"><span class="k">國籍／出生地</span><input id="nat" placeholder="如 中國香港"></div>
+    <div class="fld"><span class="k">身份證號碼</span><input id="idn" placeholder="可留空"></div>
+    <div class="fld"><span class="k">現讀學校<span class="req">*</span></span><input id="cschool" data-req data-label="現讀學校" placeholder="目前就讀學校"></div>
+    <div class="fld"><span class="k">現讀年級</span><input id="cgrade" placeholder="如 小二"></div>
+    <div class="fld full"><span class="k">住址</span><input id="addr" placeholder="通訊住址"></div>
+    <div class="fld"><span class="k">聯絡電話<span class="req">*</span></span><input id="tel" data-req data-label="聯絡電話" placeholder="家長電話"></div>
+    <div class="fld"><span class="k">電郵</span><input id="email" placeholder="可留空"></div>
+    <div class="fld"><span class="k">家長姓名<span class="req">*</span></span><input id="pname" data-req data-label="家長姓名" placeholder="監護人姓名"></div>
+    <div class="fld"><span class="k">與學生關係</span><input id="rel" placeholder="如 父／母"></div>
+  </div>
+
+  <div class="photo-row">
+    <div class="photo-box" id="photoBox" title="點擊上傳 2 吋近照">
+      <span class="ph">點擊上傳<br>2 吋近照</span>
+      <img id="photoImg" alt="" style="display:none">
+      <input type="file" id="photoFile" accept="image/*">
+    </div>
+    <div class="photo-note">
+      <b>照片說明：</b>貼上近期 2 吋彩色免冠證件相。建議白底、正面、五官清晰。可點左側方框直接從電腦選圖，圖片只存在本機瀏覽器，不會上傳任何伺服器。
+    </div>
+  </div>
+
+  <div class="big">
+    <label>嗜好／課外活動</label>
+    <textarea id="hobby" placeholder="如 鋼琴、游泳、閱讀、籃球……"></textarea>
+  </div>
+  <div class="big">
+    <label>獲獎／比賽成績</label>
+    <textarea id="award" placeholder="如 2025 校際朗誦比賽 亞軍、數學奬……"></textarea>
+  </div>
+  <div class="big">
+    <label>證書／其他附件</label>
+    <textarea id="cert" placeholder="如 音樂考級證書、服務證明……"></textarea>
+  </div>
+
+  <div class="date-line">填表日期：<input id="fdate" type="date"></div>
+</div>
+
+<button class="float-btn" id="genBtn">生成 PDF</button>
+
+<!-- 缺項彈窗 -->
+<div class="modal-mask" id="modal">
+  <div class="modal">
+    <h3>還有欄位未填</h3>
+    <p>以下標 <span style="color:#d8453b;font-weight:700">*</span> 的必填欄位尚未填寫：</p>
+    <ul id="missList"></ul>
+    <div class="modal-btns">
+      <button class="b-cancel" id="btnCancel">X 我還填填</button>
+      <button class="b-ok" id="btnOk">OK 直接生成 PDF</button>
+    </div>
+  </div>
+</div>
+
+<!-- 站點 footer -->
+<footer class="site-footer">
+  本表為可填寫範本，所有資料只存在你自己的瀏覽器，<b>不上傳、不收集</b>。<br>
+  想拿面試日全集、開放日情報？私信我們領取：
+  <a class="xhs" href="https://www.xiaohongshu.com/search_result?keyword=183236193" target="_blank" rel="noopener">去小紅書聊聊</a>
+  <div class="disc">免責聲明：本表僅供家長自行整理申請資料之用，不構成任何入學保證或建議；各校收生準則以校方公布為準。</div>
+  <span id="busuanzi_container_page_pv" style="display:none">本頁訪問 <span id="busuanzi_value_page_pv">–</span> 次</span><span id="busuanzi_container_site_uv" style="display:none">&nbsp;· 本站訪客 <span id="busuanzi_value_site_uv">–</span> 人</span>
+</footer>
+
+<script>
+(function(){
+  // 自動填表日期
+  var today = new Date();
+  var iso = today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0');
+  document.getElementById('fdate').value = iso;
+
+  // 照片上傳
+  var box = document.getElementById('photoBox');
+  var file = document.getElementById('photoFile');
+  var img = document.getElementById('photoImg');
+  box.addEventListener('click', function(){ file.click(); });
+  file.addEventListener('change', function(){
+    var f = file.files && file.files[0];
+    if(!f) return;
+    var r = new FileReader();
+    r.onload = function(e){ img.src = e.target.result; img.style.display='block'; };
+    r.readAsDataURL(f);
+  });
+
+  // 彈窗控制
+  var modal = document.getElementById('modal');
+  var missList = document.getElementById('missList');
+  document.getElementById('btnCancel').addEventListener('click', function(){ modal.classList.remove('show'); });
+
+  function val(el){ return (el.value || '').trim(); }
+
+  function doPrint(){ modal.classList.remove('show'); window.print(); }
+
+  document.getElementById('btnOk').addEventListener('click', doPrint);
+
+  document.getElementById('genBtn').addEventListener('click', function(){
+    var miss = [];
+    document.querySelectorAll('[data-req]').forEach(function(el){
+      if(!val(el)) miss.push(el.getAttribute('data-label') || el.id);
+    });
+    if(miss.length){
+      missList.innerHTML = '';
+      miss.forEach(function(m){ var li=document.createElement('li'); li.textContent=m; missList.appendChild(li); });
+      modal.classList.add('show');
+      return;
+    }
+    doPrint();
+  });
+})();
+</script>
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>
