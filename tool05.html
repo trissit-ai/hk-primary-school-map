@@ -40,16 +40,18 @@ body{background:#e9eef3;color:var(--ink);
 .head .ttl .zh{letter-spacing:0;text-transform:none;font-size:11px;margin-left:6px}
 
 /* HERO：照片左上 + 大字姓名 */
-.hero{display:flex;gap:16px;align-items:flex-start;margin-bottom:6px}
-.photo-box{width:42mm;height:55mm;border:1.5px dashed #9aa7b3;border-radius:var(--radius);
+.hero{display:flex;gap:18px;align-items:flex-start;margin-bottom:8px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.photo-box{width:42mm;height:55mm;border:3px solid var(--pri);border-radius:var(--radius);
   position:relative;display:flex;align-items:center;justify-content:center;cursor:pointer;
-  overflow:hidden;flex:0 0 auto;background:#fafbfc}
+  overflow:hidden;flex:0 0 auto;background:var(--soft);box-shadow:0 6px 18px rgba(20,28,36,.14)}
 .photo-box .ph{color:#9aa7b3;font-size:11.5px;text-align:center;line-height:1.5;padding:6px}
 .photo-box img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .photo-box input{display:none}
 .hero-name{flex:1;padding-top:1mm;min-width:0}
-.cn-in{width:100%;border:none;border-bottom:2.5px solid var(--pri);font-size:30px;font-weight:800;
-  color:var(--name);font-family:var(--serif);padding:1px 0;background:transparent;line-height:1.15}
+.kicker{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--pri);font-weight:700;margin-bottom:3px}
+.kicker .zh{letter-spacing:0;text-transform:none;font-weight:400;font-size:10px;margin-left:5px;color:var(--ink2)}
+.cn-in{width:100%;border:none;border-bottom:3px solid var(--pri);font-size:33px;font-weight:800;
+  color:var(--name);font-family:var(--serif);padding:1px 0;background:transparent;line-height:1.12}
 .cn-in:focus{outline:none}
 .en-in{width:100%;border:none;font-size:14px;color:var(--ink2);margin-top:3px;background:transparent}
 .en-in:focus{outline:none}
@@ -161,6 +163,7 @@ body{background:#e9eef3;color:var(--ink);
       <input type="file" id="photoFile" accept="image/*">
     </div>
     <div class="hero-name">
+      <div class="kicker">Applicant<span class="zh">申請學生</span></div>
       <input class="cn-in" id="cn" data-req data-label="Full Name (Chinese)" placeholder="學生中文姓名">
       <input class="en-in" id="en" placeholder="NAME (English)">
       <div class="gr">
@@ -172,7 +175,7 @@ body{background:#e9eef3;color:var(--ink);
 
   <!-- 開場白 -->
   <div class="lead">
-    <div class="lab"><span class="en">A short note expressing your wish to join<span class="req">*</span></span><span class="zh">一句願望語（表達希望加入貴校）</span></div>
+    <div class="lab"><span class="en">Your note to the school<span class="req">*</span></span><span class="zh">一句願望語（表達希望加入貴校）</span></div>
     <textarea id="hope" data-req data-label="Wish note">I sincerely hope my child could join your school and would be grateful for the opportunity to sit for an interview.</textarea>
   </div>
 
