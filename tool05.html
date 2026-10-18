@@ -168,7 +168,7 @@ body{background:#e9eef3;color:var(--ink);
         <input class="grade-in" id="grade" data-req data-label="Applying for Grade" placeholder="e.g. Primary 3">
       </div>
       <div class="wish">
-        <div class="lab"><span class="en">Your note to the school<span class="req">*</span></span><span class="zh">一句願望語（表達希望加入貴校）</span></div>
+        <div class="lab"><span class="en" contenteditable="true" spellcheck="false">Your note to the school<span class="req">*</span></span><span class="zh" contenteditable="true" spellcheck="false">一句願望語（表達希望加入貴校）</span></div>
         <textarea id="hope" data-req data-label="Wish note">I sincerely hope my child could join your school and would be grateful for the opportunity to sit for an interview.</textarea>
       </div>
     </div>
@@ -176,6 +176,7 @@ body{background:#e9eef3;color:var(--ink);
 
   <div class="sec-t"><span class="en" contenteditable="true" spellcheck="false">Student Particulars</span> <span class="zh" style="font-size:11px;color:#9aa7b3;font-weight:400" contenteditable="true" spellcheck="false">學生基本資料</span></div>
   <div class="grid">
+    <div class="fld full"><div class="lab"><span class="en">School Applying To<span class="req">*</span></span><span class="zh">申請學校</span></div><input id="school" data-req data-label="School Applying To" placeholder="e.g. Pui Ching Primary School"></div>
     <div class="fld"><div class="lab"><span class="en">Gender<span class="req">*</span></span><span class="zh">性別</span></div>
       <select id="sex" data-req data-label="Gender"><option value="">Please select</option><option>Male</option><option>Female</option></select></div>
     <div class="fld"><div class="lab"><span class="en">Date of Birth<span class="req">*</span></span><span class="zh">出生日期</span></div><input type="date" id="dob" data-req data-label="Date of Birth"></div>
