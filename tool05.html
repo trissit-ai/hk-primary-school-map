@@ -60,13 +60,13 @@ body{background:#e9eef3;color:var(--ink);
 .grade-in{width:150px;border:none;border-bottom:1.5px solid var(--ink);font-size:14px;padding:3px 4px;font-family:inherit;color:var(--ink)}
 .grade-in:focus{outline:none;border-color:var(--pri)}
 
-/* 開場白（願望語） */
-.lead{background:var(--soft);border-left:4px solid var(--pri);border-radius:0 var(--radius) var(--radius) 0;
-  padding:10px 14px;margin:8px 0 14px}
-.lead .lab{margin-bottom:4px}
-.lead textarea{width:100%;border:none;background:transparent;font-size:14px;resize:vertical;
-  min-height:46px;font-family:inherit;color:var(--ink)}
-.lead textarea:focus{outline:none}
+/* 願望語（併入 hero，緊貼姓名下方） */
+.wish{margin-top:9px}
+.wish .lab .en{font-size:11px}
+.wish .lab .zh{font-size:9.5px}
+.wish textarea{width:100%;border:none;background:transparent;font-size:13.5px;line-height:1.55;
+  resize:vertical;min-height:38px;font-family:inherit;color:var(--ink);padding:0;margin-top:2px}
+.wish textarea:focus{outline:none}
 
 /* 致學校 */
 .to-line{display:flex;align-items:flex-end;gap:10px;margin:10px 0;border-bottom:1px solid var(--line);padding-bottom:6px}
@@ -170,13 +170,11 @@ body{background:#e9eef3;color:var(--ink);
         <div class="lab"><span class="en">Applying for Grade<span class="req">*</span></span><span class="zh">申請入讀年級</span></div>
         <input class="grade-in" id="grade" data-req data-label="Applying for Grade" placeholder="e.g. Primary 3">
       </div>
+      <div class="wish">
+        <div class="lab"><span class="en">Your note to the school<span class="req">*</span></span><span class="zh">一句願望語（表達希望加入貴校）</span></div>
+        <textarea id="hope" data-req data-label="Wish note">I sincerely hope my child could join your school and would be grateful for the opportunity to sit for an interview.</textarea>
+      </div>
     </div>
-  </div>
-
-  <!-- 開場白 -->
-  <div class="lead">
-    <div class="lab"><span class="en">Your note to the school<span class="req">*</span></span><span class="zh">一句願望語（表達希望加入貴校）</span></div>
-    <textarea id="hope" data-req data-label="Wish note">I sincerely hope my child could join your school and would be grateful for the opportunity to sit for an interview.</textarea>
   </div>
 
   <!-- 致學校 -->
@@ -303,7 +301,18 @@ body{background:#e9eef3;color:var(--ink);
     modal.classList.remove('show');
     btn.disabled=true; var old=btn.textContent; btn.textContent='Generating…';
     if(window.html2canvas && window.jspdf){
-      html2canvas(page,{scale:2,backgroundColor:'#ffffff',logging:false}).then(function(canvas){
+      html2canvas(page,{scale:2,backgroundColor:'#ffffff',logging:false,onclone:function(doc){
+        var orig=page.querySelectorAll('input,textarea,select');
+        doc.querySelectorAll('input,textarea,select').forEach(function(el,i){
+          var o=orig[i]; if(!o||o.type==='file') return;
+          var v=(o.value||'').trim();
+          var cs=getComputedStyle(o);
+          var s=doc.createElement('span');
+          s.textContent=v;
+          s.style.cssText='font:'+cs.font+';color:'+(v?cs.color:'#9aa7b3')+';white-space:pre-wrap;display:inline-block';
+          el.parentNode.replaceChild(s,el);
+        });
+      }}).then(function(canvas){
         try{
           var pdf=new window.jspdf.jsPDF('p','mm','a4');
           var pw=pdf.internal.pageSize.getWidth(), ph=pdf.internal.pageSize.getHeight();
