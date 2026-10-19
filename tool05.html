@@ -61,12 +61,11 @@ body{background:#e9eef3;color:var(--ink);
 .en-in:focus{outline:none}
 .gr{margin-top:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .gr .lab{flex:0 0 auto}
-.grade-in{width:150px;border:none;border-bottom:1.5px solid var(--ink);font-size:14px;padding:3px 4px;font-family:inherit;color:var(--ink)}
+.grade-in{width:170px;border:none;border-bottom:1.5px solid var(--ink);font-size:19px;font-weight:600;padding:3px 4px;font-family:inherit;color:var(--ink)}
 .grade-in:focus{outline:none;border-color:var(--pri)}
 
 /* 願望語（併入 hero，緊貼姓名下方） */
 .wish{margin-top:9px}
-.wish .lab{flex-direction:row;gap:8px;align-items:baseline}
 .wish .lab .en{font-size:11px}
 .wish .lab .zh{font-size:9.5px}
 .wish textarea{width:100%;border:none;background:transparent;font-size:13.5px;line-height:1.55;
@@ -82,7 +81,7 @@ body{background:#e9eef3;color:var(--ink);
 .fld.full{grid-column:1 / -1}
 
 .big{margin:12px 0}
-.big .lab{margin-bottom:4px}
+.big .lab{margin-bottom:4px;flex-direction:row;gap:8px;align-items:baseline}
 .big textarea{width:100%;border:1px solid var(--line);border-radius:var(--radius);padding:8px 10px;
   font-size:13px;resize:vertical;min-height:60px;font-family:inherit;color:var(--ink)}
 .big textarea:focus{outline:none;border-color:var(--pri)}
@@ -157,6 +156,9 @@ body{background:#e9eef3;color:var(--ink);
 .decl-txt{font-size:13px;color:var(--ink);line-height:1.6}
 .decl-txt .zh{display:block;color:var(--ink2);font-size:12px;margin-top:1px}
 .sign-line{margin-top:10px;font-size:13px;color:var(--ink2)}
+.sign-line .zh{margin-left:6px}
+.sign-date{display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap;margin-top:18px}
+.sign-date .sign-line,.sign-date .date-line{margin-top:0}
 .sign-line input{border:none;border-bottom:1.5px solid var(--ink);font-size:14px;padding:3px 6px;min-width:220px;font-family:inherit;background:transparent}
 .sign-line input:focus{outline:none;border-color:var(--pri)}
 
@@ -241,9 +243,10 @@ at [Current School]. We sincerely hope our child may be considered for admission
     <div class="lang-row"><input class="lname-in" placeholder="Other language"><select class="lvl"><option value="">Please select</option></select></div>
   </div>
 
-  <div class="sign-line"><span class="en">Parent / Guardian signature</span><span class="zh">家長簽署</span>: <input id="sign" placeholder="Type full name"></div>
-
-  <div class="date-line"><span class="lab"><span class="en">Date</span><span class="zh">填表日期</span></span>: <input id="fdate" type="date"></div>
+  <div class="sign-date">
+    <div class="sign-line"><span class="en">Parent / Guardian signature</span><span class="zh">家長簽署</span>: <input id="sign" placeholder="Type full name"></div>
+    <div class="date-line"><span class="lab"><span class="en">Date</span><span class="zh">填表日期</span></span>: <input id="fdate" type="date"></div>
+  </div>
 </div>
 
   <div class="actions">
