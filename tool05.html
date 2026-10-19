@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Primary School Application Letter（可下载 PDF）</title>
+<title>Primary School Transfer Admission（可下载 PDF）</title>
 <script defer src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <style>
@@ -33,7 +33,6 @@ body{background:#e9eef3;color:var(--ink);
 .lab{display:flex;flex-direction:column;line-height:1.15}
 .lab .en{font-size:13px;font-weight:600;color:#232a31}
 .lab .zh{font-size:10.5px;color:#9aa7b3;font-weight:400;margin-top:1px}
-.req{color:var(--req);font-weight:700;margin-left:3px}
 
 [contenteditable]{outline:none;cursor:text;border-bottom:1px dashed transparent}
 [contenteditable]:hover{border-bottom-color:var(--line)}
@@ -91,8 +90,8 @@ body{background:#e9eef3;color:var(--ink);
 .date-line .lab{display:inline-flex;flex-direction:row;gap:6px;align-items:baseline}
 .date-line input{border:none;border-bottom:1px solid var(--ink);width:140px;font-size:13px;text-align:center;font-family:inherit}
 
-.langs{display:flex;flex-direction:column;gap:6px;margin-top:4px}
-.lang-row{display:flex;align-items:center;gap:8px}
+.langs{display:flex;flex-direction:row;flex-wrap:wrap;gap:10px 14px;margin-top:4px}
+.lang-row{display:flex;align-items:center;gap:8px;flex:1 1 140px}
 .lang-row .lname{flex:0 0 auto;min-width:80px;font-size:13px;font-weight:600;color:#232a31}
 .lang-row .lname-in{border:none;border-bottom:1.5px solid var(--ink);font-size:13px;font-weight:600;color:#232a31;background:transparent;padding:2px 4px;width:118px;font-family:inherit}
 .lang-row .lname-in:focus{outline:none;border-color:var(--pri)}
@@ -163,7 +162,7 @@ body{background:#e9eef3;color:var(--ink);
   <div class="page-accent"></div>
 
   <div class="head">
-    <div class="ttl"><span contenteditable="true" spellcheck="false">Application Letter</span><span class="zh" contenteditable="true" spellcheck="false">申請信</span></div>
+    <div class="ttl"><span contenteditable="true" spellcheck="false">Application for Transfer Admission</span><span class="zh" contenteditable="true" spellcheck="false">插班申请</span></div>
   </div>
 
   <!-- HERO：照片左上 + 大字姓名 -->
@@ -178,11 +177,11 @@ body{background:#e9eef3;color:var(--ink);
       <input class="cn-in" id="cn" data-req data-label="Full Name (Chinese)" placeholder="學生中文姓名">
       <input class="en-in" id="en" placeholder="NAME (English)">
       <div class="gr">
-        <div class="lab"><span class="en">Applying for Grade<span class="req">*</span></span><span class="zh">申請入讀年級</span></div>
+        <div class="lab"><span class="en">Applying for Grade</span><span class="zh">申請入讀年級</span></div>
         <input class="grade-in" id="grade" data-req data-label="Applying for Grade" placeholder="e.g. Primary 3">
       </div>
       <div class="wish">
-        <div class="lab"><span class="en" contenteditable="true" spellcheck="false">Your note to the school<span class="req">*</span></span><span class="zh" contenteditable="true" spellcheck="false">一句願望語（表達希望加入貴校）</span></div>
+        <div class="lab"><span class="en" contenteditable="true" spellcheck="false">Your note to the school</span><span class="zh" contenteditable="true" spellcheck="false">一句願望語（表達希望加入貴校）</span></div>
         <textarea id="hope" data-req data-label="Wish note">I sincerely hope my child could join your school and would be grateful for the opportunity to sit for an interview.</textarea>
       </div>
     </div>
@@ -190,28 +189,24 @@ body{background:#e9eef3;color:var(--ink);
 
   <div class="sec-t"><span class="en" contenteditable="true" spellcheck="false">Student Information</span> <span class="zh" style="font-size:11px;color:#9aa7b3;font-weight:400" contenteditable="true" spellcheck="false">學生資料</span></div>
   <div class="grid">
-    <div class="fld full"><div class="lab"><span class="en">School Applying To<span class="req">*</span></span><span class="zh">申請學校</span></div><input id="school" data-req data-label="School Applying To" placeholder="e.g. Pui Ching Primary School"></div>
-    <div class="fld"><div class="lab"><span class="en">Gender<span class="req">*</span></span><span class="zh">性別</span></div>
+    <div class="fld full"><div class="lab"><span class="en">School Applying To</span><span class="zh">申請學校</span></div><input id="school" data-req data-label="School Applying To" placeholder="e.g. Pui Ching Primary School"></div>
+    <div class="fld"><div class="lab"><span class="en">Gender</span><span class="zh">性別</span></div>
       <select id="sex" data-req data-label="Gender"><option value="">Please select</option><option>Male</option><option>Female</option></select></div>
-    <div class="fld"><div class="lab"><span class="en">Date of Birth<span class="req">*</span></span><span class="zh">出生日期</span></div><input type="date" id="dob" data-req data-label="Date of Birth"></div>
+    <div class="fld"><div class="lab"><span class="en">Date of Birth</span><span class="zh">出生日期</span></div><input type="date" id="dob" data-req data-label="Date of Birth"></div>
     <div class="fld full"><div class="lab"><span class="en">Nationality &amp; ID</span><span class="zh">國籍与号码</span></div><input id="nat" placeholder="e.g. Chinese (Hong Kong) / P123456(7)"></div>
-    <div class="fld"><div class="lab"><span class="en">Current School<span class="req">*</span></span><span class="zh">現讀學校</span></div><input id="cschool" data-req data-label="Current School" placeholder="Current school"></div>
+    <div class="fld"><div class="lab"><span class="en">Current School</span><span class="zh">現讀學校</span></div><input id="cschool" data-req data-label="Current School" placeholder="Current school"></div>
     <div class="fld"><div class="lab"><span class="en">Current Grade</span><span class="zh">現讀年級</span></div><input id="cgrade" placeholder="e.g. Primary 2"></div>
     <div class="fld full"><div class="lab"><span class="en">Residential Address</span><span class="zh">住址</span></div><input id="addr" placeholder="Correspondence address"></div>
-    <div class="fld"><div class="lab"><span class="en">Contact Phone<span class="req">*</span></span><span class="zh">聯絡電話</span></div><input id="tel" data-req data-label="Contact Phone" placeholder="Parent phone"></div>
+    <div class="fld"><div class="lab"><span class="en">Contact Phone</span><span class="zh">聯絡電話</span></div><input id="tel" data-req data-label="Contact Phone" placeholder="Parent phone"></div>
     <div class="fld"><div class="lab"><span class="en">Email</span><span class="zh">電郵</span></div><input id="email" placeholder="optional"></div>
-    <div class="fld"><div class="lab"><span class="en">Parent / Guardian Name<span class="req">*</span></span><span class="zh">家長姓名</span></div><input id="pname" data-req data-label="Parent / Guardian Name" placeholder="Guardian name"></div>
+    <div class="fld"><div class="lab"><span class="en">Parent / Guardian Name</span><span class="zh">家長姓名</span></div><input id="pname" data-req data-label="Parent / Guardian Name" placeholder="Guardian name"></div>
     <div class="fld"><div class="lab"><span class="en">Relationship to Student</span><span class="zh">與學生關係</span></div><input id="rel" placeholder="e.g. Father / Mother"></div>
   </div>
 
-  <div class="sec-t"><span class="en" contenteditable="true" spellcheck="false">Student Particulars</span> <span class="zh" style="font-size:11px;color:#9aa7b3;font-weight:400" contenteditable="true" spellcheck="false">學生細項</span></div>
+  <div class="sec-t"><span class="en" contenteditable="true" spellcheck="false">Student Portfolio</span> <span class="zh" style="font-size:11px;color:#9aa7b3;font-weight:400" contenteditable="true" spellcheck="false">學生作品集</span></div>
   <div class="big">
     <div class="lab"><span class="en" contenteditable="true" spellcheck="false">Hobbies &amp; Extracurricular Activities</span><span class="zh" contenteditable="true" spellcheck="false">嗜好與課外活動</span></div>
     <textarea id="hobby" placeholder="e.g. Piano (Grade 5), swimming, reading, basketball..."></textarea>
-  </div>
-  <div class="big">
-    <div class="lab"><span class="en" contenteditable="true" spellcheck="false">Awards &amp; Competitions</span><span class="zh" contenteditable="true" spellcheck="false">獲獎與比賽成績</span></div>
-    <textarea id="award" placeholder="e.g. 2025 Inter-school Speech Festival 2nd runner-up..."></textarea>
   </div>
   <div class="big">
     <div class="lab"><span class="en" contenteditable="true" spellcheck="false">Certificates &amp; Other Attachments</span><span class="zh" contenteditable="true" spellcheck="false">證書與其他附件</span></div>
@@ -254,7 +249,7 @@ body{background:#e9eef3;color:var(--ink);
 <div class="modal-mask" id="modal">
   <div class="modal">
     <h3>Some required fields are empty</h3>
-    <p>The following <span style="color:#d8453b;font-weight:700">*</span> required fields have not been filled:</p>
+    <p>The following required fields have not been filled:</p>
     <ul id="missList"></ul>
     <div class="modal-btns">
       <button class="b-cancel" id="btnCancel">X I'll fill more</button>
