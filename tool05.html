@@ -148,6 +148,17 @@ body{background:#e9eef3;color:var(--ink);
 .site-footer a.xhs{display:inline-block;background:#ff2442;color:#fff;font-size:12px;padding:5px 13px;border-radius:999px;text-decoration:none;font-weight:600;margin:6px 0}
 .site-footer .disc{margin-top:6px}
 
+/* 新增欄位樣式 */
+.rel-other{margin-top:6px;font-size:13px}
+.big input[type=file]{margin-top:6px;font-size:13px;color:var(--ink2)}
+.decl{display:flex;align-items:flex-start;gap:9px;margin-top:12px}
+.decl input[type=checkbox]{width:18px;height:18px;margin-top:2px;flex:0 0 auto;accent-color:var(--pri)}
+.decl-txt{font-size:13px;color:var(--ink);line-height:1.6}
+.decl-txt .zh{display:block;color:var(--ink2);font-size:12px;margin-top:1px}
+.sign-line{margin-top:10px;font-size:13px;color:var(--ink2)}
+.sign-line input{border:none;border-bottom:1.5px solid var(--ink);font-size:14px;padding:3px 6px;min-width:220px;font-family:inherit;background:transparent}
+.sign-line input:focus{outline:none;border-color:var(--pri)}
+
 @media print{
   @page{size:A4;margin:0}
   html,body{background:#fff;padding:0}
@@ -178,13 +189,12 @@ body{background:#e9eef3;color:var(--ink);
       <input class="en-in" id="en" placeholder="NAME (English)">
       <div class="gr">
         <div class="lab"><span class="en">Applying for Grade</span><span class="zh">申請入讀年級</span></div>
-        <input class="grade-in" id="grade" data-req data-label="Applying for Grade" placeholder="e.g. Primary 3">
+        <select class="grade-in" id="grade" data-req data-label="Applying for Grade"><option value="">Please select</option></select>
       </div>
       <div class="wish">
-        <div class="lab"><span class="en" contenteditable="true" spellcheck="false">Dear School Administration Office,</span><span class="zh" contenteditable="true" spellcheck="false">致學校行政處：</span></div>
+        <div class="lab"><span class="en" contenteditable="true" spellcheck="false">Dear Admissions Team,</span><span class="zh" contenteditable="true" spellcheck="false">致入學組：</span></div>
         <textarea id="hope" data-req data-label="Wish note">We are the parents of [Child's English Name], currently in [Current Grade]
-at [Current School]. We sincerely hope our child may be considered for
-admission to [Applying Grade], and would be most grateful for an interview.</textarea>
+at [Current School]. We sincerely hope our child may be considered for admission to [Applying Grade], and would be most grateful for an interview.</textarea>
       </div>
     </div>
   </div>
@@ -194,34 +204,74 @@ admission to [Applying Grade], and would be most grateful for an interview.</tex
     <div class="fld full"><div class="lab"><span class="en">School Applying To</span><span class="zh">申請學校</span></div><input id="school" data-req data-label="School Applying To" placeholder="e.g. Pui Ching Primary School"></div>
     <div class="fld"><div class="lab"><span class="en">Gender</span><span class="zh">性別</span></div>
       <select id="sex" data-req data-label="Gender"><option value="">Please select</option><option>Male</option><option>Female</option></select></div>
-    <div class="fld"><div class="lab"><span class="en">Date of Birth</span><span class="zh">出生日期</span></div><input type="date" id="dob" data-req data-label="Date of Birth"></div>
-    <div class="fld full"><div class="lab"><span class="en">Nationality &amp; ID</span><span class="zh">國籍与号码</span></div><input id="nat" placeholder="e.g. Chinese (Hong Kong) / P123456(7)"></div>
+    <div class="fld"><div class="lab"><span class="en">Date of Birth</span><span class="zh">出生日期 (DD/MM/YYYY)</span></div><input type="date" id="dob" data-req data-label="Date of Birth"></div>
+    <div class="fld full"><div class="lab"><span class="en">Nationality</span><span class="zh">國籍</span></div><input id="nat" placeholder="e.g. Chinese"></div>
+    <div class="fld full"><div class="lab"><span class="en">ID Document</span><span class="zh">身份證明</span></div><input id="idnum" placeholder="e.g. HKID P123456(7)"></div>
     <div class="fld"><div class="lab"><span class="en">Current School</span><span class="zh">現讀學校</span></div><input id="cschool" data-req data-label="Current School" placeholder="Current school"></div>
-    <div class="fld"><div class="lab"><span class="en">Current Grade</span><span class="zh">現讀年級</span></div><input id="cgrade" placeholder="e.g. Primary 2"></div>
-    <div class="fld full"><div class="lab"><span class="en">Residential Address</span><span class="zh">住址</span></div><input id="addr" placeholder="Correspondence address"></div>
+    <div class="fld"><div class="lab"><span class="en">Current Grade</span><span class="zh">現讀年級</span></div><select id="cgrade" data-req data-label="Current Grade"><option value="">Please select</option></select></div>
+    <div class="fld full"><div class="lab"><span class="en">Residential Address</span><span class="zh">住址</span></div><input id="addr" placeholder="e.g. Flat X, Block Y, Estate Z, District"></div>
+    <div class="fld full"><div class="lab"><span class="en">Mailing / Correspondence Address</span><span class="zh">通訊地址（如與住址不同）</span></div><input id="mail" placeholder="If different from above"></div>
     <div class="fld"><div class="lab"><span class="en">Contact Phone</span><span class="zh">聯絡電話</span></div><input id="tel" data-req data-label="Contact Phone" placeholder="Parent phone"></div>
     <div class="fld"><div class="lab"><span class="en">Email</span><span class="zh">電郵</span></div><input id="email" placeholder="optional"></div>
     <div class="fld"><div class="lab"><span class="en">Parent / Guardian Name</span><span class="zh">家長姓名</span></div><input id="pname" data-req data-label="Parent / Guardian Name" placeholder="Guardian name"></div>
-    <div class="fld"><div class="lab"><span class="en">Relationship to Student</span><span class="zh">與學生關係</span></div><input id="rel" placeholder="e.g. Father / Mother"></div>
+    <div class="fld"><div class="lab"><span class="en">Relationship to Student</span><span class="zh">與學生關係</span></div>
+      <select id="rel" data-req data-label="Relationship to Student"><option value="">Please select</option><option>Father</option><option>Mother</option><option>Legal Guardian</option><option>Grandparent</option><option>Other</option></select>
+      <input id="relOther" class="rel-other" placeholder="Please specify" style="display:none"></div>
+    <div class="fld"><div class="lab"><span class="en">Religion</span><span class="zh">宗教（選填）</span></div>
+      <select id="religion" data-label="Religion"><option value="">Please select</option><option>Christianity 基督教</option><option>Catholicism 天主教</option><option>Buddhism 佛教</option><option>Islam 伊斯蘭教</option><option>Taoism 道教</option><option>Other 其他</option><option>Prefer not to say 不適用</option></select></div>
+  </div>
+
+  <div class="sec-t"><span class="en" contenteditable="true" spellcheck="false">Reason for Transfer</span> <span class="zh" style="font-size:11px;color:#9aa7b3;font-weight:400" contenteditable="true" spellcheck="false">轉校原因</span></div>
+  <div class="big">
+    <textarea id="reason" placeholder="Our family has relocated to [地區], so the daily commute from the new home to the current school has become impractical; we are now seeking a school within the neighbourhood. (我們已搬到[地區]，由新居往返現讀學校不便，故希望在區內申請學校。)"></textarea>
   </div>
 
   <div class="sec-t"><span class="en" contenteditable="true" spellcheck="false">Student Portfolio</span> <span class="zh" style="font-size:11px;color:#9aa7b3;font-weight:400" contenteditable="true" spellcheck="false">學生作品集</span></div>
   <div class="big">
-    <div class="lab"><span class="en" contenteditable="true" spellcheck="false">Hobbies &amp; Extracurricular Activities</span><span class="zh" contenteditable="true" spellcheck="false">嗜好與課外活動</span></div>
-    <textarea id="hobby" placeholder="e.g. Piano (Grade 5), swimming, reading, basketball..."></textarea>
+    <div class="lab"><span class="en" contenteditable="true" spellcheck="false">Hobbies</span><span class="zh" contenteditable="true" spellcheck="false">嗜好</span></div>
+    <textarea id="hobby" placeholder="- Piano: ABRSM Grade 5, learning since 2022&#10;- Reading; school library reading buddy volunteer&#10;- Swimming (recreational)"></textarea>
+  </div>
+  <div class="big">
+    <div class="lab"><span class="en" contenteditable="true" spellcheck="false">Extracurricular Activities (ECA)</span><span class="zh" contenteditable="true" spellcheck="false">課外活動（機構／年期／職位）</span></div>
+    <textarea id="eca" placeholder="- School swimming team, 2024–2026 (member)&#10;- Basketball, school team, guard, 2023–2026&#10;- Choir, 2022–2025 (soprano)"></textarea>
   </div>
   <div class="big">
     <div class="lab"><span class="en" contenteditable="true" spellcheck="false">Awards, Certificates &amp; Attachments</span><span class="zh" contenteditable="true" spellcheck="false">獎項、證書與附件</span></div>
-    <textarea id="cert" placeholder="e.g. competition awards, music grade certificates, service records..."></textarea>
+    <textarea id="cert" placeholder="- ABRSM Piano Grade 5 certificate (2024)&#10;- District swimming competition, bronze medal (2025)&#10;- Class Merit Award, 2024–25&#10;- Community service: 20-hour volunteer at neighbourhood elderly centre"></textarea>
   </div>
 
   <div class="sec-t"><span class="en" contenteditable="true" spellcheck="false">Language Ability</span> <span class="zh" style="font-size:11px;color:#9aa7b3;font-weight:400" contenteditable="true" spellcheck="false">語言能力</span></div>
   <div class="langs">
-    <div class="lang-row"><span class="lname">English</span><select class="lvl"><option value="">Please select</option><option>Excellent</option><option>Fluent</option><option>Qualify</option><option>Basic</option><option>None</option></select></div>
-    <div class="lang-row"><span class="lname">Cantonese</span><select class="lvl"><option value="">Please select</option><option>Excellent</option><option>Fluent</option><option>Qualify</option><option>Basic</option><option>None</option></select></div>
-    <div class="lang-row"><span class="lname">Mandarin</span><select class="lvl"><option value="">Please select</option><option>Excellent</option><option>Fluent</option><option>Qualify</option><option>Basic</option><option>None</option></select></div>
-    <div class="lang-row"><input class="lname-in" placeholder="Other language"><select class="lvl"><option value="">Please select</option><option>Excellent</option><option>Fluent</option><option>Qualify</option><option>Basic</option><option>None</option></select></div>
+    <div class="lang-row"><span class="lname">English</span><select class="lvl"><option value="">Please select</option></select></div>
+    <div class="lang-row"><span class="lname">Cantonese</span><select class="lvl"><option value="">Please select</option></select></div>
+    <div class="lang-row"><span class="lname">Mandarin</span><select class="lvl"><option value="">Please select</option></select></div>
+    <div class="lang-row"><input class="lname-in" placeholder="Other language"><select class="lvl"><option value="">Please select</option></select></div>
   </div>
+
+  <div class="sec-t"><span class="en" contenteditable="true" spellcheck="false">Additional Information</span> <span class="zh" style="font-size:11px;color:#9aa7b3;font-weight:400" contenteditable="true" spellcheck="false">其他資料</span></div>
+  <div class="grid">
+    <div class="fld full"><div class="lab"><span class="en">Intended Entry (Academic Year &amp; Month)</span><span class="zh">擬入讀學年及月份</span></div><input id="entry" placeholder="e.g. 2026–27 / September"></div>
+    <div class="fld full"><div class="lab"><span class="en">Siblings at this school</span><span class="zh">兄弟姐妹是否就讀本校</span></div>
+      <select id="sib" data-label="Siblings"><option value="">Please select</option><option>None</option><option>Currently studying here</option><option>Alumni</option><option>Other</option></select></div>
+  </div>
+  <div class="grid">
+    <div class="fld"><div class="lab"><span class="en">Emergency Contact Name</span><span class="zh">緊急聯絡人姓名</span></div><input id="emgName" placeholder="Full name"></div>
+    <div class="fld"><div class="lab"><span class="en">Emergency Phone</span><span class="zh">緊急聯絡電話</span></div><input id="emgTel" placeholder="Phone"></div>
+    <div class="fld"><div class="lab"><span class="en">Emergency Relationship</span><span class="zh">與學生關係</span></div><input id="emgRel" placeholder="e.g. Aunt / Uncle"></div>
+  </div>
+  <div class="big">
+    <div class="lab"><span class="en" contenteditable="true" spellcheck="false">Health / Special Needs</span><span class="zh" contenteditable="true" spellcheck="false">健康／特殊需要（選填）</span></div>
+    <textarea id="health" placeholder="e.g. asthma / food allergy / learning support (optional)"></textarea>
+  </div>
+  <div class="big">
+    <div class="lab"><span class="en" contenteditable="true" spellcheck="false">Report Cards (past 2 years)</span><span class="zh" contenteditable="true" spellcheck="false">最近兩年成績表（上載）</span></div>
+    <input type="file" id="report" accept=".pdf,.jpg,.png" multiple>
+  </div>
+  <div class="decl">
+    <input type="checkbox" id="decl">
+    <div class="decl-txt"><span class="en">I declare that the information provided is true and complete.</span><span class="zh">本人聲明以上所填資料真確無誤。</span></div>
+  </div>
+  <div class="sign-line"><span class="en">Parent / Guardian signature</span><span class="zh">家長簽署</span>: <input id="sign" placeholder="Type full name"></div>
 
   <div class="date-line"><span class="lab"><span class="en">Date</span><span class="zh">填表日期</span></span>: <input id="fdate" type="date"></div>
 </div>
@@ -302,6 +352,30 @@ admission to [Applying Grade], and would be most grateful for an interview.</tex
     });
   });
 
+  // 年級下拉選項：K1–K3 / Primary 1–6 / Form 1–6
+  var GRADES=['K1','K2','K3'];
+  for(var gi=1; gi<=6; gi++) GRADES.push('Primary '+gi);
+  for(var gi=1; gi<=6; gi++) GRADES.push('Form '+gi);
+  ['grade','cgrade'].forEach(function(gid){
+    var sel=document.getElementById(gid); if(!sel) return;
+    GRADES.forEach(function(g){
+      var op=document.createElement('option'); op.value=g; op.textContent=g; sel.appendChild(op);
+    });
+  });
+
+  // 語言能力五級下拉：Native/Fluent/Conversational/Basic/None（含中文標籤）
+  var LVLS=[['Native','母語'],['Fluent','流利'],['Conversational','會話'],['Basic','基礎'],['None','不諳']];
+  page.querySelectorAll('.lvl').forEach(function(sel){
+    LVLS.forEach(function(p){
+      var op=document.createElement('option'); op.value=p[0]; op.textContent=p[0]+' · '+p[1]; sel.appendChild(op);
+    });
+  });
+
+  // 與學生關係 = Other 時顯示補充輸入框
+  var relSel=document.getElementById('rel'), relOther=document.getElementById('relOther');
+  function syncRelOther(){ if(relSel&&relOther) relOther.style.display=(relSel.value==='Other')?'block':'none'; }
+  if(relSel) relSel.addEventListener('change', syncRelOther);
+
   // 日期預填
   var today=new Date();
   var iso=today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0');
@@ -333,11 +407,29 @@ admission to [Applying Grade], and would be most grateful for an interview.</tex
     modal.classList.remove('show');
     btn.disabled=true; var old=btn.textContent; btn.textContent='Generating…';
     if(window.html2canvas && window.jspdf){
-      html2canvas(page,{scale:2,backgroundColor:'#ffffff',logging:false,onclone:function(doc){
+      html2canvas(page,{scale:2,backgroundColor:'#ffffff',logging:false,      onclone:function(doc){
         var orig=page.querySelectorAll('input,textarea,select');
         doc.querySelectorAll('input,textarea,select').forEach(function(el,i){
-          var o=orig[i]; if(!o||o.type==='file') return;
-          var v=(o.value||'').trim();
+          var o=orig[i]; if(!o) return;
+          if(o.type==='file'){
+            var fn=doc.createElement('span');
+            fn.textContent='(attach separately)';
+            fn.style.cssText='font-size:12px;color:#9aa7b3';
+            el.parentNode.replaceChild(fn,el); return;
+          }
+          if(o.type==='checkbox'){
+            var cb=doc.createElement('span');
+            cb.textContent = o.checked ? '\u2611' : '\u2610';
+            cb.style.cssText='font-size:16px;line-height:1;color:#232a31';
+            el.parentNode.replaceChild(cb,el); return;
+          }
+          var v;
+          if(o.tagName==='SELECT'){
+            var opt=o.options[o.selectedIndex];
+            v=opt? opt.textContent.trim() : '';
+          } else {
+            v=(o.value||'').trim();
+          }
           var cs=getComputedStyle(o);
           var s=doc.createElement('span');
           s.textContent=v;
@@ -373,7 +465,7 @@ admission to [Applying Grade], and would be most grateful for an interview.</tex
     var fields={};
     page.querySelectorAll('input[id],textarea[id],select[id]').forEach(function(el){
       if(el.type==='file') return;
-      fields[el.id]=el.value;
+      fields[el.id] = (el.type==='checkbox') ? el.checked : el.value;
     });
     var langs=Array.from(page.querySelectorAll('.lang-row')).map(function(r){
       var inp=r.querySelector('.lname-in'), span=r.querySelector('.lname');
@@ -394,8 +486,11 @@ admission to [Applying Grade], and would be most grateful for an interview.</tex
     if(!d||!d.fields) return false;
     Object.keys(d.fields).forEach(function(id){
       var el=page.querySelector('#'+id);
-      if(el) el.value=d.fields[id];
+      if(!el) return;
+      if(el.type==='checkbox'){ el.checked = !!d.fields[id]; }
+      else { el.value=d.fields[id]; }
     });
+    syncRelOther();
     if(Array.isArray(d.langs)){
       var rows=page.querySelectorAll('.lang-row');
       d.langs.forEach(function(lg,i){
