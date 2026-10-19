@@ -90,12 +90,12 @@ body{background:#e9eef3;color:var(--ink);
 .date-line .lab{display:inline-flex;flex-direction:row;gap:6px;align-items:baseline}
 .date-line input{border:none;border-bottom:1px solid var(--ink);width:140px;font-size:13px;text-align:center;font-family:inherit}
 
-.langs{display:flex;flex-direction:row;flex-wrap:wrap;gap:10px 14px;margin-top:4px}
-.lang-row{display:flex;align-items:center;gap:8px;flex:1 1 140px}
-.lang-row .lname{flex:0 0 auto;min-width:80px;font-size:13px;font-weight:600;color:#232a31}
-.lang-row .lname-in{border:none;border-bottom:1.5px solid var(--ink);font-size:13px;font-weight:600;color:#232a31;background:transparent;padding:2px 4px;width:118px;font-family:inherit}
+.langs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px 12px;margin-top:4px}
+.lang-row{display:flex;align-items:center;gap:6px;min-width:0}
+.lang-row .lname{flex:0 0 auto;min-width:0;white-space:nowrap;font-size:13px;font-weight:600;color:#232a31}
+.lang-row .lname-in{border:none;border-bottom:1.5px solid var(--ink);font-size:13px;font-weight:600;color:#232a31;background:transparent;padding:2px 4px;flex:1;min-width:0;font-family:inherit}
 .lang-row .lname-in:focus{outline:none;border-color:var(--pri)}
-.lang-row .lvl{flex:1;border:none;background:transparent;font-size:13px;padding:3px 2px;color:var(--ink);font-family:inherit}
+.lang-row .lvl{flex:1;min-width:0;border:none;background:transparent;font-size:13px;padding:3px 2px;color:var(--ink);font-family:inherit}
 .lang-row .lvl:focus{outline:none}
 
 /* 主題差異細節 */
@@ -181,8 +181,10 @@ body{background:#e9eef3;color:var(--ink);
         <input class="grade-in" id="grade" data-req data-label="Applying for Grade" placeholder="e.g. Primary 3">
       </div>
       <div class="wish">
-        <div class="lab"><span class="en" contenteditable="true" spellcheck="false">Your note to the school</span><span class="zh" contenteditable="true" spellcheck="false">一句願望語（表達希望加入貴校）</span></div>
-        <textarea id="hope" data-req data-label="Wish note">I sincerely hope my child could join your school and would be grateful for the opportunity to sit for an interview.</textarea>
+        <div class="lab"><span class="en" contenteditable="true" spellcheck="false">Dear School Administration Office,</span><span class="zh" contenteditable="true" spellcheck="false">致學校行政處：</span></div>
+        <textarea id="hope" data-req data-label="Wish note">We are the parents of [Child's English Name], currently in [Current Grade]
+at [Current School]. We sincerely hope our child may be considered for
+admission to [Applying Grade], and would be most grateful for an interview.</textarea>
       </div>
     </div>
   </div>
@@ -209,8 +211,8 @@ body{background:#e9eef3;color:var(--ink);
     <textarea id="hobby" placeholder="e.g. Piano (Grade 5), swimming, reading, basketball..."></textarea>
   </div>
   <div class="big">
-    <div class="lab"><span class="en" contenteditable="true" spellcheck="false">Certificates &amp; Other Attachments</span><span class="zh" contenteditable="true" spellcheck="false">證書與其他附件</span></div>
-    <textarea id="cert" placeholder="e.g. music grade certificates, service records..."></textarea>
+    <div class="lab"><span class="en" contenteditable="true" spellcheck="false">Awards, Certificates &amp; Attachments</span><span class="zh" contenteditable="true" spellcheck="false">獎項、證書與附件</span></div>
+    <textarea id="cert" placeholder="e.g. competition awards, music grade certificates, service records..."></textarea>
   </div>
 
   <div class="sec-t"><span class="en" contenteditable="true" spellcheck="false">Language Ability</span> <span class="zh" style="font-size:11px;color:#9aa7b3;font-weight:400" contenteditable="true" spellcheck="false">語言能力</span></div>
