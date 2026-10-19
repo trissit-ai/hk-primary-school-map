@@ -66,6 +66,7 @@ body{background:#e9eef3;color:var(--ink);
 
 /* 願望語（併入 hero，緊貼姓名下方） */
 .wish{margin-top:9px}
+.wish .lab{flex-direction:row;gap:8px;align-items:baseline}
 .wish .lab .en{font-size:11px}
 .wish .lab .zh{font-size:9.5px}
 .wish textarea{width:100%;border:none;background:transparent;font-size:13.5px;line-height:1.55;
@@ -205,25 +206,17 @@ at [Current School]. We sincerely hope our child may be considered for admission
     <div class="fld"><div class="lab"><span class="en">Gender</span><span class="zh">性別</span></div>
       <select id="sex" data-req data-label="Gender"><option value="">Please select</option><option>Male</option><option>Female</option></select></div>
     <div class="fld"><div class="lab"><span class="en">Date of Birth</span><span class="zh">出生日期 (DD/MM/YYYY)</span></div><input type="date" id="dob" data-req data-label="Date of Birth"></div>
-    <div class="fld full"><div class="lab"><span class="en">Nationality</span><span class="zh">國籍</span></div><input id="nat" placeholder="e.g. Chinese"></div>
-    <div class="fld full"><div class="lab"><span class="en">ID Document</span><span class="zh">身份證明</span></div><input id="idnum" placeholder="e.g. HKID P123456(7)"></div>
+    <div class="fld"><div class="lab"><span class="en">Nationality</span><span class="zh">國籍</span></div><input id="nat" placeholder="e.g. Chinese"></div>
+    <div class="fld"><div class="lab"><span class="en">ID/Passport No.</span><span class="zh">身份證／護照號碼</span></div><input id="idnum" placeholder="e.g. HKID P123456(7)"></div>
     <div class="fld"><div class="lab"><span class="en">Current School</span><span class="zh">現讀學校</span></div><input id="cschool" data-req data-label="Current School" placeholder="Current school"></div>
     <div class="fld"><div class="lab"><span class="en">Current Grade</span><span class="zh">現讀年級</span></div><select id="cgrade" data-req data-label="Current Grade"><option value="">Please select</option></select></div>
-    <div class="fld full"><div class="lab"><span class="en">Residential Address</span><span class="zh">住址</span></div><input id="addr" placeholder="e.g. Flat X, Block Y, Estate Z, District"></div>
-    <div class="fld full"><div class="lab"><span class="en">Mailing / Correspondence Address</span><span class="zh">通訊地址（如與住址不同）</span></div><input id="mail" placeholder="If different from above"></div>
+    <div class="fld full"><div class="lab"><span class="en">Mailing Address</span><span class="zh">通訊地址</span></div><input id="addr" placeholder="e.g. Flat X, Block Y, Estate Z, District"></div>
     <div class="fld"><div class="lab"><span class="en">Contact Phone</span><span class="zh">聯絡電話</span></div><input id="tel" data-req data-label="Contact Phone" placeholder="Parent phone"></div>
     <div class="fld"><div class="lab"><span class="en">Email</span><span class="zh">電郵</span></div><input id="email" placeholder="optional"></div>
     <div class="fld"><div class="lab"><span class="en">Parent / Guardian Name</span><span class="zh">家長姓名</span></div><input id="pname" data-req data-label="Parent / Guardian Name" placeholder="Guardian name"></div>
     <div class="fld"><div class="lab"><span class="en">Relationship to Student</span><span class="zh">與學生關係</span></div>
       <select id="rel" data-req data-label="Relationship to Student"><option value="">Please select</option><option>Father</option><option>Mother</option><option>Legal Guardian</option><option>Grandparent</option><option>Other</option></select>
       <input id="relOther" class="rel-other" placeholder="Please specify" style="display:none"></div>
-    <div class="fld"><div class="lab"><span class="en">Religion</span><span class="zh">宗教（選填）</span></div>
-      <select id="religion" data-label="Religion"><option value="">Please select</option><option>Christianity 基督教</option><option>Catholicism 天主教</option><option>Buddhism 佛教</option><option>Islam 伊斯蘭教</option><option>Taoism 道教</option><option>Other 其他</option><option>Prefer not to say 不適用</option></select></div>
-  </div>
-
-  <div class="sec-t"><span class="en" contenteditable="true" spellcheck="false">Reason for Transfer</span> <span class="zh" style="font-size:11px;color:#9aa7b3;font-weight:400" contenteditable="true" spellcheck="false">轉校原因</span></div>
-  <div class="big">
-    <textarea id="reason" placeholder="Our family has relocated to [地區], so the daily commute from the new home to the current school has become impractical; we are now seeking a school within the neighbourhood. (我們已搬到[地區]，由新居往返現讀學校不便，故希望在區內申請學校。)"></textarea>
   </div>
 
   <div class="sec-t"><span class="en" contenteditable="true" spellcheck="false">Student Portfolio</span> <span class="zh" style="font-size:11px;color:#9aa7b3;font-weight:400" contenteditable="true" spellcheck="false">學生作品集</span></div>
@@ -248,29 +241,6 @@ at [Current School]. We sincerely hope our child may be considered for admission
     <div class="lang-row"><input class="lname-in" placeholder="Other language"><select class="lvl"><option value="">Please select</option></select></div>
   </div>
 
-  <div class="sec-t"><span class="en" contenteditable="true" spellcheck="false">Additional Information</span> <span class="zh" style="font-size:11px;color:#9aa7b3;font-weight:400" contenteditable="true" spellcheck="false">其他資料</span></div>
-  <div class="grid">
-    <div class="fld full"><div class="lab"><span class="en">Intended Entry (Academic Year &amp; Month)</span><span class="zh">擬入讀學年及月份</span></div><input id="entry" placeholder="e.g. 2026–27 / September"></div>
-    <div class="fld full"><div class="lab"><span class="en">Siblings at this school</span><span class="zh">兄弟姐妹是否就讀本校</span></div>
-      <select id="sib" data-label="Siblings"><option value="">Please select</option><option>None</option><option>Currently studying here</option><option>Alumni</option><option>Other</option></select></div>
-  </div>
-  <div class="grid">
-    <div class="fld"><div class="lab"><span class="en">Emergency Contact Name</span><span class="zh">緊急聯絡人姓名</span></div><input id="emgName" placeholder="Full name"></div>
-    <div class="fld"><div class="lab"><span class="en">Emergency Phone</span><span class="zh">緊急聯絡電話</span></div><input id="emgTel" placeholder="Phone"></div>
-    <div class="fld"><div class="lab"><span class="en">Emergency Relationship</span><span class="zh">與學生關係</span></div><input id="emgRel" placeholder="e.g. Aunt / Uncle"></div>
-  </div>
-  <div class="big">
-    <div class="lab"><span class="en" contenteditable="true" spellcheck="false">Health / Special Needs</span><span class="zh" contenteditable="true" spellcheck="false">健康／特殊需要（選填）</span></div>
-    <textarea id="health" placeholder="e.g. asthma / food allergy / learning support (optional)"></textarea>
-  </div>
-  <div class="big">
-    <div class="lab"><span class="en" contenteditable="true" spellcheck="false">Report Cards (past 2 years)</span><span class="zh" contenteditable="true" spellcheck="false">最近兩年成績表（上載）</span></div>
-    <input type="file" id="report" accept=".pdf,.jpg,.png" multiple>
-  </div>
-  <div class="decl">
-    <input type="checkbox" id="decl">
-    <div class="decl-txt"><span class="en">I declare that the information provided is true and complete.</span><span class="zh">本人聲明以上所填資料真確無誤。</span></div>
-  </div>
   <div class="sign-line"><span class="en">Parent / Guardian signature</span><span class="zh">家長簽署</span>: <input id="sign" placeholder="Type full name"></div>
 
   <div class="date-line"><span class="lab"><span class="en">Date</span><span class="zh">填表日期</span></span>: <input id="fdate" type="date"></div>
