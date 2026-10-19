@@ -157,7 +157,7 @@ body{background:#e9eef3;color:var(--ink);
 .decl-txt .zh{display:block;color:var(--ink2);font-size:12px;margin-top:1px}
 .sign-line{margin-top:10px;font-size:13px;color:var(--ink2)}
 .sign-line .zh{margin-left:6px}
-.sign-date{display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap;margin-top:18px}
+.sign-date{display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap;margin-top:34px}
 .sign-date .sign-line,.sign-date .date-line{margin-top:0}
 .sign-line input{border:none;border-bottom:1.5px solid var(--ink);font-size:14px;padding:3px 6px;min-width:220px;font-family:inherit;background:transparent}
 .sign-line input:focus{outline:none;border-color:var(--pri)}
@@ -244,7 +244,7 @@ at [Current School]. We sincerely hope our child may be considered for admission
   </div>
 
   <div class="sign-date">
-    <div class="sign-line"><span class="en">Parent / Guardian signature</span><span class="zh">家長簽署</span>: <input id="sign" placeholder="Type full name"></div>
+    <div class="sign-line"><span class="en">Parent</span><span class="zh">家長</span>: <input id="sign" placeholder="Type full name"></div>
     <div class="date-line"><span class="lab"><span class="en">Date</span><span class="zh">填表日期</span></span>: <input id="fdate" type="date"></div>
   </div>
 </div>
@@ -311,6 +311,13 @@ at [Current School]. We sincerely hope our child may be considered for admission
   });
   document.getElementById('tplBtn').addEventListener('click', function(){
     document.getElementById('tplPanel').classList.toggle('show');
+  });
+  // 點擊面板/按鈕以外位置自動關閉模版浮窗
+  document.addEventListener('click', function(e){
+    var panel=document.getElementById('tplPanel');
+    if(!panel.classList.contains('show')) return;
+    if(panel.contains(e.target)||e.target.closest('#tplBtn')) return;
+    panel.classList.remove('show');
   });
   var saved=null; try{ saved=localStorage.getItem('tool05_theme'); }catch(e){}
   applyTheme(saved && THEMES.indexOf(saved)>=0 ? saved : 'theme-1');
