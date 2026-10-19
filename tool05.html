@@ -91,7 +91,7 @@ body{background:#e9eef3;color:var(--ink);
 .date-line .lab{display:inline-flex;flex-direction:row;gap:6px;align-items:baseline}
 .date-line input{border:none;border-bottom:1px solid var(--ink);width:140px;font-size:13px;text-align:center;font-family:inherit}
 
-.langs{display:grid;grid-template-columns:1fr 1fr;gap:8px 22px;margin-top:4px}
+.langs{display:flex;flex-direction:column;gap:6px;margin-top:4px}
 .lang-row{display:flex;align-items:center;gap:8px}
 .lang-row .lname{flex:0 0 auto;min-width:80px;font-size:13px;font-weight:600;color:#232a31}
 .lang-row .lname-in{border:none;border-bottom:1.5px solid var(--ink);font-size:13px;font-weight:600;color:#232a31;background:transparent;padding:2px 4px;width:118px;font-family:inherit}
@@ -106,9 +106,14 @@ body{background:#e9eef3;color:var(--ink);
 .page.theme-3 .head{border-bottom:3px double var(--pri2);padding-bottom:6px}
 
 /* 浮動按鈕 + 模版浮窗 */
-.float-btn{position:fixed;right:22px;bottom:22px;z-index:50;
-  background:var(--pri);color:#fff;border:none;border-radius:50px;padding:14px 22px;font-size:15px;font-weight:600;
+.float-btn{background:var(--pri);color:#fff;border:none;border-radius:50px;padding:14px 22px;font-size:15px;font-weight:600;
   box-shadow:0 4px 14px rgba(0,0,0,.25);cursor:pointer;font-family:inherit}
+.actions{position:fixed;right:22px;bottom:22px;z-index:50;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.data-btns{display:flex;gap:8px}
+.data-btns button{background:#fff;color:var(--pri);border:1.5px solid var(--pri);border-radius:50px;padding:9px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;box-shadow:0 4px 14px rgba(0,0,0,.12)}
+.data-btns button:active{transform:translateY(1px)}
+.toast{position:fixed;left:50%;bottom:86px;transform:translateX(-50%);background:#23303c;color:#fff;font-size:13px;padding:9px 16px;border-radius:999px;z-index:90;opacity:0;pointer-events:none;transition:opacity .25s;font-family:inherit}
+.toast.show{opacity:1}
 .float-btn:active{transform:translateY(1px)}
 .float-btn:disabled{opacity:.6;cursor:default}
 .tpl-btn{position:fixed;left:22px;bottom:22px;z-index:50;background:#fff;color:var(--pri);
@@ -148,7 +153,7 @@ body{background:#e9eef3;color:var(--ink);
   @page{size:A4;margin:0}
   html,body{background:#fff;padding:0}
   .page{width:auto;min-height:auto;margin:0;border:none;box-shadow:none;padding:10mm 12mm}
-  .float-btn,.tpl-btn,.tpl-panel,.modal-mask,.site-footer{display:none !important}
+  .float-btn,.tpl-btn,.tpl-panel,.modal-mask,.site-footer,.data-btns,.toast{display:none !important}
 }
 </style>
 </head>
@@ -183,7 +188,7 @@ body{background:#e9eef3;color:var(--ink);
     </div>
   </div>
 
-  <div class="sec-t"><span class="en" contenteditable="true" spellcheck="false">Student Particulars</span> <span class="zh" style="font-size:11px;color:#9aa7b3;font-weight:400" contenteditable="true" spellcheck="false">學生基本資料</span></div>
+  <div class="sec-t"><span class="en" contenteditable="true" spellcheck="false">Student Information</span> <span class="zh" style="font-size:11px;color:#9aa7b3;font-weight:400" contenteditable="true" spellcheck="false">學生資料</span></div>
   <div class="grid">
     <div class="fld full"><div class="lab"><span class="en">School Applying To<span class="req">*</span></span><span class="zh">申請學校</span></div><input id="school" data-req data-label="School Applying To" placeholder="e.g. Pui Ching Primary School"></div>
     <div class="fld"><div class="lab"><span class="en">Gender<span class="req">*</span></span><span class="zh">性別</span></div>
@@ -199,6 +204,7 @@ body{background:#e9eef3;color:var(--ink);
     <div class="fld"><div class="lab"><span class="en">Relationship to Student</span><span class="zh">與學生關係</span></div><input id="rel" placeholder="e.g. Father / Mother"></div>
   </div>
 
+  <div class="sec-t"><span class="en" contenteditable="true" spellcheck="false">Student Particulars</span> <span class="zh" style="font-size:11px;color:#9aa7b3;font-weight:400" contenteditable="true" spellcheck="false">學生細項</span></div>
   <div class="big">
     <div class="lab"><span class="en" contenteditable="true" spellcheck="false">Hobbies &amp; Extracurricular Activities</span><span class="zh" contenteditable="true" spellcheck="false">嗜好與課外活動</span></div>
     <textarea id="hobby" placeholder="e.g. Piano (Grade 5), swimming, reading, basketball..."></textarea>
@@ -223,7 +229,15 @@ body{background:#e9eef3;color:var(--ink);
   <div class="date-line"><span class="lab"><span class="en">Date</span><span class="zh">填表日期</span></span>: <input id="fdate" type="date"></div>
 </div>
 
-<button class="float-btn" id="genBtn">Download PDF</button>
+  <div class="actions">
+    <button class="float-btn" id="genBtn">Download PDF</button>
+    <div class="data-btns">
+      <button id="saveBtn" title="Download your filled text as a file">Save data</button>
+      <button id="loadBtn" title="Load a saved data file">Load data</button>
+    </div>
+  </div>
+  <input type="file" id="loadFile" accept="application/json,.json" style="display:none">
+  <div class="toast" id="toast"></div>
 
 <!-- 模版浮窗 -->
 <button class="tpl-btn" id="tplBtn">换模版 / Templates</button>
@@ -355,6 +369,75 @@ body{background:#e9eef3;color:var(--ink);
       modal.classList.add('show'); return;
     }
     generatePDF();
+  });
+
+  // ---- Save / Load user data (Download 功能) ----
+  function collectData(){
+    var fields={};
+    page.querySelectorAll('input[id],textarea[id],select[id]').forEach(function(el){
+      if(el.type==='file') return;
+      fields[el.id]=el.value;
+    });
+    var langs=Array.from(page.querySelectorAll('.lang-row')).map(function(r){
+      var inp=r.querySelector('.lname-in'), span=r.querySelector('.lname');
+      return { name: inp? inp.value : (span? span.textContent.trim():''), lvl: r.querySelector('.lvl').value };
+    });
+    var titles=Array.from(document.querySelectorAll('[contenteditable="true"]')).map(function(el){
+      var t=el.textContent;
+      if(el.querySelector('.req')) t=t.replace(/\*/g,'').trim();
+      return t;
+    });
+    var img=document.getElementById('photoImg');
+    var photo=(img && img.style.display!=='none')? img.src : '';
+    var theme='';
+    page.classList.forEach(function(c){ if(c.indexOf('theme-')===0) theme=c; });
+    return { v:1, fields:fields, langs:langs, titles:titles, photo:photo, theme:theme };
+  }
+  function applyData(d){
+    if(!d||!d.fields) return false;
+    Object.keys(d.fields).forEach(function(id){
+      var el=page.querySelector('#'+id);
+      if(el) el.value=d.fields[id];
+    });
+    if(Array.isArray(d.langs)){
+      var rows=page.querySelectorAll('.lang-row');
+      d.langs.forEach(function(lg,i){
+        var r=rows[i]; if(!r) return;
+        var inp=r.querySelector('.lname-in'), span=r.querySelector('.lname'), sel=r.querySelector('.lvl');
+        if(inp && lg.name!==undefined) inp.value=lg.name;
+        else if(span && lg.name!==undefined) span.textContent=lg.name;
+        if(sel) sel.value=lg.lvl||'';
+      });
+    }
+    if(Array.isArray(d.titles)){
+      var eds=document.querySelectorAll('[contenteditable="true"]');
+      d.titles.forEach(function(txt,i){
+        var el=eds[i]; if(!el) return;
+        var req=el.querySelector('.req');
+        el.textContent=txt;
+        if(req) el.appendChild(req);
+      });
+    }
+    if(d.photo){ var img=document.getElementById('photoImg'); img.src=d.photo; img.style.display='block'; }
+    if(d.theme && THEMES.indexOf(d.theme)>=0) applyTheme(d.theme);
+    return true;
+  }
+  var toastEl=document.getElementById('toast'), toastT=null;
+  function showToast(msg){ toastEl.textContent=msg; toastEl.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(function(){ toastEl.classList.remove('show'); },1800); }
+  document.getElementById('saveBtn').addEventListener('click', function(){
+    var d=collectData();
+    var blob=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
+    var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='primary-school-application-data.json';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); },1000);
+    showToast('Saved to file');
+  });
+  document.getElementById('loadBtn').addEventListener('click', function(){ document.getElementById('loadFile').click(); });
+  document.getElementById('loadFile').addEventListener('change', function(e){
+    var f=e.target.files[0]; if(!f) return;
+    var r=new FileReader();
+    r.onload=function(){ try{ var d=JSON.parse(r.result); showToast(applyData(d)? 'Data loaded' : 'File looks wrong'); }catch(err){ showToast('Could not read this file'); } e.target.value=''; };
+    r.readAsText(f);
   });
 })();
 </script>
