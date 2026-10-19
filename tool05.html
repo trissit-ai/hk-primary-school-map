@@ -27,6 +27,7 @@ body{background:#e9eef3;color:var(--ink);
 .page.theme-1{--pri:#2f6fb0;--pri2:#1f4f80;--soft:#eef4fa;--name:#1f4f80}
 .page.theme-2{--pri:#e8843a;--pri2:#2bb3a3;--soft:#fff3e9;--name:#c9661f;--radius:11px}
 .page.theme-3{--pri:#8a5a2b;--pri2:#a8823c;--soft:#fbf6ec;--name:#7a4e1f;--serif:Georgia,"Times New Roman",serif;--radius:3px}
+.page.theme-4{--pri:#d35d8a;--pri2:#b06ab3;--soft:#fdeef4;--name:#b8346f;--radius:10px}
 
 /* 標籤：英文為主 + 中文小字 */
 .lab{display:flex;flex-direction:column;line-height:1.15}
@@ -216,6 +217,7 @@ body{background:#e9eef3;color:var(--ink);
   <div class="tpl-card" data-theme="theme-1"><span class="sw" style="background:linear-gradient(135deg,#2f6fb0,#1f4f80)"></span><div><b>Fresh Blue</b><small>清新蓝 · 正式大方</small></div></div>
   <div class="tpl-card" data-theme="theme-2"><span class="sw" style="background:linear-gradient(135deg,#e8843a,#2bb3a3)"></span><div><b>Warm Sunshine</b><small>暖阳橙 · 親切活潑</small></div></div>
   <div class="tpl-card" data-theme="theme-3"><span class="sw" style="background:linear-gradient(135deg,#8a5a2b,#a8823c)"></span><div><b>Elegant Gold</b><small>雅致金 · 典雅雋永</small></div></div>
+  <div class="tpl-card" data-theme="theme-4"><span class="sw" style="background:linear-gradient(135deg,#d35d8a,#b06ab3)"></span><div><b>Rosy Girl</b><small>粉嫩玫瑰 · 女孩專屬</small></div></div>
 </div>
 
 <!-- 缺項彈窗 -->
@@ -243,7 +245,7 @@ body{background:#e9eef3;color:var(--ink);
 
 <script>
 (function(){
-  var THEMES=['theme-1','theme-2','theme-3'];
+  var THEMES=['theme-1','theme-2','theme-3','theme-4'];
   var page=document.querySelector('.page');
 
   function applyTheme(t){
