@@ -22,6 +22,8 @@ body{background:#e9eef3;color:var(--ink);
   padding:13mm 14mm 12mm;border:1px solid #d4dbe2;box-shadow:0 2px 10px rgba(0,0,0,.08);
   position:relative;--radius:4px}
 .page-accent{height:7px;background:linear-gradient(90deg,var(--pri),var(--pri2));border-radius:4px;margin-bottom:10px}
+.page.album .page-accent{height:3px}
+.page.album .head{margin-bottom:3px}
 
 /* 三套主题 */
 .page.theme-1{--pri:#2f6fb0;--pri2:#1f4f80;--soft:#eef4fa;--name:#1f4f80}
@@ -162,6 +164,36 @@ body{background:#e9eef3;color:var(--ink);
 .sign-line input{border:none;border-bottom:1.5px solid var(--ink);font-size:14px;padding:3px 6px;min-width:220px;font-family:inherit;background:transparent}
 .sign-line input:focus{outline:none;border-color:var(--pri)}
 
+/* ===== Page 2: Awards, Certificates & Attachments（線上 Album） ===== */
+.cert-addbar{position:relative;border:2px dashed var(--line);border-radius:var(--radius);padding:9px 14px;margin-top:4px;text-align:center;color:var(--ink2);font-size:13px;cursor:pointer;background:var(--soft);line-height:1.5}
+.cert-addbar:hover{border-color:var(--pri);color:var(--pri)}
+.cert-addbar .x{position:absolute;top:6px;right:6px;width:26px;height:26px;border:none;border-radius:7px;background:rgba(255,255,255,.92);color:var(--ink);font-size:14px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.15);display:flex;align-items:center;justify-content:center}
+.album-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:start}
+.cert{position:relative;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:3px;display:flex;flex-direction:column;gap:2px;transition:box-shadow .15s}
+.cert:hover{box-shadow:0 6px 20px rgba(20,28,36,.12)}
+.cert.dragging{opacity:.45}
+.cert .drag{position:absolute;top:6px;left:6px;width:26px;height:26px;border-radius:7px;background:rgba(255,255,255,.92);color:var(--ink2);font-size:15px;cursor:grab;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.15);z-index:2}
+.cert .drag:active{cursor:grabbing}
+.cert .cert-ctl{position:absolute;top:6px;right:6px;display:flex;gap:4px;z-index:2}
+.cert .cert-ctl button{width:26px;height:26px;border:none;border-radius:7px;background:rgba(255,255,255,.92);color:var(--ink);font-size:14px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.15);display:flex;align-items:center;justify-content:center}
+.cert .cert-ctl button:active{transform:translateY(1px)}
+.cert .cert-ctl .del{color:var(--req)}
+.cert .cert-img{position:relative;border:1.5px solid var(--pri);border-radius:var(--radius);background:#fff;flex:none;width:100%;aspect-ratio:1.414;min-height:0;overflow:hidden;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.cert .cert-img img{position:absolute;top:0;left:50%;transform:translateX(-50%);height:100%;width:auto;max-width:none}
+.cert .cert-img .ph{color:#9aa7b3;font-size:12px;text-align:center;padding:8px;line-height:1.5}
+.cert .cert-img .ph small{display:block;font-size:10px;opacity:.8;margin-top:4px;line-height:1.4}
+.cert .cert-img input{display:none}
+.cert .cert-fields{display:flex;flex-direction:column;gap:3px}
+.cert .cert-title{width:100%;border:none;border-bottom:2px solid var(--pri);font-size:12.5px;font-weight:700;color:var(--name);font-family:var(--serif);padding:1px 0;background:transparent}
+.cert .cert-title:focus{outline:none}
+.cert .cert-detail{width:100%;border:1px solid var(--line);border-radius:var(--radius);padding:3px 5px;font-size:10.5px;resize:vertical;min-height:16px;font-family:inherit;color:var(--ink)}
+.cert .cert-detail:focus{outline:none;border-color:var(--pri)}
+.cert .cert-date{display:flex;align-items:center;gap:6px}
+.cert .cert-date .lab{flex-direction:row;gap:3px;align-items:baseline}
+.cert .cert-date .lab .en{font-weight:400}
+.cert .cert-date input{flex:1 1 auto;min-width:0;border:none;border-bottom:1px solid var(--ink);font-size:10.5px;padding:1px 2px;font-family:inherit;background:transparent}
+.cert .cert-date input:focus{outline:none}
+
 @media print{
   @page{size:A4;margin:0}
   html,body{background:#fff;padding:0}
@@ -230,9 +262,10 @@ at [Current School]. We sincerely hope our child may be considered for admission
     <div class="lab"><span class="en" contenteditable="true" spellcheck="false">Extracurricular Activities (ECA)</span><span class="zh" contenteditable="true" spellcheck="false">課外活動（機構／年期／職位）</span></div>
     <textarea id="eca" placeholder="- School swimming team, 2024–2026 (member)&#10;- Basketball, school team, guard, 2023–2026&#10;- Choir, 2022–2025 (soprano)"></textarea>
   </div>
+
   <div class="big">
-    <div class="lab"><span class="en" contenteditable="true" spellcheck="false">Awards, Certificates &amp; Attachments</span><span class="zh" contenteditable="true" spellcheck="false">獎項、證書與附件</span></div>
-    <textarea id="cert" placeholder="- ABRSM Piano Grade 5 certificate (2024)&#10;- District swimming competition, bronze medal (2025)&#10;- Class Merit Award, 2024–25&#10;- Community service: 20-hour volunteer at neighbourhood elderly centre"></textarea>
+    <div class="lab"><span class="en" contenteditable="true" spellcheck="false">Awards, Certificates &amp; Achievements</span><span class="zh" contenteditable="true" spellcheck="false">獎項、證書與成就</span></div>
+    <textarea id="cert" placeholder="e.g. competition awards, music grade certificates, service records..."></textarea>
   </div>
 
   <div class="sec-t"><span class="en" contenteditable="true" spellcheck="false">Language Ability</span> <span class="zh" style="font-size:11px;color:#9aa7b3;font-weight:400" contenteditable="true" spellcheck="false">語言能力</span></div>
@@ -248,6 +281,9 @@ at [Current School]. We sincerely hope our child may be considered for admission
     <div class="date-line"><span class="lab"><span class="en">Date</span><span class="zh">填表日期</span></span>: <input id="fdate" type="date"></div>
   </div>
 </div>
+
+<!-- ===== Album 頁（Awards, Certificates & Attachments）：由 JS 依 A4 容量自動分頁為多張 .page.album ===== -->
+<div id="albumRoot"></div>
 
   <div class="actions">
     <button class="float-btn" id="genBtn">Download PDF</button>
@@ -296,14 +332,16 @@ at [Current School]. We sincerely hope our child may be considered for admission
 <script>
 (function(){
   var THEMES=['theme-1','theme-2','theme-3','theme-4'];
+  var currentTheme='theme-1';
   var page=document.querySelector('.page');
 
   function applyTheme(t){
-    THEMES.forEach(function(x){ page.classList.remove(x); });
-    page.classList.add(t);
+    THEMES.forEach(function(x){ document.querySelectorAll('.page').forEach(function(p){ p.classList.remove(x); }); });
+    document.querySelectorAll('.page').forEach(function(p){ p.classList.add(t); });
     document.querySelectorAll('.tpl-card').forEach(function(c){
       c.classList.toggle('active', c.dataset.theme===t);
     });
+    currentTheme=t;
     try{ localStorage.setItem('tool05_theme', t); }catch(e){}
   }
   document.querySelectorAll('.tpl-card').forEach(function(c){
@@ -383,51 +421,74 @@ at [Current School]. We sincerely hope our child may be considered for admission
     });
     return miss;
   }
+  // 判斷一張證書卡是否有實質內容（有圖／標題／詳情／日期任一即有）
+  function cardHasContent(c){
+    var img=c.querySelector('.cert-img img');
+    var hasImg=!!(img && img.style.display!=='none' && img.getAttribute('src'));
+    var t=(c.querySelector('.cert-title').value||'').trim();
+    var d=(c.querySelector('.cert-detail').value||'').trim();
+    var dt=(c.querySelector('.cert-date input').value||'').trim();
+    return hasImg||!!t||!!d||!!dt;
+  }
   function generatePDF(){
     modal.classList.remove('show');
     btn.disabled=true; var old=btn.textContent; btn.textContent='Generating…';
+    var p1=document.querySelector('.page:not(.album)'); // 第一頁（申請表）
+    // 僅導出「含至少一張有內容證書」的 album 頁；全空則只出第一頁（請求 #2）
+    var albumPages=Array.prototype.slice.call(document.querySelectorAll('.page.album')).filter(function(pg){
+      return Array.prototype.slice.call(pg.querySelectorAll('.cert')).some(cardHasContent);
+    });
     if(window.html2canvas && window.jspdf){
-      html2canvas(page,{scale:2,backgroundColor:'#ffffff',logging:false,      onclone:function(doc){
-        var orig=page.querySelectorAll('input,textarea,select');
-        doc.querySelectorAll('input,textarea,select').forEach(function(el,i){
-          var o=orig[i]; if(!o) return;
-          if(o.type==='file'){
-            var fn=doc.createElement('span');
-            fn.textContent='(attach separately)';
-            fn.style.cssText='font-size:12px;color:#9aa7b3';
-            el.parentNode.replaceChild(fn,el); return;
-          }
-          if(o.type==='checkbox'){
-            var cb=doc.createElement('span');
-            cb.textContent = o.checked ? '\u2611' : '\u2610';
-            cb.style.cssText='font-size:16px;line-height:1;color:#232a31';
-            el.parentNode.replaceChild(cb,el); return;
-          }
-          var v;
-          if(o.tagName==='SELECT'){
-            var opt=o.options[o.selectedIndex];
-            v=opt? opt.textContent.trim() : '';
-          } else {
-            v=(o.value||'').trim();
-          }
-          var cs=getComputedStyle(o);
-          var s=doc.createElement('span');
-          s.textContent=v;
-          s.style.cssText='font:'+cs.font+';color:'+(v?cs.color:'#9aa7b3')+';white-space:pre-wrap;display:inline-block';
-          el.parentNode.replaceChild(s,el);
+      var pdf=new window.jspdf.jsPDF('p','mm','a4');
+      var pw=pdf.internal.pageSize.getWidth(), ph=pdf.internal.pageSize.getHeight();
+      var renderList=[p1].concat(albumPages);
+      var queue=Promise.resolve();
+      renderList.forEach(function(rp,idx){
+        queue=queue.then(function(){
+          return html2canvas(rp,{scale:2,backgroundColor:'#ffffff',logging:false, onclone:function(doc){
+            var srcPages=document.querySelectorAll('.page'), docPages=doc.querySelectorAll('.page');
+            srcPages.forEach(function(sp,pi){
+              var dp=docPages[pi]; if(!dp) return;
+              // 表單欄位 → 純文字
+              var orig=sp.querySelectorAll('input,textarea,select'), docEls=dp.querySelectorAll('input,textarea,select');
+              orig.forEach(function(o,i){
+                var el=docEls[i]; if(!el) return;
+                if(o.type==='file'){ if(el.closest('.cert-img')){ el.remove(); return; } var fn=doc.createElement('span'); fn.textContent='(attach separately)'; fn.style.cssText='font-size:12px;color:#9aa7b3'; el.parentNode.replaceChild(fn,el); return; }
+                if(o.type==='checkbox'){ var cb=doc.createElement('span'); cb.textContent=o.checked?'☑':'☐'; cb.style.cssText='font-size:16px;line-height:1;color:#232a31'; el.parentNode.replaceChild(cb,el); return; }
+                var v; if(o.tagName==='SELECT'){ var opt=o.options[o.selectedIndex]; v=opt?opt.textContent.trim():''; } else { v=(o.value||'').trim(); }
+                var cs=getComputedStyle(o); var s=doc.createElement('span'); s.textContent=v; s.style.cssText='font:'+cs.font+';color:'+(v?cs.color:'#9aa7b3')+';white-space:pre-wrap;display:inline-block'; el.parentNode.replaceChild(s,el);
+              });
+              // 證書卡：去除編輯控件、虛線加卡框、全空卡（請求 #1／#22 修訂）
+              dp.querySelectorAll('.cert-ctl,.drag').forEach(function(n){ n.remove(); });
+              dp.querySelectorAll('.cert-empty,.cert-addbar').forEach(function(n){ n.remove(); });
+              var srcCards=sp.querySelectorAll('.cert'), docCards=dp.querySelectorAll('.cert');
+              docCards.forEach(function(dc,i){
+                var sc=srcCards[i]; if(!sc) return;
+                var img=sc.querySelector('.cert-img img');
+                var hasImg=!!(img && img.style.display!=='none' && img.getAttribute('src'));
+                var t=(sc.querySelector('.cert-title').value||'').trim();
+                var d=(sc.querySelector('.cert-detail').value||'').trim();
+                var dt=(sc.querySelector('.cert-date input').value||'').trim();
+                if(!hasImg&&!t&&!d&&!dt) dc.remove();
+              });
+            });
+          }}).then(function(canvas){
+            var iw=pw, ih=canvas.height*iw/canvas.width; if(ih>ph){ iw=ph*canvas.width/canvas.height; ih=ph; }
+            if(idx>0) pdf.addPage();
+            pdf.addImage(canvas.toDataURL('image/png'),'PNG',(pw-iw)/2,0,iw,ih);
+          });
         });
-      }}).then(function(canvas){
-        try{
-          var pdf=new window.jspdf.jsPDF('p','mm','a4');
-          var pw=pdf.internal.pageSize.getWidth(), ph=pdf.internal.pageSize.getHeight();
-          var iw=pw, ih=canvas.height*iw/canvas.width;
-          if(ih>ph){ iw=ph*canvas.width/canvas.height; ih=ph; }
-          pdf.addImage(canvas.toDataURL('image/png'),'PNG',(pw-iw)/2,0,iw,ih);
-          pdf.save('primary-school-application.pdf');
-        }catch(e){ window.print(); }
-        btn.disabled=false; btn.textContent=old;
-      }).catch(function(){ window.print(); btn.disabled=false; btn.textContent=old; });
-    } else { window.print(); btn.disabled=false; btn.textContent=old; }
+      });
+      queue.then(function(){
+        // 檔名：primary-school-application_YYYYMMDD-NN.pdf（NN=當日導出序號，localStorage 計數，跨天歸零）
+        var dN=new Date(), ds=dN.getFullYear()+String(dN.getMonth()+1).padStart(2,'0')+String(dN.getDate()).padStart(2,'0'), k='pdfseq_'+ds, n=1;
+        try{ n=(parseInt(localStorage.getItem(k)||'0',10)||0)+1; localStorage.setItem(k,String(n)); }catch(e){}
+        pdf.save('primary-school-application_'+ds+'-'+String(n).padStart(2,'0')+'.pdf');
+      }).catch(function(){ window.print(); }).then(function(){ btn.disabled=false; btn.textContent=old; });
+    } else {
+      window.print();
+      btn.disabled=false; btn.textContent=old;
+    }
   }
   document.getElementById('btnOk').addEventListener('click', generatePDF);
   btn.addEventListener('click', function(){
@@ -460,7 +521,7 @@ at [Current School]. We sincerely hope our child may be considered for admission
     var photo=(img && img.style.display!=='none')? img.src : '';
     var theme='';
     page.classList.forEach(function(c){ if(c.indexOf('theme-')===0) theme=c; });
-    return { v:1, fields:fields, langs:langs, titles:titles, photo:photo, theme:theme };
+    return { v:1, fields:fields, langs:langs, titles:titles, photo:photo, theme:theme, certs:certs };
   }
   function applyData(d){
     if(!d||!d.fields) return false;
@@ -491,6 +552,7 @@ at [Current School]. We sincerely hope our child may be considered for admission
       });
     }
     if(d.photo){ var img=document.getElementById('photoImg'); img.src=d.photo; img.style.display='block'; }
+    if(Array.isArray(d.certs)){ certs=d.certs; renderAlbum(); }
     if(d.theme && THEMES.indexOf(d.theme)>=0) applyTheme(d.theme);
     return true;
   }
@@ -511,6 +573,105 @@ at [Current School]. We sincerely hope our child may be considered for admission
     r.onload=function(){ try{ var d=JSON.parse(r.result); showToast(applyData(d)? 'Data loaded' : 'File looks wrong'); }catch(err){ showToast('Could not read this file'); } e.target.value=''; };
     r.readAsText(f);
   });
+
+  // ---- Album 頁（Awards / Certificates）：依 A4 容量自動分頁為多張 .page.album ----
+  var albumRoot=document.getElementById('albumRoot');
+  var LS_CERT='tool05_certs';
+  var certs=[]; // {id,img,title,detail,date}
+  function uid(){ return 'c'+Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
+  function loadCerts(){ try{ var s=localStorage.getItem(LS_CERT); if(s){ var a=JSON.parse(s); if(Array.isArray(a)) certs=a; } }catch(e){} }
+  function saveCerts(){ try{ localStorage.setItem(LS_CERT, JSON.stringify(certs)); }catch(e){} }
+  function readImage(file,cb){ if(!file) return; var r=new FileReader(); r.onload=function(){ cb(r.result); }; r.readAsDataURL(file); }
+  function downscalePhoto(src,maxW,q,cb){
+    if(!src||src.indexOf('data:')!==0){ cb(src); return; }
+    var im=new Image();
+    im.onload=function(){
+      var w=im.naturalWidth||0,h=im.naturalHeight||0;
+      if(!w||w<=maxW){ cb(src); return; }
+      var r=maxW/w, c=document.createElement('canvas'); c.width=maxW; c.height=Math.max(1,Math.round(h*r));
+      var ctx=c.getContext('2d'); ctx.drawImage(im,0,0,c.width,c.height);
+      try{ cb(c.toDataURL('image/jpeg',q)); }catch(e){ cb(src); }
+    };
+    im.onerror=function(){ cb(src); };
+    im.src=src;
+  }
+  function findIdx(id){ return certs.findIndex(function(c){ return c.id===id; }); }
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]; }); }
+  function buildCard(c){
+    var card=document.createElement('div');
+    card.className='cert'; card.dataset.id=c.id; card.draggable=true;
+    card.innerHTML=
+      '<div class="drag" title="拖動排序">⠿</div>'+
+      '<div class="cert-ctl"><button class="up" title="上移">↑</button><button class="down" title="下移">↓</button><button class="del" title="刪除">✕</button></div>'+
+      '<div class="cert-img"><span class="ph" style="display:'+(c.img?'none':'block')+'">點擊上傳證書<br>Click to upload<br><small>圖片自動調整為統一比例 · 上下撐滿不變形</small><small>圖片會自動壓縮，單張建議 ≤ 5MB</small></span><img alt="" style="display:'+(c.img?'block':'none')+'" src="'+(c.img||'')+'"><input type="file" accept="image/*"></div>'+
+      '<div class="cert-fields">'+
+        '<input class="cert-title" placeholder="Title 證書名稱" value="'+esc(c.title)+'">'+
+        '<textarea class="cert-detail" placeholder="Detail 詳細（機構／年期／獎項）">'+esc(c.detail)+'</textarea>'+
+        '<div class="cert-date"><div class="lab"><span class="en">Date</span><span class="zh">日期</span></div><input type="text" placeholder="e.g. 2025-06" value="'+esc(c.date)+'"></div>'+
+      '</div>';
+    var imgBox=card.querySelector('.cert-img'), img=imgBox.querySelector('img'), fileIn=imgBox.querySelector('input'), ph=imgBox.querySelector('.ph');
+    imgBox.addEventListener('click', function(e){ if(e.target!==fileIn) fileIn.click(); });
+    fileIn.addEventListener('change', function(){ readImage(fileIn.files[0], function(src){ downscalePhoto(src,800,0.82,function(d2){ img.src=d2; img.style.display='block'; ph.style.display='none'; var i=findIdx(c.id); if(i>=0){ certs[i].img=d2; saveCerts(); } }); }); });
+    card.querySelector('.cert-title').addEventListener('input', function(){ var i=findIdx(c.id); if(i>=0){ certs[i].title=this.value; saveCerts(); } });
+    card.querySelector('.cert-detail').addEventListener('input', function(){ var i=findIdx(c.id); if(i>=0){ certs[i].detail=this.value; saveCerts(); } });
+    card.querySelector('.cert-date input').addEventListener('input', function(){ var i=findIdx(c.id); if(i>=0){ certs[i].date=this.value; saveCerts(); } });
+    card.querySelector('.up').addEventListener('click', function(){ moveCard(c.id,-1); });
+    card.querySelector('.down').addEventListener('click', function(){ moveCard(c.id,1); });
+    card.querySelector('.del').addEventListener('click', function(){ if(window.confirm('Delete this certificate?')) delCard(c.id); });
+    card.addEventListener('dragstart', function(e){ card.classList.add('dragging'); e.dataTransfer.effectAllowed='move'; e.dataTransfer.setData('text/plain', c.id); });
+    card.addEventListener('dragend', function(){ card.classList.remove('dragging'); });
+    card.addEventListener('dragover', function(e){ e.preventDefault(); });
+    card.addEventListener('drop', function(e){ e.preventDefault(); dropAt(e.dataTransfer.getData('text/plain'), c.id); });
+    return card;
+  }
+  function renderAlbum(){
+    albumRoot.querySelectorAll('.page.album').forEach(function(n){ n.remove(); });
+    var nodes=certs.map(function(c){ return buildCard(c); });
+    // 分頁：每頁 6 張（2 列 × 3 行，像最早一版的 2 列網格）；末頁下方附整寬「＋ 新增證書」條
+    var pages=[], i=0;
+    while(i<nodes.length){ pages.push(nodes.slice(i,i+6)); i+=6; }
+    if(pages.length===0) pages.push([]);
+    pages.forEach(function(pageNodes, pi){
+      var pg=document.createElement('div');
+      pg.className='page '+currentTheme+' album';
+      pg.style.marginTop='14px';
+      var ac=document.createElement('div'); ac.className='page-accent'; pg.appendChild(ac);
+      var head=document.createElement('div'); head.className='head';
+      head.innerHTML='<div class="ttl"><span>Awards, Certificates &amp; Achievements</span><span class="zh">獎項、證書與成就</span></div>';
+      pg.appendChild(head);
+      var grid=document.createElement('div'); grid.className='album-grid'; pg.appendChild(grid);
+      pageNodes.forEach(function(n){ grid.appendChild(n); });
+      if(pi===pages.length-1){
+        var bar=document.createElement('div'); bar.className='cert-addbar';
+        bar.innerHTML='<span class="x" title="刪除最後一個空白證書">✕</span>＋<br>Add certificate / 新增證書';
+        bar.addEventListener('click', function(e){ if(e.target.classList.contains('x')){ delLastEmpty(); return; } addBlank(); });
+        pg.appendChild(bar);
+      }
+      albumRoot.appendChild(pg);
+    });
+  }
+  function delLastEmpty(){
+    for(var i=certs.length-1;i>=0;i--){ var c=certs[i]; if(!c.img && !c.title && !c.detail && !c.date){ certs.splice(i,1); refresh(); showToast('Removed an empty certificate'); return; } }
+    showToast('No empty certificate to remove');
+  }
+  function refresh(){ renderAlbum(); saveCerts(); }
+  function addBlank(){ certs.push({id:uid(),img:'',title:'',detail:'',date:''}); refresh(); var eb=albumRoot.querySelector('.page.album:last-child .cert-addbar'); if(eb) eb.scrollIntoView({behavior:'smooth',block:'center'}); }
+  function moveCard(id,dir){ var i=findIdx(id); if(i<0) return; var j=i+dir; if(j<0||j>=certs.length) return; var t=certs[i]; certs[i]=certs[j]; certs[j]=t; refresh(); }
+  function delCard(id){ var i=findIdx(id); if(i<0) return; certs.splice(i,1); refresh(); }
+  function dropAt(fromId,toId){ if(fromId===toId) return; var fi=findIdx(fromId), ti=findIdx(toId); if(fi<0||ti<0) return; var m=certs.splice(fi,1)[0]; certs.splice(ti,0,m); refresh(); }
+  // 批量上傳：直接把圖片檔案拖到 album 區域即可（工具列移除後的替代方案）
+  albumRoot.addEventListener('dragover', function(e){ if(e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length){ e.preventDefault(); e.dataTransfer.dropEffect='copy'; } });
+  albumRoot.addEventListener('drop', function(e){
+    if(!e.dataTransfer || !e.dataTransfer.files || !e.dataTransfer.files.length) return; // 卡片重排序走卡片自身 drop
+    e.preventDefault();
+    var files=Array.prototype.slice.call(e.dataTransfer.files).filter(function(f){ return (f.type||'').indexOf('image/')===0; });
+    if(!files.length) return;
+    files.forEach(function(f){ readImage(f, function(src){ downscalePhoto(src,800,0.82,function(d2){ certs.push({id:uid(),img:d2,title:'',detail:'',date:''}); }); }); });
+    refresh(); showToast(files.length+' certificates added');
+  });
+  loadCerts();
+  if(certs.length===0) certs.push({id:uid(),img:'',title:'',detail:'',date:''});
+  renderAlbum();
 })();
 </script>
 <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
