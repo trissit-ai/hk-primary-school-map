@@ -57,6 +57,21 @@ main{max-width:1240px;margin:0 auto;padding:18px 22px 40px}
 .filters label{font-size:12px;color:var(--ink2);font-weight:600}
 select,input[type=text]{font-size:14px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit}
 select:focus,input:focus{outline:2px solid var(--soft);border-color:var(--pri)}
+/* ---- 多選下拉組件 ---- */
+.ms{position:relative;display:inline-block}
+.ms-btn{display:inline-flex;align-items:center;justify-content:space-between;gap:8px;min-width:118px;max-width:280px;font-size:14px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;cursor:pointer;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ms-btn:focus{outline:2px solid var(--soft);border-color:var(--pri)}
+.ms-btn::after{content:'▾';color:var(--ink3);font-size:11px;flex:none}
+.ms-btn.sum{border-color:var(--pri);color:var(--pri-d);font-weight:600}
+.ms-btn.sum::after{color:var(--pri)}
+.ms-pop{display:none;position:absolute;top:calc(100% + 4px);left:0;z-index:40;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 28px rgba(15,40,80,.16);padding:6px;min-width:210px;max-height:300px;overflow:auto}
+.ms.open .ms-pop{display:block}
+.ms-pop label{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--ink);padding:7px 9px;border-radius:7px;cursor:pointer;font-weight:500;white-space:nowrap}
+.ms-pop label:hover{background:var(--soft2)}
+.ms-pop input[type=checkbox]{accent-color:var(--pri);margin:0;flex:none}
+.ms-pop input:focus{outline:none}
+.ms-clr{display:block;width:100%;background:none;border:none;border-top:1px solid var(--line);margin-top:4px;padding:7px 0 4px;font-size:12px;color:var(--ink3);cursor:pointer;font-family:inherit;text-align:center}
+.ms-clr:hover{color:var(--pri-d)}
 .btn{background:var(--pri);color:#fff;border:none;border-radius:8px;padding:9px 16px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
 .btn.ghost{background:#fff;color:var(--pri-d);border:1px solid var(--line);font-weight:500}
 .btn:hover{background:var(--pri-d);color:#fff}
@@ -132,10 +147,10 @@ footer .fx{border-top:1px solid var(--line);padding-top:14px}
     <div class="panel-h"><h2>2 · 篩選</h2></div>
     <div class="panel-b">
       <div class="filters">
-        <div class="g"><label for="fD">地區</label><select id="fD"><option value="">全部（18 區）</option></select></div>
-        <div class="g"><label for="fT">類別</label><select id="fT"><option value="">全部</option><option value="資助">資助</option><option value="官立">官立</option><option value="直資">直資</option><option value="私立">私立</option></select></div>
-        <div class="g"><label for="fDoor">門到校上限</label><select id="fDoor"><option value="999">不限</option><option value="55">55 分鐘</option><option value="60">60 分鐘</option><option value="70">70 分鐘</option><option value="80">80 分鐘</option></select></div>
-        <div class="g"><label for="fL">升中關係</label><select id="fL"><option value="">全部</option><option value="1">只看一條龍／直屬／聯繫</option><option value="2">只看一條龍</option></select></div>
+        <div class="g"><label>地區</label><div class="ms" id="msD"></div></div>
+        <div class="g"><label>類別</label><div class="ms" id="msT"></div></div>
+        <div class="g"><label>門到校上限</label><div class="ms" id="msDoor"></div></div>
+        <div class="g"><label>升中關係</label><div class="ms" id="msL"></div></div>
         <div class="g"><label for="fBus">校車</label><select id="fBus"><option value="">全部</option><option value="1">要有校車或保姆車</option></select></div>
         <div class="g"><label for="fQ">校名</label><input type="text" id="fQ" placeholder="輸入關鍵字" style="width:180px"></div>
         <button class="btn ghost" id="btnReset">重置</button>
@@ -262,14 +277,16 @@ function render(){
   DIMS.forEach(d => document.getElementById('v_' + d.k).textContent = W[d.k] || 0);
   document.getElementById('wsum').textContent = DIMS.reduce((s, d) => s + (W[d.k] || 0), 0);
 
-  const d  = document.getElementById('fD').value, t = document.getElementById('fT').value,
-        mx = +document.getElementById('fDoor').value, l = document.getElementById('fL').value,
-        bs = document.getElementById('fBus').value, q = document.getElementById('fQ').value.trim();
+  const dArr = msGet('fD'), tArr = msGet('fT'), lArr = msGet('fL');
+  const doorArr = msGet('fDoor').map(Number);
+  const mx = doorArr.length ? Math.min(...doorArr) : 999;   // 多選取最小檔生效（任一勾選檔位都算通過）
+  const bs = document.getElementById('fBus').value, q = document.getElementById('fQ').value.trim();
 
   let rows = DATA.filter(r =>
-    (!d || r.d === d) && (!t || r.t === t) && (!q || r.n.indexOf(q) >= 0 || r.ns.indexOf(q) >= 0) &&
+    (!dArr.length || dArr.includes(r.d)) && (!tArr.length || tArr.includes(r.t)) &&
+    (!q || r.n.indexOf(q) >= 0 || r.ns.indexOf(q) >= 0) &&
     (!bs || r.bus > 0) &&
-    (!l || (l === '1' ? r.a >= 10 : r.a >= 15)) &&
+    (!lArr.length || lArr.some(l => l === '1' ? r.a >= 10 : r.a >= 15)) &&
     (mx >= 999 || (r.door !== null && r.door <= mx))
   );
 
@@ -322,21 +339,71 @@ function csv(){
   a.click();
 }
 
+// ---- 多選下拉組件（地區/類別/門到校上限/升中關係）----
+const MS = {};
+function buildMS(id, mountId, items, ph){
+  const root = document.getElementById(mountId);
+  const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'ms-btn';
+  const pop = document.createElement('div'); pop.className = 'ms-pop';
+  items.forEach(it => {
+    const lab = document.createElement('label');
+    const cb = document.createElement('input'); cb.type = 'checkbox'; cb.value = it.v;
+    cb.onchange = () => {
+      if(cb.checked) MS[id].vals.add(it.v); else MS[id].vals.delete(it.v);
+      msBtn(id); render();
+    };
+    lab.appendChild(cb); lab.appendChild(document.createTextNode(it.l));
+    pop.appendChild(lab);
+  });
+  const clr = document.createElement('button'); clr.type = 'button'; clr.className = 'ms-clr';
+  clr.textContent = '清空選擇（全部）';
+  clr.onclick = () => {
+    MS[id].vals.clear();
+    pop.querySelectorAll('input[type=checkbox]').forEach(c => c.checked = false);
+    msBtn(id); render();
+  };
+  pop.appendChild(clr);
+  btn.onclick = e => {
+    e.stopPropagation();
+    const was = root.classList.contains('open');
+    closeAllMS();
+    if(!was) root.classList.add('open');
+  };
+  root.appendChild(btn); root.appendChild(pop);
+  MS[id] = { id, vals: new Set(), items, ph, btn, root };
+  msBtn(id);
+}
+function msBtn(id){                          // 按鈕文案：未選顯示佔位；選中列名或「等 N 項」
+  const m = MS[id], names = [...m.vals].map(v => { const it = m.items.find(x => x.v === v); return it ? it.l : v; });
+  if(!names.length){ m.btn.textContent = m.ph; m.btn.classList.remove('sum'); }
+  else { m.btn.textContent = names.length <= 2 ? names.join('、') : names[0] + ' 等 ' + names.length + ' 項'; m.btn.classList.add('sum'); }
+}
+function closeAllMS(){ document.querySelectorAll('.ms.open').forEach(e => e.classList.remove('open')); }
+document.addEventListener('click', e => { if(!e.target.closest('.ms')) closeAllMS(); });
+function msGet(id){ return MS[id] ? Array.from(MS[id].vals) : []; }
+
 (function initDists(){
   const set = {};
   DATA.forEach(r => { if(r.d) set[r.d] = 1; });
-  const el = document.getElementById('fD');
-  Object.keys(set).sort((a, b) => a.localeCompare(b, 'zh')).forEach(v => {
-    const o = document.createElement('option'); o.value = v; o.textContent = v; el.appendChild(o);
-  });
+  const items = Object.keys(set).sort((a, b) => a.localeCompare(b, 'zh')).map(v => ({ v, l: v }));
+  buildMS('fD', 'msD', items, '全部（18 區）');
 })();
+buildMS('fT', 'msT',
+  [{v:'資助',l:'資助'},{v:'官立',l:'官立'},{v:'直資',l:'直資'},{v:'私立',l:'私立'}], '全部');
+buildMS('fDoor', 'msDoor',
+  [{v:'55',l:'55 分鐘'},{v:'60',l:'60 分鐘'},{v:'70',l:'70 分鐘'},{v:'80',l:'80 分鐘'}], '不限');
+buildMS('fL', 'msL',
+  [{v:'1',l:'一條龍／直屬／聯繫'},{v:'2',l:'一條龍'}], '全部');
 
 document.querySelectorAll('#presets button').forEach(b => b.onclick = () => applyPreset(b.dataset.p));
-['fD','fT','fDoor','fL','fBus'].forEach(i => document.getElementById(i).onchange = render);
+document.getElementById('fBus').onchange = render;
 document.getElementById('fQ').oninput = render;
 document.getElementById('btnReset').onclick = () => {
-  ['fD','fT','fL','fBus'].forEach(i => document.getElementById(i).value = '');
-  document.getElementById('fDoor').value = '999';
+  Object.values(MS).forEach(m => {
+    m.vals.clear();
+    m.root.querySelectorAll('.ms-pop input[type=checkbox]').forEach(c => c.checked = false);
+    msBtn(m.id);
+  });
   document.getElementById('fQ').value = '';
   applyPreset('even');
 };
