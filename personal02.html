@@ -194,9 +194,33 @@ body{background:#e9eef3;color:var(--ink);
   .page{width:auto;min-height:auto;margin:0;border:none;box-shadow:none;padding:10mm 12mm}
   .float-btn,.tpl-btn,.tpl-panel,.modal-mask,.site-footer,.data-btns,.toast,.cert-ctl,.drag,.cert-addbar{display:none !important}
 }
+/* 密碼門：未解鎖前隱藏 body 下全部內容，只保留 #gate 可見 */
+body.locked > *:not(#gate){display:none !important}
+#gate{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,#1f4f80,#2f6fb0);color:#fff;font-family:inherit;text-align:center;padding:24px}
+#gate.gone{display:none}
+#gate h2{font-size:22px;margin:0 0 6px;font-weight:600}
+#gate .sub{font-size:13px;opacity:.85;margin-bottom:22px}
+#gate .pwrow{display:flex;gap:8px}
+#gate input{font-size:16px;padding:10px 12px;border:1px solid rgba(255,255,255,.5);border-radius:4px;width:220px;outline:none;color:#1f4f80}
+#gate button{font-size:16px;padding:10px 18px;border:none;border-radius:4px;background:#ffd34d;color:#1f4f80;font-weight:600;cursor:pointer}
+#gate button:hover{background:#ffc61a}
+#gate .err{color:#ffd0d0;font-size:13px;margin-top:12px;min-height:16px}
+#gate .hint{margin-top:26px;font-size:13px;opacity:.92;max-width:340px;line-height:1.7}
+#gate .hint a{color:#fff;text-decoration:underline}
 </style>
 </head>
-<body>
+<body class="locked">
+
+<div id="gate">
+  <h2>插班申請表（專享）</h2>
+  <div class="sub">此表為專享內容，請輸入密碼後查看</div>
+  <div class="pwrow">
+    <input id="pwInput" type="password" placeholder="請輸入密碼" autocomplete="off">
+    <button id="pwBtn" type="button">進入</button>
+  </div>
+  <div class="err" id="pwErr"></div>
+  <div class="hint">如需找回密碼或自建专享表格请在小红书私信<a href="https://www.xiaohongshu.com/search_result?keyword=183236193" target="_blank" rel="noopener">183236193</a></div>
+</div>
 
 <div class="page theme-2">
   <div class="page-accent"></div>
@@ -673,5 +697,28 @@ const DEFAULT_DATA = {"v":1,"fields":{"cn":"薛新晨","en":"Sit San Sen，Lance
 })();
 </script>
 <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+/* 密碼門邏輯：預設密碼 qq1213456；解鎖後本 session 內不再重問 */
+(function(){
+  var PW='qq1213456';
+  var gate=document.getElementById('gate');
+  var inp=document.getElementById('pwInput');
+  var btn=document.getElementById('pwBtn');
+  var err=document.getElementById('pwErr');
+  function unlock(){
+    document.body.classList.remove('locked');
+    gate.classList.add('gone');
+    try{ sessionStorage.setItem('p02ok','1'); }catch(e){}
+  }
+  try{ if(sessionStorage.getItem('p02ok')==='1'){ unlock(); return; } }catch(e){}
+  function trygo(){
+    if(inp.value===PW){ unlock(); }
+    else { err.textContent='密碼錯誤，請重試'; inp.value=''; inp.focus(); }
+  }
+  btn.addEventListener('click',trygo);
+  inp.addEventListener('keydown',function(e){ if(e.key==='Enter'){ trygo(); } });
+  inp.focus();
+})();
+</script>
 </body>
 </html>
