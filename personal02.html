@@ -702,7 +702,7 @@ const DEFAULT_DATA = {"v":1,"fields":{"cn":"薛新晨","en":"Sit San Sen，Lance
 </script>
 <script async src="https://jsd.dusays.com/npm/penndu@17.0.0/bsz.js"></script>
 <script>
-/* 密碼門：4 位數字方框，預設 0909；解鎖後本 session 內不再重問 */
+/* 密碼門：4 位數字方框，預設 0909；每次進入均須重新輸入密碼 */
 (function(){
   var PW='0909';
   var gate=document.getElementById('gate');
@@ -712,9 +712,7 @@ const DEFAULT_DATA = {"v":1,"fields":{"cn":"薛新晨","en":"Sit San Sen，Lance
   function unlock(){
     document.body.classList.remove('locked');
     gate.classList.add('gone');
-    try{ sessionStorage.setItem('p02ok','1'); }catch(e){}
   }
-  try{ if(sessionStorage.getItem('p02ok')==='1'){ unlock(); return; } }catch(e){}
   function norm(s){
     // 容错：全角字符（含全角数字）与全角空格转半角，并去首尾空格
     return (s||'').replace(/[\uFF01-\uFF5E]/g,function(c){return String.fromCharCode(c.charCodeAt(0)-0xFEE0);}).replace(/\u3000/g,' ').trim();
