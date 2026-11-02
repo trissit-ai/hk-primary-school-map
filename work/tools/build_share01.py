@@ -87,7 +87,7 @@ footer .row{margin:8px 0;display:flex;gap:10px;align-items:center;flex-wrap:wrap
   <footer>
     <div class="row">
       <a class="xhsb" href="https://www.xiaohongshu.com/search_result?keyword=183236193" target="_blank" rel="noopener">去小紅書聊聊</a>
-      <span id="busuanzi_container_page_pv" style="display:none">本頁訪問 <span id="busuanzi_value_page_pv">–</span> 次</span><span id="busuanzi_container_site_uv" style="display:none">&nbsp;· 訪客 <span id="busuanzi_value_site_uv">–</span> 人</span>
+      <span id="busuanzi_container_page_pv" style="display:none">本頁訪問 <span id="busuanzi_page_pv">–</span> 次</span><span id="busuanzi_container_site_uv" style="display:none">&nbsp;· 訪客 <span id="busuanzi_site_uv">–</span> 人</span>
     </div>
     <div>免責聲明：本頁內容僅供個人參考，不構成任何擇校建議；一切以教育局與學校官方公布為準，擇校決定與後果由家長自行承擔。</div>
     <div>工具免費、無廣告、免註冊、不收集任何個人資料。最後更新：__TODAY__。</div>
