@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>工具 02 · 校區篩選工具｜香港擇校工具超市</title>
+<meta name="description" content="按你家情況（入學途徑、住址落點、學校類別、口岸與通勤）從全港 694 所小學篩出推薦排序，數據來自教育局官方名冊與各校官網。">
+<style>
+
+:root{
+  --bg:#F4F8FB; --card:#FFFFFF; --pri:#4F7BAB; --pri-d:#3A6188; --soft:#B7CCE0; --soft2:#E6EFF7;
+  --ink:#2C3B47; --ink2:#6B7C8A; --ink3:#94A4B1; --bar:#4E5A66; --line:#DCE6F0; --req:#C0563A;
+  --ok:#3F6212; --warn:#B5761B;
+  --t-aid:#2f7fd1; --t-gov:#3f6212; --t-dss:#e08a2e; --t-pri:#8e5bc7; --t-int:#d14f8a; --t-esf:#2aa198; --t-sp:#9aa3b0;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--ink);
+  font:15px/1.68 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--pri-d)}
+b{font-weight:600}
+
+/* ---------- 顶栏 ---------- */
+.top{background:var(--bar);color:#F2F6FA;padding:16px 22px 18px}
+.top .inner{max-width:1500px;margin:0 auto}
+.trow{display:flex;align-items:center;}
+.trow > * + *{margin-left:14px}
+.home{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;flex:0 0 34px;border-radius:50%;background:#fff;color:#3A6188;box-shadow:0 1px 5px rgba(0,0,0,.18);text-decoration:none;font-size:17px;border:none;transition:.12s}
+.home:hover{transform:translateY(-1px);box-shadow:0 3px 8px rgba(0,0,0,.22);color:#2C5f86}
+.crumb{font-size:13px;color:#AFC0CE;margin-bottom:6px}
+.crumb a{color:#CBDCEB;text-decoration:none}
+.crumb a:hover{text-decoration:underline}
+.top h1{margin:0 0 6px;font-size:23px;letter-spacing:.4px;font-weight:600}
+.top p{margin:0;font-size:13.5px;color:#C3D2E0;max-width:900px}
+.badge02{display:inline-block;background:#5E7080;color:#EAF1F7;font-size:12px;padding:2px 9px;border-radius:99px;margin-right:8px;vertical-align:2px;letter-spacing:.5px}
+
+/* ---------- 主体两栏 ---------- */
+main{max-width:1500px;margin:0 auto;padding:18px 22px 40px;display:grid;grid-template-columns:minmax(360px,45%) 1fr;grid-gap:18px;align-items:start}
+@media (max-width:1000px){main{grid-template-columns:1fr;padding:14px}}
+
+.panel{background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 3px rgba(44,59,71,.05)}
+.panel-h{padding:14px 18px 12px;border-bottom:1px solid var(--line)}
+.panel-h h2{margin:0;font-size:16px;font-weight:600}
+.panel-h .sub{margin:4px 0 0;font-size:12.5px;color:var(--ink2)}
+
+#left{position:sticky;top:0;max-height:100vh;overflow:auto;padding-bottom:6px}
+@media (max-width:1000px){#left{position:static;max-height:none;overflow:visible}}
+#left::-webkit-scrollbar{width:8px}
+#left::-webkit-scrollbar-thumb{background:#CFDCE8;border-radius:8px}
+
+.sec{padding:14px 18px;border-bottom:1px solid var(--line)}
+.sec:last-child{border-bottom:0}
+.sec-t{display:flex;align-items:center;;margin:0 0 12px;font-size:13px;font-weight:600;letter-spacing:.4px;color:var(--pri-d);text-transform:none}
+.sec-t > * + *{margin-left:8px}
+.sec-t .tagreq{background:var(--req);color:#fff;font-size:11px;padding:1px 7px;border-radius:99px;font-weight:500;letter-spacing:0}
+.sec-t .tagopt{background:#9AA9B6;color:#fff;font-size:11px;padding:1px 7px;border-radius:99px;font-weight:500;letter-spacing:0}
+.sec-t .sp{flex:1}
+.sec-t .fold{font-size:12px;color:var(--ink2);cursor:pointer;font-weight:400;user-select:none}
+.sec-t .fold:hover{color:var(--pri-d)}
+
+.grp{margin-bottom:14px}
+.grp:last-child{margin-bottom:0}
+.grp>label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:var(--ink)}
+.grp>label .r{color:var(--req);margin-left:3px;font-weight:700}
+.grp>label .hint{font-weight:400;color:var(--ink3);font-size:12px;margin-left:6px}
+
+select,input[type=search],input[type=text]{
+  width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#FBFDFF;
+  font-size:14px;color:var(--ink);font-family:inherit;outline:none
+}
+select:focus,input:focus{border-color:var(--pri);box-shadow:0 0 0 3px rgba(79,123,171,.12)}
+
+.chips{display:flex;flex-wrap:wrap;}
+.chips > *{margin:0 6px 6px 0}
+.chip{
+  border:1px solid var(--line);background:#FBFDFF;border-radius:99px;padding:5px 12px;font-size:13px;
+  cursor:pointer;user-select:none;color:var(--ink2);transition:.12s;white-space:nowrap
+}
+.chip:hover{border-color:var(--soft);background:var(--soft2)}
+.chip.on{background:var(--pri);border-color:var(--pri);color:#fff;font-weight:500}
+.chip.dis{opacity:.4;cursor:not-allowed}
+.chip .dot{display:inline-block;width:8px;height:8px;border-radius:99px;margin-right:5px;vertical-align:1px}
+
+.dots{display:flex;flex-wrap:wrap;}
+.dots > *{margin:0 8px 5px 0}
+.dots .chip{padding:4px 10px;font-size:12.5px}
+
+.note{
+  margin-top:7px;padding:8px 10px;background:var(--soft2);border-left:3px solid var(--soft);
+  border-radius:0 6px 6px 0;font-size:12px;line-height:1.6;color:var(--ink2)
+}
+.note.warn{background:#FBF1E6;border-left-color:#E0A44E;color:#7A5410}
+.note b{color:var(--ink)}
+
+.acts{display:flex;;padding:14px 18px;flex-wrap:wrap}
+.acts > *{margin:0 8px 8px 0}
+.btn{
+  border:0;border-radius:9px;padding:9px 16px;font-size:14px;cursor:pointer;font-family:inherit;font-weight:500
+}
+.btn.go{background:var(--pri);color:#fff;flex:1;min-width:120px}
+.btn.go:hover{background:var(--pri-d)}
+.btn.gh{background:#fff;border:1px solid var(--line);color:var(--ink2)}
+.btn.gh:hover{border-color:var(--soft);background:var(--soft2)}
+.selrow{display:flex;;margin-top:7px}
+.selrow > * + *{margin-left:6px}
+.btn.sm{padding:4px 11px;font-size:12px;line-height:1.45}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+
+/* ---------- 右栏 ---------- */
+#right{min-width:0}
+.rbar{
+  display:flex;align-items:center;;flex-wrap:wrap;padding:12px 18px;border-bottom:1px solid var(--line)
+display:flex;align-items:center;;flex-wrap:wrap;padding:12px 18px;border-bottom:1px solid var(--line) > *{margin:0 10px 10px 0}
+}
+.rbar .n{font-size:14px}
+.rbar .n b{color:var(--pri-d);font-size:19px;margin:0 3px}
+.rbar .sp{flex:1}
+.rbar .sortsel{padding:5px 9px;font-size:13px;width:auto}
+.rbar .mini{
+  border:1px solid var(--line);background:#fff;border-radius:8px;padding:5px 11px;font-size:13px;cursor:pointer;color:var(--ink2)
+}
+.rbar .mini:hover{border-color:var(--soft);background:var(--soft2)}
+
+.empty{padding:52px 30px;text-align:center;color:var(--ink2)}
+.empty .big{font-size:15px;margin-bottom:8px;color:var(--ink)}
+.empty .sm{font-size:13px;line-height:1.8}
+
+.cards{padding:8px 12px 14px;max-height:none}
+.card{
+  display:grid;grid-template-columns:38px 1fr;grid-gap:10px;padding:12px 8px;border-bottom:1px solid #EEF3F8
+}
+.card:last-child{border-bottom:0}
+.card .no{
+  width:30px;height:30px;border-radius:8px;background:var(--soft2);color:var(--pri-d);
+  display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;margin-top:2px
+}
+.card .no.top{background:var(--pri);color:#fff}
+.nm{font-size:15.5px;font-weight:600;line-height:1.4}
+.nm .en{display:block;font-size:11.5px;color:var(--ink3);font-weight:400;letter-spacing:.2px;margin-top:1px}
+.card .top2{display:flex;align-items:flex-start;}
+.card .top2 > * + *{margin-left:10px}
+.sc{
+  margin-left:auto;text-align:center;min-width:52px;background:#F7FAFD;border:1px solid var(--line);
+  border-radius:9px;padding:3px 6px;flex-shrink:0
+}
+.sc .v{font-size:17px;font-weight:700;color:var(--pri-d);line-height:1.1}
+.sc .l{font-size:10px;color:var(--ink3);letter-spacing:.3px}
+
+.tags{display:flex;flex-wrap:wrap;;margin:7px 0 0}
+.tags > *{margin:0 5px 5px 0}
+.tg{
+  font-size:11.5px;padding:2px 8px;border-radius:5px;background:#F1F5F9;color:var(--ink2);border:1px solid #E4EBF2;
+  white-space:nowrap
+}
+.tg.ty{color:#fff;border-color:transparent}
+.tg.net{background:#EEF4FB;color:var(--pri-d);border-color:#D9E6F3}
+.tg.met{background:#EAF4EC;color:#33691E;border-color:#D6E9D9}
+.tg.hot{background:#FDF0E6;color:#8A4B08;border-color:#F6E0CB}
+.tg.cool{background:#F1F5F9;color:#7B8A97}
+.tg.non{background:#F7F0F4;color:#8C4A6E;border-color:#EFDDE7}
+
+.why{margin-top:8px;font-size:12.5px;line-height:1.75;color:var(--ink2)}
+.why .k{color:var(--pri-d);font-weight:600}
+.why .risk{color:var(--warn)}
+.why .good{color:var(--ok)}
+
+.cact{margin-top:8px;display:flex;;flex-wrap:wrap}
+.cact > *{margin:0 6px 6px 0}
+.cact a,.cact button{
+  font-size:12px;padding:4px 10px;border-radius:7px;border:1px solid var(--line);background:#fff;
+  color:var(--ink2);text-decoration:none;cursor:pointer;font-family:inherit
+}
+.cact a:hover,.cact button:hover{border-color:var(--soft);background:var(--soft2)}
+.cact button.on{background:var(--pri);border-color:var(--pri);color:#fff}
+
+.det{
+  margin-top:8px;padding:8px 10px;background:#FAFCFE;border:1px solid #EBF1F7;border-radius:8px;
+  font-size:12px;line-height:1.7;color:var(--ink2);display:none
+}
+.det.show{display:block}
+
+footer{max-width:1500px;margin:0 auto;padding:0 22px 40px;font-size:12px;color:var(--ink3);line-height:1.9}
+footer .fx{border-top:1px solid var(--line);padding-top:14px}
+
+</style>
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="inner">
+    <div class="trow">
+      <span class="home">🏠</span>
+      <div>
+        <div class="crumb"><span>香港擇校工具超市</span> / 工具 02</div>
+        <h1><span class="badge02">工具 02</span>校區篩選工具</h1>
+      </div>
+    </div>
+    <p>左邊填你家情況，右邊即時排出推薦學校順序。數據：教育局《學校位置及資料》名冊（2026-09-30，S 級官方）＋ 各校官網 2027/28 插班公告（逐校標可信度）。不評價學校好壞，只按你填的條件排序。</p>
+  </div>
+</header>
+
+<main>
+  <!-- ============ 左：條件 ============ -->
+  <section id="left" class="panel">
+    <div class="panel-h">
+      <h2>你家情況</h2>
+      <p class="sub">改任何一項，右邊立刻重排。帶 <span style="color:var(--req);font-weight:700">*</span> 的是必填，其餘選填。</p>
+    </div>
+
+    <!-- 必填 -->
+    <div class="sec">
+      <div class="sec-t">必填 <span class="tagreq">6 項</span><span class="sp"></span></div>
+
+      <div class="grp">
+        <label>1 · 入學途徑 <span class="r">*</span></label>
+        <select id="fPath">
+          <option value="p3" selected>插班 · 小三（2027 年 9 月入學）</option>
+          <option value="p1">小一入學 · 經 POA 小一入學統籌辦法</option>
+          <option value="p24">插班 · 小二至小五（其他年級）</option>
+          <option value="p6">插班 · 小六</option>
+        </select>
+        <div class="note" id="nPath"></div>
+      </div>
+
+      <div class="grp">
+        <label>2 · 香港住址證明能落在哪裡 <span class="r">*</span><span class="hint">當前第一卡點</span></label>
+        <select id="fAddr"></select>
+        <div class="grp" id="netWrap" style="margin-top:8px;display:none">
+          <label>已確定的校網號</label>
+          <select id="fNetOne"></select>
+        </div>
+        <div class="note" id="nAddr"></div>
+      </div>
+
+      <div class="grp">
+        <label>3 · 學校類別（可多選）<span class="r">*</span></label>
+        <div class="chips" id="fTypes"></div>
+        <div class="note" id="nTypes"></div>
+      </div>
+
+      <div class="grp">
+        <label>4 · 跨境口岸 <span class="r">*</span></label>
+        <select id="fPort"></select>
+        <div class="note" id="nPort"></div>
+      </div>
+
+      <div class="grp">
+        <label>5 · 到口岸最多幾站 <span class="r">*</span></label>
+        <div class="chips" id="fHops"></div>
+      </div>
+
+      <div class="grp">
+        <label>6 · 落站後到學校 <span class="r">*</span></label>
+        <div class="chips" id="fWalk"></div>
+        <div class="note">站數＝港鐵東鐵線站序（羅湖／落馬洲起算，兩者站數相同）。步行距離為學校到最近港鐵站的直線距離推算值，非實際路程。</div>
+      </div>
+    </div>
+
+    <!-- 選填 -->
+    <div class="sec">
+      <div class="sec-t">選填 <span class="tagopt">不填也出結果</span><span class="sp"></span><span class="fold" id="foldOpt">展開 ▾</span></div>
+      <div id="optBody" style="display:none">
+
+        <div class="grp">
+          <label>地區（十八區，可多選）</label>
+          <div class="dots" id="fDist"></div>
+          <div class="selrow">
+            <button class="btn gh sm" id="bDistAll" type="button">全選</button>
+            <button class="btn gh sm" id="bDistNone" type="button">全不選</button>
+          </div>
+        </div>
+
+        <div class="grp">
+          <label>校網號（可多選）</label>
+          <div class="dots" id="fNets"></div>
+          <div class="selrow">
+            <button class="btn gh sm" id="bNetAll" type="button">全選</button>
+            <button class="btn gh sm" id="bNetNone" type="button">全不選</button>
+          </div>
+          <div class="note" id="nNetMulti"></div>
+        </div>
+
+        <div class="grp">
+          <label>一條龍（可多選）</label>
+          <div class="dots" id="fTT"></div>
+          <div class="selrow">
+            <button class="btn gh sm" id="bTTAll" type="button">全選</button>
+            <button class="btn gh sm" id="bTTNone" type="button">全不選</button>
+          </div>
+          <div class="note">「一條龍」＝小學與中學採用接龍辦學模式（小六可免派位直升高中）。依 <b>教育局 2026/27 官方名單</b>（資助學校）標註；<b>直資／私立學校的接龍安排不在此官方名單內</b>，歸入「非一條龍」，請向個別學校查詢。名單內共 17 所資助小學。</div>
+        </div>
+
+        <div class="grp">
+          <label>最近港鐵站</label>
+          <select id="fStn"></select>
+        </div>
+
+        <div class="grp">
+          <label>收表與資料狀態</label>
+          <div class="chips">
+            <div class="chip" id="oNow">只要現在就能遞表</div>
+            <div class="chip" id="oPub">只要已公布 2027/28 時間表</div>
+            <div class="chip" id="oNoU">排除資料「待核」</div>
+          </div>
+        </div>
+
+        <div class="grp">
+          <label>其他</label>
+          <div class="chips">
+            <div class="chip" id="oTop" title="商業機構榜單，非教育局官方">只看競爭力百強</div>
+            <div class="chip" id="oNoSp" title="特殊學校不在一般插班範圍">排除特殊學校</div>
+          </div>
+          <div class="note">「競爭力百強」＝商業升學機構《全港小學教育競爭力100強》的名次，<b>不是教育局官方排名</b>，口徑不公開，只適合當線索；不在榜不等於不好。</div>
+        </div>
+
+        <div class="grp">
+          <label>排序偏好</label>
+          <select id="fSort">
+            <option value="mix" selected>綜合（通勤＋資料完備＋匹配）</option>
+            <option value="trip">通勤優先（口岸站數最少）</option>
+            <option value="info">資料完備優先（已公布時間表）</option>
+            <option value="rank">榜單優先（競爭力百強）</option>
+          </select>
+        </div>
+
+        <div class="grp">
+          <label>顯示前幾所</label>
+          <select id="fTop">
+            <option value="10">前 10 所</option>
+            <option value="20" selected>前 20 所</option>
+            <option value="50">前 50 所</option>
+            <option value="0">全部</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- 核對清單 -->
+    <div class="sec">
+      <div class="sec-t">打電話要問的事 <span class="tagopt">不影響篩選</span><span class="sp"></span><span class="fold" id="foldChk">展開 ▾</span></div>
+      <div id="chkBody" style="display:none">
+        <div class="dots" id="fChk"></div>
+        <div class="note">勾了的項目會疊加到下面的清單，打電話時照著問。</div>
+        <div class="acts" style="padding:10px 0 0">
+          <button class="btn gh" id="copyQ" type="button">複製問話清單</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="acts">
+      <button class="btn go" id="btnGo" type="button">篩選 ▸</button>
+      <button class="btn gh" id="btnMine" type="button">用我家預設</button>
+      <button class="btn gh" id="btnReset" type="button">重置</button>
+    </div>
+  </section>
+
+  <!-- ============ 右：結果 ============ -->
+  <section id="right" class="panel">
+    <div class="rbar">
+      <div class="n">符合 <b id="cnt">0</b> 所</div>
+      <span class="sp"></span>
+      <select class="sortsel" id="q" style="width:auto;min-width:150px;display:none"></select>
+      <button class="mini" id="btnCsv" type="button">匯出</button>
+      <button class="mini" id="btnCopy" type="button">複製清單</button>
+    </div>
+    <div id="out"></div>
+  </section>
+</main>
+
+<div id="exportBox" style="display:none;position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(20,30,40,.55);z-index:50;align-items:center;justify-content:center;padding:18px">
+  <div style="background:#fff;border-radius:14px;max-width:560px;width:100%;max-height:82vh;display:flex;flex-direction:column;overflow:hidden">
+    <div style="padding:13px 16px;font-size:15px;font-weight:600;color:var(--pri-d);border-bottom:1px solid var(--line);display:flex;align-items:center">
+      <span id="exportTitle" style="flex:1"></span>
+      <button type="button" id="exportClose" style="border:0;background:var(--soft2);color:var(--ink2);border-radius:8px;padding:5px 12px;font-size:13px;cursor:pointer;font-family:inherit;margin-left:8px">關閉</button>
+    </div>
+    <textarea id="exportText" readonly style="flex:1;border:0;resize:none;padding:14px 16px;font:13px/1.7 ui-monospace,Menlo,Consolas,monospace;color:var(--ink);outline:none;user-select:text;-webkit-user-select:text"></textarea>
+    <div style="padding:10px 16px;font-size:12px;color:var(--ink3);border-top:1px solid var(--line)">提示：長按文字 → 全選 → 複製；或截圖保存。</div>
+  </div>
+</div>
+
+
+<footer>
+  <div class="fx">
+    數據來源：教育局《學校位置及資料》名冊（2026-09-30）· 教育局《2027 年度小一入學 · 各小一學校網小學名冊》· 各校官網 2027/28 插班公告（逐校抓取，標 S官方／A已公布月份／B二手／待核）。<br>
+    口岸站數與步行距離為<b>推算值</b>（直線距離／站序），不是實際車程，實走會不同。香港教育局不公布官方小學排名，「競爭力百強」為商業機構榜單。<br>
+    本工具只做條件排序，<b>不評價任何學校、校網或地區的好壞</b>；收表時間以學校官網與校方答覆為準。<br>
+    工具免費、不收費、不收集任何個人資料。<br>
+    免責聲明：本工具僅供個人參考，不構成任何擇校建議；一切以教育局與學校官方公布為準，擇校決定與後果由家長自行承擔。<br>
+     人</span>
+  </div>
+</footer>
+
+
+<script src="./main.js"></script>
+</body>
+</html>
