@@ -26,7 +26,19 @@ a{color:var(--c1)}
 button,input{font-family:inherit}
 
 /* header */
-header{padding:40px 0 20px}
+header{padding:28px 0 20px}
+.topbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.topbar .home{width:34px;height:34px;flex:0 0 34px;display:inline-flex;align-items:center;justify-content:center;
+  border-radius:50%;background:rgba(255,255,255,.07);border:1px solid var(--line);color:var(--c1);
+  font-size:17px;line-height:1;text-decoration:none;
+  transition:transform .25s,border-color .25s,background .25s}
+.topbar .home:hover{transform:translateY(-2px);border-color:var(--c1);background:rgba(77,226,192,.12)}
+.topbar .crumb{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--ink3)}
+.topbar .crumb a{color:var(--ink2);text-decoration:none;border-bottom:1px dashed var(--line)}
+.topbar .crumb a:hover{color:var(--c1);border-bottom-color:var(--c1)}
+.topbar .crumb .sep{color:var(--ink3)}
+.topbar .crumb .badge{font-size:11px;letter-spacing:.5px;padding:3px 10px;border-radius:99px;
+  border:1px solid rgba(77,226,192,.4);color:var(--c1);background:rgba(77,226,192,.08)}
 .eyebrow{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:16px}
 .chip{font-size:11.5px;letter-spacing:.6px;padding:4px 11px;border-radius:99px;
   border:1px solid var(--line);color:var(--ink2);background:var(--card2)}
@@ -273,6 +285,10 @@ h1{margin:0 0 10px;font-size:clamp(28px,4.6vw,42px);font-weight:700;letter-spaci
 
 footer{max-width:1040px;margin:0 auto;padding:0 22px 44px;font-size:12px;color:var(--ink3);line-height:1.9;position:relative;z-index:1}
 footer .fx{border-top:1px solid var(--line);padding-top:16px}
+footer .statsline{margin-top:12px;padding-top:11px;border-top:1px dashed var(--line);font-size:12px;color:var(--ink2)}
+footer .statslabel{color:var(--c1);font-weight:600;letter-spacing:.5px;margin-right:10px}
+footer .statsline b{color:var(--ink);font-weight:600}
+footer .statsnote{color:var(--ink3);font-size:11px;margin-left:8px}
 .xhs{display:inline-block;background:#ff2442;color:#fff;font-size:12px;padding:3px 11px;border-radius:999px;text-decoration:none;font-weight:600;margin-top:6px}
 .toast{position:fixed;right:22px;bottom:22px;z-index:20;max-width:330px;padding:13px 17px;border-radius:13px;
   background:rgba(16,28,44,.96);border:1px solid rgba(77,226,192,.4);color:#CFFFF2;font-size:13.5px;line-height:1.7;
@@ -300,6 +316,10 @@ footer .fx{border-top:1px solid var(--line);padding-top:16px}
 <div class="wrap">
 
 <header class="fade">
+  <div class="topbar">
+    <a class="home" href="index.html" title="工具超市首页" aria-label="回工具超市首页">🏠</a>
+    <div class="crumb"><a href="index.html">香港择校工具超市</a><span class="sep">/</span><span class="badge">工具 06</span></div>
+  </div>
   <div class="eyebrow">
     <span class="chip hi">三步交互 · 示意数据</span>
     <span class="chip">不含真实路线 / 站位 / 班次 / 收费</span>
@@ -631,7 +651,10 @@ footer .fx{border-top:1px solid var(--line);padding-top:16px}
     免责声明：本页为家长自行整理的非官方资料，只教判断方法，不提供路线、站位、班次、收费或即时交通资讯，不构成交通或择校建议；一切以运输署、各营办商最新公布与现场站牌为准，出行决定与后果由家长自行承担。<br>
     本站免费、无广告、免注册；地址输入只在本页内存，不上传、不收集个人资料。我们也不评价任何学校、校网或地区的好坏。<br>
     有想加的工具、发现说明有错，来小红书找我们最方便：<a class="xhs" href="https://www.xiaohongshu.com/search_result?keyword=183236193" target="_blank" rel="noopener">去小红书聊聊</a><br>
-    <span id="busuanzi_container_page_pv" style="display:none">本页访问 <span id="busuanzi_page_pv">–</span> 次</span><span id="busuanzi_container_site_uv" style="display:none">&nbsp;· 本站访客 <span id="busuanzi_site_uv">–</span> 人</span>
+    <div class="statsline">
+      <span class="statslabel">访问统计</span><span id="busuanzi_container_page_pv" style="display:none">本页访问 <b id="busuanzi_page_pv">–</b> 次</span><span id="busuanzi_container_site_uv" style="display:none">&nbsp;· 本站访客 <b id="busuanzi_site_uv">–</b> 人</span>
+      <span class="statsnote">（不蒜子提供，host 级计数；网络受限时数字可能不显示）</span>
+    </div>
   </div>
 </footer>
 <script async src="https://jsd.dusays.com/npm/penndu@17.0.0/bsz.js"></script>
