@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-生成 工具03 口岸通勤時間試算 (tool03.html)
-源數據：hk-school-map/data.json（教育局官方名冊）
+生成 工具03 口岸通勤时间试算 (tool03.html)
+源数据：hk-school-map/data.json（教育局官方名册）
 用法：cd hk-school-map && python3 work/tools/build_tool03.py
 """
 import json, os, io
@@ -11,7 +11,7 @@ DATA = os.path.join(ROOT, 'data.json')
 TPL = os.path.join(ROOT, 'work', 'tools', 'tool03.tpl.html')
 OUT = os.path.join(ROOT, 'tool03.html')
 
-# 工具03 只需要：校名/英文/類別/地區/校網/排名/最近港鐵站/步行m/東鐵站數/收表類型
+# 工具03 只需要：校名/英文/类别/地区/校网/排名/最近港铁站/步行m/东铁站数/收表类型
 KEEP = ['n', 'e', 't', 'd', 'k', 'r', 's', 'sd', 'h', 'iv']
 
 

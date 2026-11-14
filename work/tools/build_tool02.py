@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-生成 工具02 校區篩選工具 (tool02.html)
-源數據：hk-school-map/data.json（教育局官方名冊 + 各校官網調研）
+生成 工具02 校区筛选工具 (tool02.html)
+源数据：hk-school-map/data.json（教育局官方名册 + 各校官网调研）
 用法：cd hk-school-map && python3 work/tools/build_tool02.py
 """
 import json, os, io, re
@@ -15,17 +15,17 @@ KEEP = ['n', 'e', 't', 'd', 'a', 'p', 'w', 'k', 'r', 's', 'sd', 'ti', 'h', 'iv',
 
 
 def pub_state(x):
-    """2027/28 學年插班資料狀態：D=已公布確切日期 / M=有資料或已公布月份 / U=待核
+    """2027/28 学年插班资料状态：D=已公布确切日期 / M=有资料或已公布月份 / U=待核
 
-    坑（2026-10-15 踩到）：不能只看「確切」兩字。官網原文常有
-    「2027-2028 年度確切筆試日期尚未公布」——含「確切」但其實是沒公布。
-    判定要點：確切 + 緊跟具體日期（20xx-xx），且整段沒有「尚未公布／須向校方」。
+    坑（2026-10-15 踩到）：不能只看「确切」两字。官网原文常有
+    「2027-2028 年度确切笔试日期尚未公布」——含「确切」但其实是没公布。
+    判定要点：确切 + 紧跟具体日期（20xx-xx），且整段没有「尚未公布／须向校方」。
     """
     c27 = (x.get('c27') or '')
-    if re.search(r'確切(申請期|日期|時間)?\s*[：:]?\s*20\d\d', c27) \
-            and not re.search(r'尚未公布|尚未公佈|未公布|未公佈|須向校方|待公布|待公佈', c27):
+    if re.search(r'确切(申请期|日期|时间)?\s*[：:]?\s*20\d\d', c27) \
+            and not re.search(r'尚未公布|尚未公布|未公布|未公布|须向校方|待公布|待公布', c27):
         return 'D'
-    if re.search(r'待核|尚未公布|尚未公佈|未公布|未公佈|暂未开放|暫未開放|尚未上載|尚未上载', c27):
+    if re.search(r'待核|尚未公布|尚未公布|未公布|未公布|暂未开放|暂未开放|尚未上载|尚未上载', c27):
         return 'U'
     if c27:
         return 'M'
@@ -40,7 +40,7 @@ def main():
     for x in schools:
         r = {k: x.get(k) for k in KEEP}
         if r.get('tt') is None:
-            r.pop('tt', None)   # 只保留真正的一條龍學校，其餘不掛此欄
+            r.pop('tt', None)   # 只保留真正的一条龙学校，其余不挂此栏
         c27 = (x.get('c27') or '').strip()
         if len(c27) > 220:
             c27 = c27[:220] + '…'
@@ -55,7 +55,7 @@ def main():
     dists = sorted({x.get('d') for x in schools if x.get('d')})
     stns = sorted({x.get('s') for x in schools if x.get('s')})
 
-    meta = {'nets': nets, 'dists': dists, 'stns': stns, 'tts': ['一條龍', '非一條龍']}
+    meta = {'nets': nets, 'dists': dists, 'stns': stns, 'tts': ['一条龙', '非一条龙']}
 
     tpl = io.open(TPL, encoding='utf-8').read()
     data_js = json.dumps(recs, ensure_ascii=False, separators=(',', ':'))

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""build_share01.py — 生成 share01.html（小學大事件日期共享 · 非公開頁）
-表格五維：開放日 / 開始報名 / 截止報名 / 面試日 / 結果公佈
-種子：data.json 的 iv 欄（各校官網逐校抓取的插班收表狀態）→ 開始報名（月份級）；
-其餘四欄留空待家長共享，核實後填入。
+"""build_share01.py — 生成 share01.html（小学大事件日期共享 · 非公开页）
+表格五维：开放日 / 开始报名 / 截止报名 / 面试日 / 结果公布
+种子：data.json 的 iv 栏（各校官网逐校抓取的插班收表状态）→ 开始报名（月份级）；
+其余四栏留空待家长共享，核实后填入。
 重跑：python3 build_share01.py
 """
 import json, os, datetime
@@ -30,7 +30,7 @@ HTML = """<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>小學大事件日期共享 · 非公開頁</title>
+<title>小学大事件日期共享 · 非公开页</title>
 <style>
 :root{--ink:#1c2733;--dim:#5b6b7b;--line:#e3e9ef;--bg:#f4f6f9;--card:#fff;--accent:#2f6fd1;--xhs:#ff2442}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -58,39 +58,39 @@ footer .row{margin:8px 0;display:flex;gap:10px;align-items:center;flex-wrap:wrap
 </head>
 <body>
 <div class="wrap">
-  <h1>小學大事件日期共享</h1>
-  <p class="sub">開放日 · 開始報名 · 截止報名 · 面試日 · 結果公佈 —— 由家長共建共享的非公開頁（請勿外傳链接）</p>
+  <h1>小学大事件日期共享</h1>
+  <p class="sub">开放日 · 开始报名 · 截止报名 · 面试日 · 结果公布 —— 由家长共建共享的非公开页（请勿外传链接）</p>
 
   <div class="card note">
-    <p><b>為什麼這頁不公開、不進搜尋引擎？</b>有些日期若被全面公開，只會推高個別學校的報名競爭，對誰都沒好處。所以：能公開的放在下面共建表格，其餘由家長共享、核實後上架。</p>
+    <p><b>为什么这页不公开、不进搜寻引擎？</b>有些日期若被全面公开，只会推高个别学校的报名竞争，对谁都没好处。所以：能公开的放在下面共建表格，其余由家长共享、核实后上架。</p>
   </div>
 
   <div class="card">
-    <h2>① 共建表格（官方已核實 ＋ 家長共享）</h2>
-    <p>「開始報名」來自各校官網逐校抓取（插班收表，月份級）＋ 教育局《學校位置及資料》名冊（2026-09-30）；其餘四欄<b>待家長共享</b>，核實後填入。收表時間學校隨時會調整，<b>報名前一律以學校官網當日公布為準</b>。</p>
-    <input class="search" id="q" type="search" placeholder="搜尋校名／地區，例如：上水、元朗、聖公會">
+    <h2>① 共建表格（官方已核实 ＋ 家长共享）</h2>
+    <p>「开始报名」来自各校官网逐校抓取（插班收表，月份级）＋ 教育局《学校位置及资料》名册（2026-09-30）；其余四栏<b>待家长共享</b>，核实后填入。收表时间学校随时会调整，<b>报名前一律以学校官网当日公布为准</b>。</p>
+    <input class="search" id="q" type="search" placeholder="搜寻校名／地区，例如：上水、元朗、圣公会">
     <div class="count" id="cnt"></div>
     <div style="max-height:520px;overflow:auto;border:1px solid var(--line);border-radius:8px">
     <table>
-      <thead><tr><th>校名</th><th class="hideM">類別</th><th>地區</th><th class="hideM">校網</th><th>開放日</th><th>開始報名</th><th class="hideM">截止報名</th><th class="hideM">面試日</th><th class="hideM">結果公佈</th></tr></thead>
+      <thead><tr><th>校名</th><th class="hideM">类别</th><th>地区</th><th class="hideM">校网</th><th>开放日</th><th>开始报名</th><th class="hideM">截止报名</th><th class="hideM">面试日</th><th class="hideM">结果公布</th></tr></thead>
       <tbody id="tb"></tbody>
     </table>
     </div>
   </div>
 
   <div class="card">
-    <h2>② 日期共享（家長共建）</h2>
-    <p>開放日、開始報名、截止報名、面試日、結果公佈——<b>求各家長共享</b>。請到小紅書私信留言<b>學校與日期</b>，我們核對後會加到本共建表格內。</p>
-    <p style="margin-top:8px"><a class="xhsb" href="https://www.xiaohongshu.com/search_result?keyword=183236193" target="_blank" rel="noopener">去小紅書聊聊</a></p>
+    <h2>② 日期共享（家长共建）</h2>
+    <p>开放日、开始报名、截止报名、面试日、结果公布——<b>求各家长共享</b>。请到小红书私信留言<b>学校与日期</b>，我们核对后会加到本共建表格内。</p>
+    <p style="margin-top:8px"><a class="xhsb" href="https://www.xiaohongshu.com/search_result?keyword=183236193" target="_blank" rel="noopener">去小红书聊聊</a></p>
   </div>
 
   <footer>
     <div class="row">
-      <a class="xhsb" href="https://www.xiaohongshu.com/search_result?keyword=183236193" target="_blank" rel="noopener">去小紅書聊聊</a>
-      <span id="busuanzi_container_page_pv" style="display:none">本頁訪問 <span id="busuanzi_page_pv">–</span> 次</span><span id="busuanzi_container_site_uv" style="display:none">&nbsp;· 訪客 <span id="busuanzi_site_uv">–</span> 人</span>
+      <a class="xhsb" href="https://www.xiaohongshu.com/search_result?keyword=183236193" target="_blank" rel="noopener">去小红书聊聊</a>
+      <span id="busuanzi_container_page_pv" style="display:none">本页访问 <span id="busuanzi_page_pv">–</span> 次</span><span id="busuanzi_container_site_uv" style="display:none">&nbsp;· 访客 <span id="busuanzi_site_uv">–</span> 人</span>
     </div>
-    <div>免責聲明：本頁內容僅供個人參考，不構成任何擇校建議；一切以教育局與學校官方公布為準，擇校決定與後果由家長自行承擔。</div>
-    <div>工具免費、無廣告、免註冊、不收集任何個人資料。最後更新：__TODAY__。</div>
+    <div>免责声明：本页内容仅供个人参考，不构成任何择校建议；一切以教育局与学校官方公布为准，择校决定与后果由家长自行承担。</div>
+    <div>工具免费、无广告、免注册、不收集任何个人资料。最后更新：__TODAY__。</div>
   </footer>
 </div>
 <script>
@@ -106,8 +106,8 @@ function render(){
     n++;
     out.push('<tr><td class="n">'+esc(r.n)+'</td><td class="hideM">'+esc(r.t)+'</td><td>'+esc(r.d)+'</td><td class="hideM">'+esc(r.k)+'</td><td class="dim">–</td><td>'+esc(r.iv)+'</td><td class="hideM dim">–</td><td class="hideM dim">–</td><td class="hideM dim">–</td></tr>');
   }
-  tb.innerHTML=out.join('')||'<tr><td colspan="9" style="color:#5b6b7b">沒有符合的學校</td></tr>';
-  cnt.textContent='共 '+n+' 所有收表資料；空白欄（–）待家長共享';
+  tb.innerHTML=out.join('')||'<tr><td colspan="9" style="color:#5b6b7b">没有符合的学校</td></tr>';
+  cnt.textContent='共 '+n+' 所有收表资料；空白栏（–）待家长共享';
 }
 q.addEventListener('input',render);render();
 </script>

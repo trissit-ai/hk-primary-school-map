@@ -1,27 +1,29 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""構建 personal01.html（自訂權重篩選器 · 北區／大埔／沙田）
+"""构建 personal01.html（自订权重筛选器 · 北区／大埔／沙田）
 
 用法： python3 build_personal01.py
-輸入： work/tools/personal01.tpl.html + work/tools/personal01_data.json
-輸出： 倉庫根目錄 personal01.html
+输入： work/tools/personal01.tpl.html + work/tools/personal01_data.json
+输出： 仓库根目录 personal01.html
 
-註：本頁不列入工具超市（tools.html），只作個人／直接分享用。
+注：本页不列入工具超市（tools.html），只作个人／直接分享用。
 """
 import json, os, re, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))
 
-DSTR = {'北区': '北區', '大埔区': '大埔區', '沙田区': '沙田區'}
+DSTR = {'北区': '北区', '大埔区': '大埔区', '沙田区': '沙田区'}
 
-# 簡→繁（只覆蓋本表 35 所校名出現的字；站名已為繁體）
+# 2026-11-14 全站统一简体中文：下面两张映射原为「简→繁」，现保留为恒等映射。
+# 目的：build 时不再把校名／站名转回繁体；保留数据结构以免改动生成流程。
+# 若日后要恢复繁体输出，改回这两张表即可。
 S2T = str.maketrans({
-    '侨': '僑', '妇': '婦', '会': '會', '孙': '孫', '凤': '鳳', '创': '創', '学': '學',
-    '岭': '嶺', '节': '節', '属': '屬', '锦': '錦', '辉': '輝', '东': '東', '华': '華',
-    '马': '馬', '灿': '燦', '纪': '紀', '发': '發', '圣': '聖', '荣': '榮', '郑': '鄭',
-    '梦': '夢', '旧': '舊', '宝': '寶', '达': '達', '黄': '黃', '銮': '鑾', '贤': '賢',
-    '电': '電', '联': '聯', '萧': '蕭', '灵': '靈', '风': '風', '润': '潤', '树': '樹',
+    '侨': '侨', '妇': '妇', '会': '会', '孙': '孙', '凤': '凤', '创': '创', '学': '学',
+    '岭': '岭', '节': '节', '属': '属', '锦': '锦', '辉': '辉', '东': '东', '华': '华',
+    '马': '马', '灿': '灿', '纪': '纪', '发': '发', '圣': '圣', '荣': '荣', '郑': '郑',
+    '梦': '梦', '旧': '旧', '宝': '宝', '达': '达', '黄': '黄', '銮': '銮', '贤': '贤',
+    '电': '电', '联': '联', '萧': '萧', '灵': '灵', '风': '风', '润': '润', '树': '树',
 })
 
 
@@ -41,11 +43,11 @@ def main():
     data = []
     for r in raw:
         o = {k: r.get(k) for k in keep}
-        o['ns'] = o['n']                      # 簡體原名，供搜索比對
-        o['n'] = o['n'].translate(S2T)        # 繁體顯示，與全站一致
+        o['ns'] = o['n']                      # 简体原名，供搜索比对
+        o['n'] = o['n'].translate(S2T)        # 繁体显示，与全站一致
         o['d'] = DSTR.get(o['d'], o['d'])
         o['p'] = fix_phone(o['p'])
-        o['k'] = '—' if o['k'] in ('不适用', '不適用', None, '') else o['k']
+        o['k'] = '—' if o['k'] in ('不适用', '不适用', None, '') else o['k']
         data.append(o)
 
     with open(os.path.join(HERE, 'personal01.tpl.html'), encoding='utf-8') as f:
@@ -60,9 +62,9 @@ def main():
 
     print('built %s (%d bytes, %d schools)' % (out, os.path.getsize(out), len(data)))
     assert '__DATA__' not in html and '__N__' not in html
-    assert '晨晨' not in html, '私人資訊外洩：晨晨'
-    assert '佛教' not in html, '宗教篩選內容殘留'
-    assert '首選' not in html and '首选' not in html, '私人結論殘留'
+    assert '晨晨' not in html, '私人资讯外泄：晨晨'
+    assert '佛教' not in html, '宗教筛选内容残留'
+    assert '首选' not in html and '首选' not in html, '私人结论残留'
 
 
 if __name__ == '__main__':

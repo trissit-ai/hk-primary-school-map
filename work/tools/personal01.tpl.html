@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="zh-Hans">
+<html lang="zh-CN">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>自訂權重篩選器（北區・大埔・沙田）｜香港擇校工具</title>
-<meta name="description" content="把你在意的條件調成權重，幫你排序北區、大埔、沙田 35 所小學。全部欄位來自教育局《小學概覽 2026》與各校官網，可查證。這不是學校排名，是你自己權重下的排序。">
+<title>自订权重筛选器（北区・大埔・沙田）｜香港择校工具</title>
+<meta name="description" content="把你在意的条件调成权重，帮你排序北区、大埔、沙田 35 所小学。全部栏位来自教育局《小学概览 2026》与各校官网，可查证。这不是学校排名，是你自己权重下的排序。">
 <style>
 :root{
   --bg:#F4F8FB; --card:#FFFFFF; --pri:#4F7BAB; --pri-d:#3A6188; --soft:#B7CCE0; --soft2:#E6EFF7;
@@ -93,97 +93,97 @@ footer .fx{border-top:1px solid var(--line);padding-top:14px}
 <header class="top">
   <div class="inner">
     <div class="trow">
-      <a class="home" href="index.html" title="工具超市首頁">🏠</a>
+      <a class="home" href="index.html" title="工具超市首页">🏠</a>
       <div>
-        <div class="crumb"><a href="index.html">香港擇校工具超市</a> / 個人工具</div>
-        <h1><span class="badge04">個人工具</span>自訂權重篩選器（北區・大埔・沙田）</h1>
+        <div class="crumb"><a href="index.html">香港择校工具超市</a> / 个人工具</div>
+        <h1><span class="badge04">个人工具</span>自订权重筛选器（北区・大埔・沙田）</h1>
       </div>
     </div>
-    <p>把你在意的條件調成權重，右邊的排序會跟著變。每一欄都標了出處和等級，你可以自己核。</p>
+    <p>把你在意的条件调成权重，右边的排序会跟著变。每一栏都标了出处和等级，你可以自己核。</p>
   </div>
 </header>
 
 <main>
 
   <div class="lead">
-    <b>先講清楚：這不是學校排名。</b>香港教育局不公布官方小學排名。這張表的分數，是<b>你自己的權重</b>乘以<b>可查證的事實欄位</b>算出來的——換一個人調權重，順序就完全不同。它只能幫你縮小範圍、整理問題，不能替你做決定。
+    <b>先讲清楚：这不是学校排名。</b>香港教育局不公布官方小学排名。这张表的分数，是<b>你自己的权重</b>乘以<b>可查证的事实栏位</b>算出来的——换一个人调权重，顺序就完全不同。它只能帮你缩小范围、整理问题，不能替你做决定。
   </div>
 
   <div class="panel">
     <div class="panel-h">
-      <h2>1 · 調權重</h2>
-      <div class="sub">拉桿是「相對重要度」，不是分數。全部拉到 0 的欄位不參與計算。</div>
+      <h2>1 · 调权重</h2>
+      <div class="sub">拉杆是「相对重要度」，不是分数。全部拉到 0 的栏位不参与计算。</div>
     </div>
     <div class="panel-b">
       <div class="presets" id="presets">
         <button data-p="even" class="on">均衡</button>
-        <button data-p="q70">重質素 70 / 通勤 30</button>
-        <button data-p="cm">通勤優先</button>
-        <button data-p="sec">升中優先</button>
-        <button data-p="lang">英語／普通話授課優先</button>
+        <button data-p="q70">重质素 70 / 通勤 30</button>
+        <button data-p="cm">通勤优先</button>
+        <button data-p="sec">升中优先</button>
+        <button data-p="lang">英语／普通话授课优先</button>
       </div>
       <div class="wgrid" id="wgrid"></div>
-      <div class="stat" style="margin-top:12px">權重合計：<b id="wsum">—</b>（只看比例，不看絕對值）</div>
+      <div class="stat" style="margin-top:12px">权重合计：<b id="wsum">—</b>（只看比例，不看绝对值）</div>
     </div>
   </div>
 
   <div class="panel">
-    <div class="panel-h"><h2>2 · 篩選</h2></div>
+    <div class="panel-h"><h2>2 · 筛选</h2></div>
     <div class="panel-b">
       <div class="filters">
-        <div class="g"><label for="fD">地區</label><select id="fD"><option value="">全部</option><option>北區</option><option>大埔區</option><option>沙田區</option></select></div>
-        <div class="g"><label for="fT">類別</label><select id="fT"><option value="">全部</option><option value="aid">資助</option><option value="gov">官立</option><option value="dss">直資</option></select></div>
-        <div class="g"><label for="fDoor">門到校上限</label><select id="fDoor"><option value="999">不限</option><option value="55">55 分鐘</option><option value="60">60 分鐘</option><option value="70">70 分鐘</option><option value="81">81 分鐘</option></select></div>
-        <div class="g"><label for="fL">升中關係</label><select id="fL"><option value="">全部</option><option value="1">只看一條龍／聯繫中學</option></select></div>
-        <div class="g"><label for="fQ">校名</label><input type="text" id="fQ" placeholder="輸入關鍵字" style="width:180px"></div>
+        <div class="g"><label for="fD">地区</label><select id="fD"><option value="">全部</option><option>北区</option><option>大埔区</option><option>沙田区</option></select></div>
+        <div class="g"><label for="fT">类别</label><select id="fT"><option value="">全部</option><option value="aid">资助</option><option value="gov">官立</option><option value="dss">直资</option></select></div>
+        <div class="g"><label for="fDoor">门到校上限</label><select id="fDoor"><option value="999">不限</option><option value="55">55 分钟</option><option value="60">60 分钟</option><option value="70">70 分钟</option><option value="81">81 分钟</option></select></div>
+        <div class="g"><label for="fL">升中关系</label><select id="fL"><option value="">全部</option><option value="1">只看一条龙／联系中学</option></select></div>
+        <div class="g"><label for="fQ">校名</label><input type="text" id="fQ" placeholder="输入关键字" style="width:180px"></div>
         <button class="btn ghost" id="btnReset">重置</button>
-        <button class="btn ghost" id="btnCsv">導出 CSV</button>
+        <button class="btn ghost" id="btnCsv">导出 CSV</button>
       </div>
     </div>
   </div>
 
   <div class="panel">
     <div class="panel-h">
-      <h2>3 · 結果 <span id="cnt" style="font-weight:400;color:var(--ink2);font-size:13px"></span></h2>
-      <div class="sub">點表頭可排序。門到校是<b>推算值</b>（見下方說明），不是實測車程。</div>
+      <h2>3 · 结果 <span id="cnt" style="font-weight:400;color:var(--ink2);font-size:13px"></span></h2>
+      <div class="sub">点表头可排序。门到校是<b>推算值</b>（见下方说明），不是实测车程。</div>
     </div>
     <div class="panel-b">
       <div class="tblwrap">
         <table>
           <thead><tr>
             <th data-s="score">得分 ↕</th>
-            <th data-s="n">學校 ↕</th>
-            <th data-s="d">地區 ↕</th>
-            <th>校網</th><th>就近港鐵站</th>
-            <th data-s="door">門到校 ↕</th>
-            <th data-s="a" title="教育局《小學概覽2026》">升中路徑 ↕</th>
-            <th data-s="b" title="學校自行公布">升中結果 ↕</th>
-            <th data-s="c" title="教育局《小學概覽2026》授課語言欄">英語／普通話授課 ↕</th>
-            <th data-s="aw" title="教育局卓越教學獎（ATE）">教學獎 ↕</th>
-            <th data-s="e" title="概覽載明的跨境／新來港學童支援">跨境支援 ↕</th>
-            <th data-s="f" title="含推算成分">插班資訊 ↕</th>
-            <th>電話</th>
+            <th data-s="n">学校 ↕</th>
+            <th data-s="d">地区 ↕</th>
+            <th>校网</th><th>就近港铁站</th>
+            <th data-s="door">门到校 ↕</th>
+            <th data-s="a" title="教育局《小学概览2026》">升中路径 ↕</th>
+            <th data-s="b" title="学校自行公布">升中结果 ↕</th>
+            <th data-s="c" title="教育局《小学概览2026》授课语言栏">英语／普通话授课 ↕</th>
+            <th data-s="aw" title="教育局卓越教学奖（ATE）">教学奖 ↕</th>
+            <th data-s="e" title="概览载明的跨境／新来港学童支援">跨境支援 ↕</th>
+            <th data-s="f" title="含推算成分">插班资讯 ↕</th>
+            <th>电话</th>
           </tr></thead>
           <tbody id="tb"></tbody>
         </table>
       </div>
 
       <div class="note">
-        <b>每一欄是什麼、從哪裡來</b><br>
-        · <b>升中路徑</b>：一條龍 15／聯繫中學 10／無 0。<b>S 級</b>——教育局《小學概覽 2026》官方欄位。<br>
-        · <b>升中結果</b>：學校自行公布的升中數據換算。<b>A 級</b>，各校口徑不一，只能橫向粗看。<br>
-        · <b>英語／普通話授課</b>：概覽「授課語言」欄換算。<b>S 級</b>。這是事實，要不要重視是你的選擇——孩子粵語弱就調高，粵語沒問題就不用管。<br>
-        · <b>教學獎</b>：教育局「卓越教學獎」（ATE）獲獎數。<b>S 級</b>。沒獲獎不等於教得不好，很多學校沒申請。<br>
-        · <b>跨境支援</b>：概覽裡有沒有寫明跨境／新來港學童的支援安排。<b>S 級</b>。沒寫不等於沒有，建議打電話問。<br>
-        · <b>插班資訊</b>：學位與收表資訊的可得性，<b>含推算成分</b>，等級最低，當線索用。<br>
-        · <b>門到校</b>：35 分基準（到家門口到口岸 10 ＋ 過關 20 ＋ 到港鐵站 5）＋ 港鐵車程 ＋ 落站步行÷80 米／分。<b>推算值</b>，我們 12 月會實走採集替換。<br>
+        <b>每一栏是什么、从哪里来</b><br>
+        · <b>升中路径</b>：一条龙 15／联系中学 10／无 0。<b>S 级</b>——教育局《小学概览 2026》官方栏位。<br>
+        · <b>升中结果</b>：学校自行公布的升中数据换算。<b>A 级</b>，各校口径不一，只能横向粗看。<br>
+        · <b>英语／普通话授课</b>：概览「授课语言」栏换算。<b>S 级</b>。这是事实，要不要重视是你的选择——孩子粤语弱就调高，粤语没问题就不用管。<br>
+        · <b>教学奖</b>：教育局「卓越教学奖」（ATE）获奖数。<b>S 级</b>。没获奖不等于教得不好，很多学校没申请。<br>
+        · <b>跨境支援</b>：概览里有没有写明跨境／新来港学童的支援安排。<b>S 级</b>。没写不等于没有，建议打电话问。<br>
+        · <b>插班资讯</b>：学位与收表资讯的可得性，<b>含推算成分</b>，等级最低，当线索用。<br>
+        · <b>门到校</b>：35 分基准（到家门口到口岸 10 ＋ 过关 20 ＋ 到港铁站 5）＋ 港铁车程 ＋ 落站步行÷80 米／分。<b>推算值</b>，我们 12 月会实走采集替换。<br>
         <br>
-        <b>兩個容易搞錯的制度事實</b><br>
-        1. <b>資助一條龍</b>的結龍中學，<b>必須</b>提供足夠學位全數收取附屬小學的小六生；<b>直資／私立一條龍可以設校內門檻</b>。想要升中不折騰，資助龍的制度保證更硬。<br>
-        2. <b>不存在能載學童過境的學校校車。</b>實際是兩套：跨境校巴（特別配額，文錦渡／深圳灣／落馬洲／香園圍），或只在香港一側接的本地校巴（上客點只有落馬洲支線管制站、羅湖道，須禁區紙）。申請窗口每年 5–6 月。<br>
+        <b>两个容易搞错的制度事实</b><br>
+        1. <b>资助一条龙</b>的结龙中学，<b>必须</b>提供足够学位全数收取附属小学的小六生；<b>直资／私立一条龙可以设校内门槛</b>。想要升中不折腾，资助龙的制度保证更硬。<br>
+        2. <b>不存在能载学童过境的学校校车。</b>实际是两套：跨境校巴（特别配额，文锦渡／深圳湾／落马洲／香园围），或只在香港一侧接的本地校巴（上客点只有落马洲支线管制站、罗湖道，须禁区纸）。申请窗口每年 5–6 月。<br>
         <br>
-        <b>這張表的邊界</b><br>
-        只涵蓋<b>北區、大埔、沙田</b>共 <b>__N__ 所</b>（自教育局官方名冊三區 91 所中，按「門到校 ≤ 81 分鐘」及「非私立／國際」篩出），<b>不是全港清單</b>。插班沒有統一申請系統，<b>要一所一所學校打電話問</b>。
+        <b>这张表的边界</b><br>
+        只涵盖<b>北区、大埔、沙田</b>共 <b>__N__ 所</b>（自教育局官方名册三区 91 所中，按「门到校 ≤ 81 分钟」及「非私立／国际」筛出），<b>不是全港清单</b>。插班没有统一申请系统，<b>要一所一所学校打电话问</b>。
       </div>
     </div>
   </div>
@@ -192,24 +192,24 @@ footer .fx{border-top:1px solid var(--line);padding-top:14px}
 
 <footer>
   <div class="fx">
-    數據來源：教育局《小學概覽 2026》（三區 91 所逐校抓取）· 教育局卓越教學獎名冊 · 各校官網 · 港鐵站點座標。等級：S＝官方、A＝學校自行公布、B＝媒體。<br>
-    免責聲明：本工具僅供個人參考，不構成任何擇校建議；一切以教育局與學校官方公布為準，擇校決定與後果由家長自行承擔。<br>
-    <span id="busuanzi_container_page_pv" style="display:none">本頁訪問 <span id="busuanzi_page_pv">–</span> 次</span><span id="busuanzi_container_site_uv" style="display:none">&nbsp;· 本站訪客 <span id="busuanzi_site_uv">–</span> 人</span>
+    数据来源：教育局《小学概览 2026》（三区 91 所逐校抓取）· 教育局卓越教学奖名册 · 各校官网 · 港铁站点座标。等级：S＝官方、A＝学校自行公布、B＝媒体。<br>
+    免责声明：本工具仅供个人参考，不构成任何择校建议；一切以教育局与学校官方公布为准，择校决定与后果由家长自行承担。<br>
+    <span id="busuanzi_container_page_pv" style="display:none">本页访问 <span id="busuanzi_page_pv">–</span> 次</span><span id="busuanzi_container_site_uv" style="display:none">&nbsp;· 本站访客 <span id="busuanzi_site_uv">–</span> 人</span>
   </div>
 </footer>
 
 <script>
 const DATA = __DATA__;
 
-/* 維度：key, 名稱, 說明, 滿分, 換算方式 */
+/* 维度：key, 名称, 说明, 满分, 换算方式 */
 const DIMS = [
-  {k:'a',  nm:'升中路徑',            sub:'一條龍／聯繫中學 · S 級',        max:15, preset:{even:10,q70:15,cm:5, sec:30,lang:5}},
-  {k:'b',  nm:'升中結果',            sub:'學校自行公布 · A 級',            max:10, preset:{even:10,q70:10,cm:5, sec:20,lang:5}},
-  {k:'c',  nm:'英語／普通話授課',    sub:'概覽授課語言欄 · S 級',          max:15, preset:{even:10,q70:15,cm:5, sec:5, lang:30}},
-  {k:'aw', nm:'教育局卓越教學獎',    sub:'ATE 名冊 · S 級',                max:8,  preset:{even:10,q70:8, cm:5, sec:5, lang:5}},
-  {k:'e',  nm:'跨境／新來港支援',    sub:'概覽載明 · S 級',                max:12, preset:{even:10,q70:12,cm:5, sec:5, lang:5}},
-  {k:'f',  nm:'插班資訊可得性',      sub:'含推算 · 等級最低',              max:10, preset:{even:10,q70:10,cm:5, sec:5, lang:5}},
-  {k:'cm', nm:'通勤（門到校愈短愈高）', sub:'分鐘 · 推算值',               max:100,preset:{even:10,q70:30,cm:50,sec:10,lang:10}}
+  {k:'a',  nm:'升中路径',            sub:'一条龙／联系中学 · S 级',        max:15, preset:{even:10,q70:15,cm:5, sec:30,lang:5}},
+  {k:'b',  nm:'升中结果',            sub:'学校自行公布 · A 级',            max:10, preset:{even:10,q70:10,cm:5, sec:20,lang:5}},
+  {k:'c',  nm:'英语／普通话授课',    sub:'概览授课语言栏 · S 级',          max:15, preset:{even:10,q70:15,cm:5, sec:5, lang:30}},
+  {k:'aw', nm:'教育局卓越教学奖',    sub:'ATE 名册 · S 级',                max:8,  preset:{even:10,q70:8, cm:5, sec:5, lang:5}},
+  {k:'e',  nm:'跨境／新来港支援',    sub:'概览载明 · S 级',                max:12, preset:{even:10,q70:12,cm:5, sec:5, lang:5}},
+  {k:'f',  nm:'插班资讯可得性',      sub:'含推算 · 等级最低',              max:10, preset:{even:10,q70:10,cm:5, sec:5, lang:5}},
+  {k:'cm', nm:'通勤（门到校愈短愈高）', sub:'分钟 · 推算值',               max:100,preset:{even:10,q70:30,cm:50,sec:10,lang:10}}
 ];
 
 let W = {}, sk = 'score', asc = false, cur = 'even';
@@ -266,7 +266,7 @@ function render(){
   let rows = DATA.filter(r =>
     (!d || r.d === d) && r.door <= mx && (!q || r.n.indexOf(q) >= 0 || r.ns.indexOf(q) >= 0) &&
     (!l || r.a >= 10) &&
-    (!t || (t === 'dss' ? r.t.indexOf('直接') === 0 : t === 'gov' ? r.t.indexOf('官立') === 0 : r.t.indexOf('資助') === 0))
+    (!t || (t === 'dss' ? r.t.indexOf('直接') === 0 : t === 'gov' ? r.t.indexOf('官立') === 0 : r.t.indexOf('资助') === 0))
   );
 
   rows.forEach(r => r.score = score(r));
@@ -281,9 +281,9 @@ function render(){
   document.getElementById('cnt').textContent = '共 ' + rows.length + ' 所';
   document.getElementById('tb').innerHTML = rows.map(r => {
     const pct = Math.max(4, Math.min(100, r.score));
-    const tt = r.t.indexOf('直接') === 0 ? '<span class="tag t-dss">直資</span>'
+    const tt = r.t.indexOf('直接') === 0 ? '<span class="tag t-dss">直资</span>'
              : r.t.indexOf('官立') === 0 ? '<span class="tag t-gov">官立</span>'
-             : '<span class="tag t-aid">資助</span>';
+             : '<span class="tag t-aid">资助</span>';
     return '<tr>' +
       '<td><span class="scor">' + r.score.toFixed(1) + '</span><div class="bar"><i style="width:' + pct + '%"></i></div></td>' +
       '<td class="nm"><b>' + r.n + '</b>' + tt + '</td>' +
@@ -291,7 +291,7 @@ function render(){
       '<td>' + (r.k === '不适用' ? '<span class="mut">—</span>' : r.k) + '</td>' +
       '<td>' + (r.station || '—') + '</td>' +
       '<td class="dim">' + r.door + ' 分</td>' +
-      '<td class="dim">' + (r.a >= 15 ? '<span class="rk">龍 15</span>' : r.a >= 10 ? '<span class="rk">聯 10</span>' : r.a) + '</td>' +
+      '<td class="dim">' + (r.a >= 15 ? '<span class="rk">龙 15</span>' : r.a >= 10 ? '<span class="rk">联 10</span>' : r.a) + '</td>' +
       '<td class="dim">' + r.b + '</td>' +
       '<td class="dim">' + r.c + '</td>' +
       '<td class="dim">' + r.aw + '</td>' +
@@ -302,7 +302,7 @@ function render(){
 }
 
 function csv(){
-  const head = ['得分','學校','類別','地區','校網','就近港鐵站','門到校(分)','升中路徑','升中結果','英語普通話授課','教學獎','跨境支援','插班資訊','電話'];
+  const head = ['得分','学校','类别','地区','校网','就近港铁站','门到校(分)','升中路径','升中结果','英语普通话授课','教学奖','跨境支援','插班资讯','电话'];
   const rows = [...DATA].map(r => { r.score = score(r); return r; }).sort((a, b) => b.score - a.score);
   const esc = v => '"' + String(v).replace(/"/g, '""') + '"';
   const out = [head.map(esc).join(',')].concat(rows.map(r => [

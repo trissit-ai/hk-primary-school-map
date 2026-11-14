@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -29,7 +29,7 @@ body{background:#e9eef3;color:var(--ink);
 .page.theme-3{--pri:#8a5a2b;--pri2:#a8823c;--soft:#fbf6ec;--name:#7a4e1f;--serif:Georgia,"Times New Roman",serif;--radius:3px}
 .page.theme-4{--pri:#d35d8a;--pri2:#b06ab3;--soft:#fdeef4;--name:#b8346f;--radius:10px}
 
-/* 標籤：英文為主 + 中文小字 */
+/* 标签：英文为主 + 中文小字 */
 .lab{display:flex;flex-direction:column;line-height:1.15}
 .lab .en{font-size:13px;font-weight:600;color:#232a31}
 .lab .zh{font-size:10.5px;color:#9aa7b3;font-weight:400;margin-top:1px}
@@ -38,7 +38,7 @@ body{background:#e9eef3;color:var(--ink);
 [contenteditable]:hover{border-bottom-color:var(--line)}
 [contenteditable]:focus{border-bottom-color:var(--pri)}
 
-/* 頂部標題 */
+/* 顶部标题 */
 .head{text-align:center;margin-bottom:12px}
 .head .ttl{font-size:12.5px;letter-spacing:3px;text-transform:uppercase;color:var(--ink2)}
 .head .ttl .zh{letter-spacing:0;text-transform:none;font-size:11px;margin-left:6px}
@@ -64,7 +64,7 @@ body{background:#e9eef3;color:var(--ink);
 .grade-in{width:170px;border:none;border-bottom:1.5px solid var(--ink);font-size:19px;font-weight:600;padding:3px 4px;font-family:inherit;color:var(--ink)}
 .grade-in:focus{outline:none;border-color:var(--pri)}
 
-/* 願望語（併入 hero，緊貼姓名下方） */
+/* 愿望语（并入 hero，紧贴姓名下方） */
 .wish{margin-top:9px}
 .wish .lab .en{font-size:11px}
 .wish .lab .zh{font-size:9.5px}
@@ -98,13 +98,13 @@ body{background:#e9eef3;color:var(--ink);
 .lang-row .lvl{flex:1;min-width:0;border:none;background:transparent;font-size:13px;padding:3px 2px;color:var(--ink);font-family:inherit}
 .lang-row .lvl:focus{outline:none}
 
-/* 主題差異細節 */
+/* 主题差异细节 */
 .page.theme-2 .photo-box{background:var(--soft)}
 .page.theme-2 .fld input,.page.theme-2 .fld select,.page.theme-2 .big textarea,.page.theme-2 .grade-in{border-radius:8px}
 .page.theme-3 .cn-in,.page.theme-3 .head .ttl{font-family:var(--serif)}
 .page.theme-3 .head{border-bottom:3px double var(--pri2);padding-bottom:6px}
 
-/* 浮動按鈕 + 模版浮窗 */
+/* 浮动按钮 + 模版浮窗 */
 .float-btn{background:var(--pri);color:#fff;border:none;border-radius:50px;padding:14px 22px;font-size:15px;font-weight:600;
   box-shadow:0 4px 14px rgba(0,0,0,.25);cursor:pointer;font-family:inherit}
 .actions{position:fixed;right:22px;bottom:22px;z-index:50;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
@@ -131,7 +131,7 @@ body{background:#e9eef3;color:var(--ink);
 .tpl-card b{font-size:13px}
 .tpl-card small{display:block;color:var(--ink2);font-size:11px;margin-top:1px}
 
-/* 缺項彈窗 */
+/* 缺项弹窗 */
 .modal-mask{position:fixed;inset:0;background:rgba(20,28,36,.5);z-index:80;display:none;align-items:center;justify-content:center;padding:20px}
 .modal-mask.show{display:flex}
 .modal{background:#fff;border-radius:14px;max-width:420px;width:100%;padding:22px 22px 18px;box-shadow:0 10px 40px rgba(0,0,0,.25)}
@@ -147,7 +147,7 @@ body{background:#e9eef3;color:var(--ink);
 .site-footer{max-width:820px;margin:26px auto 0;font-size:12px;color:#7a8896;line-height:1.9;text-align:center}
 .site-footer .disc{margin-top:6px}
 
-/* 新增欄位樣式 */
+/* 新增栏位样式 */
 .rel-other{margin-top:6px;font-size:13px}
 .sign-line{margin-top:10px;font-size:13px;color:var(--ink2)}
 .sign-line .zh{margin-left:6px}
@@ -181,55 +181,55 @@ body{background:#e9eef3;color:var(--ink);
       <input type="file" id="photoFile" accept="image/*">
     </div>
     <div class="hero-name">
-      <div class="kicker">Applicant<span class="zh">申請學生</span></div>
-      <input class="cn-in" id="cn" data-req data-label="Full Name (Chinese)" placeholder="學生中文姓名">
+      <div class="kicker">Applicant<span class="zh">申请学生</span></div>
+      <input class="cn-in" id="cn" data-req data-label="Full Name (Chinese)" placeholder="学生中文姓名">
       <input class="en-in" id="en" placeholder="NAME (English)">
       <div class="gr">
-        <div class="lab"><span class="en">Applying for Grade</span><span class="zh">申請入讀年級</span></div>
+        <div class="lab"><span class="en">Applying for Grade</span><span class="zh">申请入读年级</span></div>
         <select class="grade-in" id="grade" data-req data-label="Applying for Grade"><option value="">Please select</option></select>
       </div>
       <div class="wish">
-        <div class="lab"><span class="en" contenteditable="true" spellcheck="false">Dear Admissions Team,</span><span class="zh" contenteditable="true" spellcheck="false">致入學組：</span></div>
+        <div class="lab"><span class="en" contenteditable="true" spellcheck="false">Dear Admissions Team,</span><span class="zh" contenteditable="true" spellcheck="false">致入学组：</span></div>
         <textarea id="hope" data-req data-label="Wish note">We are the parents of [Child's English Name], currently in [Current Grade]
 at [Current School]. We sincerely hope our child may be considered for admission to [Applying Grade], and would be most grateful for an interview.</textarea>
       </div>
     </div>
   </div>
 
-  <div class="sec-t"><span class="en" contenteditable="true" spellcheck="false">Student Information</span> <span class="zh" style="font-size:11px;color:#9aa7b3;font-weight:400" contenteditable="true" spellcheck="false">學生資料</span></div>
+  <div class="sec-t"><span class="en" contenteditable="true" spellcheck="false">Student Information</span> <span class="zh" style="font-size:11px;color:#9aa7b3;font-weight:400" contenteditable="true" spellcheck="false">学生资料</span></div>
   <div class="grid">
-    <div class="fld full"><div class="lab"><span class="en">School Applying To</span><span class="zh">申請學校</span></div><input id="school" data-req data-label="School Applying To" placeholder="e.g. Pui Ching Primary School"></div>
-    <div class="fld"><div class="lab"><span class="en">Gender</span><span class="zh">性別</span></div>
+    <div class="fld full"><div class="lab"><span class="en">School Applying To</span><span class="zh">申请学校</span></div><input id="school" data-req data-label="School Applying To" placeholder="e.g. Pui Ching Primary School"></div>
+    <div class="fld"><div class="lab"><span class="en">Gender</span><span class="zh">性别</span></div>
       <select id="sex" data-req data-label="Gender"><option value="">Please select</option><option>Male</option><option>Female</option></select></div>
     <div class="fld"><div class="lab"><span class="en">Date of Birth</span><span class="zh">出生日期 (DD/MM/YYYY)</span></div><input type="date" id="dob" data-req data-label="Date of Birth"></div>
-    <div class="fld"><div class="lab"><span class="en">Nationality</span><span class="zh">國籍</span></div><input id="nat" placeholder="e.g. Chinese"></div>
-    <div class="fld"><div class="lab"><span class="en">ID/Passport No.</span><span class="zh">身份證／護照號碼</span></div><input id="idnum" placeholder="e.g. HKID P123456(7)"></div>
-    <div class="fld"><div class="lab"><span class="en">Current School</span><span class="zh">現讀學校</span></div><input id="cschool" data-req data-label="Current School" placeholder="Current school"></div>
-    <div class="fld"><div class="lab"><span class="en">Current Grade</span><span class="zh">現讀年級</span></div><select id="cgrade" data-req data-label="Current Grade"><option value="">Please select</option></select></div>
-    <div class="fld full"><div class="lab"><span class="en">Mailing Address</span><span class="zh">通訊地址</span></div><input id="addr" placeholder="e.g. Flat X, Block Y, Estate Z, District"></div>
-    <div class="fld"><div class="lab"><span class="en">Contact Phone</span><span class="zh">聯絡電話</span></div><input id="tel" data-req data-label="Contact Phone" placeholder="Parent phone"></div>
-    <div class="fld"><div class="lab"><span class="en">Email</span><span class="zh">電郵</span></div><input id="email" placeholder="optional"></div>
-    <div class="fld"><div class="lab"><span class="en">Parent / Guardian Name</span><span class="zh">家長姓名</span></div><input id="pname" data-req data-label="Parent / Guardian Name" placeholder="Guardian name"></div>
-    <div class="fld"><div class="lab"><span class="en">Relationship to Student</span><span class="zh">與學生關係</span></div>
+    <div class="fld"><div class="lab"><span class="en">Nationality</span><span class="zh">国籍</span></div><input id="nat" placeholder="e.g. Chinese"></div>
+    <div class="fld"><div class="lab"><span class="en">ID/Passport No.</span><span class="zh">身份证／护照号码</span></div><input id="idnum" placeholder="e.g. HKID P123456(7)"></div>
+    <div class="fld"><div class="lab"><span class="en">Current School</span><span class="zh">现读学校</span></div><input id="cschool" data-req data-label="Current School" placeholder="Current school"></div>
+    <div class="fld"><div class="lab"><span class="en">Current Grade</span><span class="zh">现读年级</span></div><select id="cgrade" data-req data-label="Current Grade"><option value="">Please select</option></select></div>
+    <div class="fld full"><div class="lab"><span class="en">Mailing Address</span><span class="zh">通讯地址</span></div><input id="addr" placeholder="e.g. Flat X, Block Y, Estate Z, District"></div>
+    <div class="fld"><div class="lab"><span class="en">Contact Phone</span><span class="zh">联络电话</span></div><input id="tel" data-req data-label="Contact Phone" placeholder="Parent phone"></div>
+    <div class="fld"><div class="lab"><span class="en">Email</span><span class="zh">电邮</span></div><input id="email" placeholder="optional"></div>
+    <div class="fld"><div class="lab"><span class="en">Parent / Guardian Name</span><span class="zh">家长姓名</span></div><input id="pname" data-req data-label="Parent / Guardian Name" placeholder="Guardian name"></div>
+    <div class="fld"><div class="lab"><span class="en">Relationship to Student</span><span class="zh">与学生关系</span></div>
       <select id="rel" data-req data-label="Relationship to Student"><option value="">Please select</option><option>Father</option><option>Mother</option><option>Legal Guardian</option><option>Grandparent</option><option>Other</option></select>
       <input id="relOther" class="rel-other" placeholder="Please specify" style="display:none"></div>
   </div>
 
-  <div class="sec-t"><span class="en" contenteditable="true" spellcheck="false">Profile</span> <span class="zh" style="font-size:11px;color:#9aa7b3;font-weight:400" contenteditable="true" spellcheck="false">學生作品集</span></div>
+  <div class="sec-t"><span class="en" contenteditable="true" spellcheck="false">Profile</span> <span class="zh" style="font-size:11px;color:#9aa7b3;font-weight:400" contenteditable="true" spellcheck="false">学生作品集</span></div>
   <div class="big">
     <div class="lab"><span class="en" contenteditable="true" spellcheck="false">Hobbies</span><span class="zh" contenteditable="true" spellcheck="false">嗜好</span></div>
     <textarea id="hobby" placeholder="- Piano: ABRSM Grade 5, learning since 2022&#10;- Reading; school library reading buddy volunteer&#10;- Swimming (recreational)"></textarea>
   </div>
   <div class="big">
-    <div class="lab"><span class="en" contenteditable="true" spellcheck="false">Extracurricular Activities (ECA)</span><span class="zh" contenteditable="true" spellcheck="false">課外活動</span></div>
+    <div class="lab"><span class="en" contenteditable="true" spellcheck="false">Extracurricular Activities (ECA)</span><span class="zh" contenteditable="true" spellcheck="false">课外活动</span></div>
     <textarea id="eca" placeholder="- School swimming team, 2024–2026 (member)&#10;- Basketball, school team, guard, 2023–2026&#10;- Choir, 2022–2025 (soprano)"></textarea>
   </div>
   <div class="big">
-    <div class="lab"><span class="en" contenteditable="true" spellcheck="false">Awards, Certificates &amp; Attachments</span><span class="zh" contenteditable="true" spellcheck="false">獎項、證書與附件</span></div>
+    <div class="lab"><span class="en" contenteditable="true" spellcheck="false">Awards, Certificates &amp; Attachments</span><span class="zh" contenteditable="true" spellcheck="false">奖项、证书与附件</span></div>
     <textarea id="cert" placeholder="- ABRSM Piano Grade 5 certificate (2024)&#10;- District swimming competition, bronze medal (2025)&#10;- Class Merit Award, 2024–25&#10;- Community service: 20-hour volunteer at neighbourhood elderly centre"></textarea>
   </div>
 
-  <div class="sec-t"><span class="en" contenteditable="true" spellcheck="false">Language Ability</span> <span class="zh" style="font-size:11px;color:#9aa7b3;font-weight:400" contenteditable="true" spellcheck="false">語言能力</span></div>
+  <div class="sec-t"><span class="en" contenteditable="true" spellcheck="false">Language Ability</span> <span class="zh" style="font-size:11px;color:#9aa7b3;font-weight:400" contenteditable="true" spellcheck="false">语言能力</span></div>
   <div class="langs">
     <div class="lang-row"><span class="lname">English</span><select class="lvl"><option value="">Please select</option></select></div>
     <div class="lang-row"><span class="lname">Cantonese</span><select class="lvl"><option value="">Please select</option></select></div>
@@ -238,7 +238,7 @@ at [Current School]. We sincerely hope our child may be considered for admission
   </div>
 
   <div class="sign-date">
-    <div class="sign-line"><span class="en">Parent</span><span class="zh">家長</span>: <input id="sign" placeholder="Type full name"></div>
+    <div class="sign-line"><span class="en">Parent</span><span class="zh">家长</span>: <input id="sign" placeholder="Type full name"></div>
     <div class="date-line"><span class="lab"><span class="en">Date</span><span class="zh">填表日期</span></span>: <input id="fdate" type="date"></div>
   </div>
 </div>
@@ -247,7 +247,7 @@ at [Current School]. We sincerely hope our child may be considered for admission
     <button class="float-btn" id="genBtn">Download PDF</button>
     <div class="data-btns">
       <button id="saveBtn" title="把当前填写存入网址（#d=…）">Save 网址</button>
-      <button id="copyBtn" title="复制带数据的网址链接">複製連結</button>
+      <button id="copyBtn" title="复制带数据的网址链接">复制连结</button>
     </div>
   </div>
   <div class="toast" id="toast"></div>
@@ -255,15 +255,15 @@ at [Current School]. We sincerely hope our child may be considered for admission
 <!-- 模版浮窗 -->
 <button class="tpl-btn" id="tplBtn">换模版 / Templates</button>
 <div class="tpl-panel" id="tplPanel">
-  <h4>選擇模版風格（已填內容會保留）</h4>
-  <div style="font-size:11px;color:#9aa7b3;margin:-3px 0 9px">提示：點擊頁面上任何欄目標題可直接改字</div>
+  <h4>选择模版风格（已填内容会保留）</h4>
+  <div style="font-size:11px;color:#9aa7b3;margin:-3px 0 9px">提示：点击页面上任何栏目标题可直接改字</div>
   <div class="tpl-card" data-theme="theme-1"><span class="sw" style="background:linear-gradient(135deg,#2f6fb0,#1f4f80)"></span><div><b>Fresh Blue</b><small>清新蓝 · 正式大方</small></div></div>
-  <div class="tpl-card" data-theme="theme-2"><span class="sw" style="background:linear-gradient(135deg,#e8843a,#2bb3a3)"></span><div><b>Warm Sunshine</b><small>暖阳橙 · 親切活潑</small></div></div>
-  <div class="tpl-card" data-theme="theme-3"><span class="sw" style="background:linear-gradient(135deg,#8a5a2b,#a8823c)"></span><div><b>Elegant Gold</b><small>雅致金 · 典雅雋永</small></div></div>
-  <div class="tpl-card" data-theme="theme-4"><span class="sw" style="background:linear-gradient(135deg,#d35d8a,#b06ab3)"></span><div><b>Rosy Girl</b><small>粉嫩玫瑰 · 女孩專屬</small></div></div>
+  <div class="tpl-card" data-theme="theme-2"><span class="sw" style="background:linear-gradient(135deg,#e8843a,#2bb3a3)"></span><div><b>Warm Sunshine</b><small>暖阳橙 · 亲切活泼</small></div></div>
+  <div class="tpl-card" data-theme="theme-3"><span class="sw" style="background:linear-gradient(135deg,#8a5a2b,#a8823c)"></span><div><b>Elegant Gold</b><small>雅致金 · 典雅隽永</small></div></div>
+  <div class="tpl-card" data-theme="theme-4"><span class="sw" style="background:linear-gradient(135deg,#d35d8a,#b06ab3)"></span><div><b>Rosy Girl</b><small>粉嫩玫瑰 · 女孩专属</small></div></div>
 </div>
 
-<!-- 缺項彈窗 -->
+<!-- 缺项弹窗 -->
 <div class="modal-mask" id="modal">
   <div class="modal">
     <h3>Some required fields are empty</h3>
@@ -276,11 +276,11 @@ at [Current School]. We sincerely hope our child may be considered for admission
   </div>
 </div>
 
-<!-- 站點 footer -->
+<!-- 站点 footer -->
 <footer class="site-footer">
   本表为薛新晨专用 · 数据仅存于本页网址（每 5 秒自动保存，亦可按「Save 网址」），不上传服务器。<br>
-  收藏或複製本页链接，即可随时回来继续填写；也可直接修改网址 <code>#d=</code> 后的内容（base64 JSON）后重新打开。
-  <div class="disc">免責聲明：本表僅供家長自行整理申請資料之用，不構成任何入學保證或建議；各校收生準則以校方公布為準。</div>
+  收藏或复制本页链接，即可随时回来继续填写；也可直接修改网址 <code>#d=</code> 后的内容（base64 JSON）后重新打开。
+  <div class="disc">免责声明：本表仅供家长自行整理申请资料之用，不构成任何入学保证或建议；各校收生准则以校方公布为准。</div>
 </footer>
 
 <script>
@@ -327,7 +327,7 @@ const DEFAULT_DATA = __DEFAULT_DATA__;
     panel.classList.remove('show');
   });
 
-  // 欄目標題可編輯：禁 Enter 換行、粘貼轉純文本
+  // 栏目标题可编辑：禁 Enter 换行、粘贴转纯文本
   document.querySelectorAll('[contenteditable]').forEach(function(el){
     el.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); el.blur(); } });
     el.addEventListener('paste',function(e){
@@ -337,7 +337,7 @@ const DEFAULT_DATA = __DEFAULT_DATA__;
     });
   });
 
-  // 年級下拉選項：K1–K3 / Primary 1–6 / Form 1–6
+  // 年级下拉选项：K1–K3 / Primary 1–6 / Form 1–6
   var GRADES=['K1','K2','K3'];
   for(var gi=1; gi<=6; gi++) GRADES.push('Primary '+gi);
   for(var gi=1; gi<=6; gi++) GRADES.push('Form '+gi);
@@ -346,23 +346,23 @@ const DEFAULT_DATA = __DEFAULT_DATA__;
     GRADES.forEach(function(g){ var op=document.createElement('option'); op.value=g; op.textContent=g; sel.appendChild(op); });
   });
 
-  // 語言能力五級下拉
-  var LVLS=[['Native','母語'],['Fluent','流利'],['Conversational','會話'],['Basic','基礎'],['None','不諳']];
+  // 语言能力五级下拉
+  var LVLS=[['Native','母语'],['Fluent','流利'],['Conversational','会话'],['Basic','基础'],['None','不谙']];
   page.querySelectorAll('.lvl').forEach(function(sel){
     LVLS.forEach(function(p){ var op=document.createElement('option'); op.value=p[0]; op.textContent=p[0]+' · '+p[1]; sel.appendChild(op); });
   });
 
-  // 與學生關係 = Other 時顯示補充輸入框
+  // 与学生关系 = Other 时显示补充输入框
   var relSel=document.getElementById('rel'), relOther=document.getElementById('relOther');
   function syncRelOther(){ if(relSel&&relOther) relOther.style.display=(relSel.value==='Other')?'block':'none'; }
   if(relSel) relSel.addEventListener('change', syncRelOther);
 
-  // 日期預填
+  // 日期预填
   var today=new Date();
   var iso=today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0');
   var fdateEl=document.getElementById('fdate'); if(!fdateEl.value) fdateEl.value=iso;
 
-  // 照片上傳（本機）
+  // 照片上传（本机）
   var box=document.getElementById('photoBox'), file=document.getElementById('photoFile'), img=document.getElementById('photoImg');
   box.addEventListener('click', function(){ file.click(); });
     file.addEventListener('change', function(){
@@ -372,7 +372,7 @@ const DEFAULT_DATA = __DEFAULT_DATA__;
     r.readAsDataURL(f);
   });
 
-  // 缺項校驗 + PDF
+  // 缺项校验 + PDF
   var modal=document.getElementById('modal'), missList=document.getElementById('missList');
   var btn=document.getElementById('genBtn');
   document.getElementById('btnCancel').addEventListener('click', function(){ modal.classList.remove('show'); });

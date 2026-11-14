@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""構建 tool04.html（工具 04 · 自訂權重篩選器，全港版）
+"""构建 tool04.html（工具 04 · 自订权重筛选器，全港版）
 
-輸入： work/tools/psp2026_all.json（教育局《小學概覽 2026》全港逐校抓取，S 級）
-       ../../data.json（學校名冊 + 港鐵站座標）
-輸出： 倉庫根目錄 tool04.html
+输入： work/tools/psp2026_all.json（教育局《小学概览 2026》全港逐校抓取，S 级）
+       ../../data.json（学校名册 + 港铁站座标）
+输出： 仓库根目录 tool04.html
 
 用法： python3 build_tool04.py
 """
@@ -17,28 +17,28 @@ import re
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))
 
-# 東鐵線站序（羅湖／落馬洲起算，兩者皆為 0）——用 dict，不要用 list.index
-HOPS = {'羅湖': 0, '落馬洲': 0, '上水': 1, '粉嶺': 2, '太和': 3, '大埔墟': 4, '沙田': 5,
-        '火炭': 6, '大圍': 7, '九龍塘': 8, '旺角東': 9, '紅磡': 10, '會展': 11, '金鐘': 12}
+# 东铁线站序（罗湖／落马洲起算，两者皆为 0）——用 dict，不要用 list.index
+HOPS = {'罗湖': 0, '落马洲': 0, '上水': 1, '粉岭': 2, '太和': 3, '大埔墟': 4, '沙田': 5,
+        '火炭': 6, '大围': 7, '九龙塘': 8, '旺角东': 9, '红磡': 10, '会展': 11, '金钟': 12}
 HOPS.update({'罗湖': 0, '落马洲': 0, '上水': 1, '粉岭': 2, '太和': 3, '大埔墟': 4, '沙田': 5,
              '火炭': 6, '大围': 7, '九龙塘': 8, '旺角东': 9, '红磡': 10, '会展': 11, '金钟': 12})
 
 PER_HOP = 3.0        # 每站（分，含停站）
-TRAIN_WAIT = 3.0     # 等車
+TRAIN_WAIT = 3.0     # 等车
 WALK_SPEED = 80.0    # 米／分
-BASE = 35.0          # 出門→口岸 10 ＋ 過關 20 ＋ 到港鐵站 5
-DETOUR = 1.9         # 非東鐵：直線距離→車程（分／公里）
-TRANSFER = 8.0       # 非東鐵：換乘與步行罰時
-MAX_WALK = 2000      # 落站步行上限（米），超過即不給推算值
+BASE = 35.0          # 出门→口岸 10 ＋ 过关 20 ＋ 到港铁站 5
+DETOUR = 1.9         # 非东铁：直线距离→车程（分／公里）
+TRANSFER = 8.0       # 非东铁：换乘与步行罚时
+MAX_WALK = 2000      # 落站步行上限（米），超过即不给推算值
 
 LANG = {
     '英文': 15,
-    '中文（包括:普通話）及英文': 12, '中文（包括：普通話）及英文': 12,
+    '中文（包括:普通话）及英文': 12, '中文（包括：普通话）及英文': 12,
     '中文及英文': 9,
-    '中文（包括:普通話）': 6, '中文（包括：普通話）': 6,
+    '中文（包括:普通话）': 6, '中文（包括：普通话）': 6,
     '中文': 2,
 }
-BUS = {'校車; 保姆車': 10, '校車': 8, '保姆車': 6, '-': 0, '': 0}
+BUS = {'校车; 保姆车': 10, '校车': 8, '保姆车': 6, '-': 0, '': 0}
 
 
 def hav(a, b, c, d):
@@ -59,7 +59,7 @@ def main():
     schools = D['schools']
     stn = {s['n']: s for s in D['stations']}
 
-    # 1) 先按電話對齊；2) 用對齊成功的配對學習 繁→簡 字表；3) 再補姓名比對
+    # 1) 先按电话对齐；2) 用对齐成功的配对学习 繁→简 字表；3) 再补姓名比对
     by_phone = {re.sub(r'\D', '', x.get('p') or ''): x for x in schools if x.get('p')}
     by_name = {norm_name(x['n']): x for x in schools}
 
@@ -72,7 +72,7 @@ def main():
             pairs.append((r['n'], by_phone[t]['n']))
 
     t2s = {}
-    for a, b in pairs:                       # a=繁（概覽） b=簡（名冊）
+    for a, b in pairs:                       # a=繁（概览） b=简（名册）
         na, nb = norm_name(a), norm_name(b)
         if len(na) == len(nb):
             for x, y in zip(na, nb):
@@ -93,11 +93,11 @@ def main():
         if x:
             joined[r['id']] = x
 
-    # 起點站座標（落馬洲／羅湖）
-    start = stn.get('落馬洲') or stn.get('罗湖')
+    # 起点站座标（落马洲／罗湖）
+    start = stn.get('落马洲') or stn.get('罗湖')
     if start is None:
         for k, v in stn.items():
-            if k in ('落馬洲', '罗湖', '羅湖'):
+            if k in ('落马洲', '罗湖', '罗湖'):
                 start = v
                 break
 
@@ -125,13 +125,13 @@ def main():
 
         x = joined.get(r['id'])
         door = None
-        est = 0          # 1=東鐵站序推算 2=直線距離推算（誤差較大）
+        est = 0          # 1=东铁站序推算 2=直线距离推算（误差较大）
         station = ''
         walk = None
         if x:
             station = x.get('s') or ''
             walk = x.get('sd')
-            # 最近站超過 2 公里＝該站不具參考性（離島、無鐵路地區），不給推算值
+            # 最近站超过 2 公里＝该站不具参考性（离岛、无铁路地区），不给推算值
             if station and walk is not None and walk <= MAX_WALK:
                 if station in HOPS:
                     rail = HOPS[station] * PER_HOP + TRAIN_WAIT
@@ -172,8 +172,8 @@ def main():
     print('built', out, os.path.getsize(out), 'bytes')
 
     assert '__DATA__' not in html
-    # 全港公開版：只禁私人資訊與私人結論，不禁校名（含宗教背景學校，公開名冊本就收錄）
-    for w in ('晨晨', '首選', '首选'):
+    # 全港公开版：只禁私人资讯与私人结论，不禁校名（含宗教背景学校，公开名册本就收录）
+    for w in ('晨晨', '首选', '首选'):
         assert w not in html, w
     json.dump(recs, io.open(os.path.join(HERE, 'tool04_data.json'), 'w', encoding='utf-8'),
               ensure_ascii=False)
