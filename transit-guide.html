@@ -1,457 +1,1000 @@
 <!doctype html>
-<html lang="zh-HK">
+<html lang="zh-CN">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>工具 06 · 口岸接駁看懂指南｜香港擇校工具超市</title>
-<meta name="description" content="過關之後要坐巴士、小巴，這頁教你看懂站牌、分清楚馬路兩邊、認出自己去的是去程還是回程。非官方整理，不提供路線與即時交通資料。">
+<title>工具 06 · 口岸接驳看懂指南｜香港择校工具超市</title>
+<meta name="description" content="过关后先认车，再看懂站牌、分清楚马路两边与去回程。三步交互：填起点与学校、看车往哪开、看你该站哪一边。家长自用的免费工具，示意数据，不含真实路线。">
 <style>
 :root{
-  --bg:#F4F8FB; --card:#FFFFFF; --pri:#4F7BAB; --pri-d:#3A6188; --soft:#B7CCE0; --soft2:#E6EFF7;
-  --ink:#2C3B47; --ink2:#6B7C8A; --ink3:#94A4B1; --bar:#4E5A66; --line:#DCE6F0;
-  --warn:#FFF6E8; --warn-line:#E8B96A; --ok:#E8F4EE; --ok-line:#79B394;
+  --bg:#0A101C; --card:rgba(255,255,255,.045); --card2:rgba(255,255,255,.028);
+  --line:rgba(255,255,255,.10); --line2:rgba(255,255,255,.06);
+  --ink:#EAF2FB; --ink2:#9FB0C4; --ink3:#6E829B;
+  --c1:#4DE2C0; --c1d:#2FBFA5; --c2:#FFA45C;
+  --ok:rgba(77,226,192,.12); --bad:rgba(255,164,92,.12);
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
-body{background:var(--bg);color:var(--ink);
-  font:15px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
-  -webkit-font-smoothing:antialiased}
-a{color:var(--pri-d)}
-button{font-family:inherit}
+body{background:var(--bg);color:var(--ink);min-height:100vh;
+  font:15px/1.7 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden}
+.glow{position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(900px 560px at 12% -12%,rgba(77,226,192,.13),transparent 62%),
+             radial-gradient(760px 520px at 92% 4%,rgba(255,164,92,.10),transparent 62%)}
+.wrap{position:relative;z-index:1;max-width:1040px;margin:0 auto;padding:0 22px 60px}
+a{color:var(--c1)}
+button,input{font-family:inherit}
 
-.top{background:var(--bar);color:#F2F6FA;padding:22px 22px 26px}
-.top .inner{max-width:1000px;margin:0 auto}
-.back{display:inline-block;color:#C3D2E0;text-decoration:none;font-size:13px;margin-bottom:14px}
-.back:hover{color:#fff}
-.top h1{margin:0 0 8px;font-size:24px;letter-spacing:.5px;font-weight:600;line-height:1.45}
-.top p{margin:0;font-size:14px;color:#C3D2E0;max-width:820px;line-height:1.85}
-.pillrow{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap}
-.pill{background:#5E7080;color:#EAF1F7;font-size:12px;padding:3px 11px;border-radius:99px;letter-spacing:.3px}
+/* header */
+header{padding:40px 0 20px}
+.eyebrow{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:16px}
+.chip{font-size:11.5px;letter-spacing:.6px;padding:4px 11px;border-radius:99px;
+  border:1px solid var(--line);color:var(--ink2);background:var(--card2)}
+.chip.hi{border-color:rgba(77,226,192,.4);color:var(--c1);background:rgba(77,226,192,.08)}
+h1{margin:0 0 10px;font-size:clamp(28px,4.6vw,42px);font-weight:700;letter-spacing:-.5px;line-height:1.25;
+  background:linear-gradient(100deg,#FFFFFF 8%,#B9E9DC 55%,#FFC79B 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{margin:0;max-width:740px;font-size:15px;color:var(--ink2);line-height:1.85}
+.flowbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:20px}
+.flowbar .fb{display:flex;align-items:center;gap:7px;padding:7px 13px;border-radius:99px;
+  border:1px solid var(--line2);background:var(--card2);font-size:12.5px;color:var(--ink2)}
+.flowbar .fb b{color:var(--c1);font-size:14px}
+.flowbar .fb.res b{color:var(--c2)}
+.flowbar .arw{color:var(--ink3);font-size:14px}
 
-main{max-width:1000px;margin:0 auto;padding:22px 22px 30px}
-.warn{background:var(--warn);border-left:4px solid var(--warn-line);border-radius:0 10px 10px 0;
-  padding:14px 18px;font-size:13.5px;line-height:1.9;color:#6A5433;margin-bottom:26px}
-.warn b{color:#4A3B22}
+/* step card */
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 18px 50px rgba(0,0,0,.22)}
+.stepcard{margin-top:18px;padding:22px}
+.stepcard.active{border-color:rgba(77,226,192,.42);box-shadow:0 18px 50px rgba(0,0,0,.22),0 0 0 1px rgba(77,226,192,.10)}
+.shead{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.num{width:38px;height:38px;flex:0 0 38px;border-radius:50%;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--c1),var(--c1d));color:#062018;font-size:18px;font-weight:800;
+  box-shadow:0 6px 18px rgba(77,226,192,.22)}
+.num.warm{background:linear-gradient(135deg,var(--c2),#E08A45);color:#2A1405;box-shadow:0 6px 18px rgba(255,164,92,.22)}
+.shead h2{margin:0;font-size:18px;font-weight:650}
+.kind{font-size:11.5px;padding:3px 10px;border-radius:99px;border:1px solid var(--line);color:var(--ink3)}
+.kind.in{border-color:rgba(77,226,192,.4);color:var(--c1)}
+.kind.out{border-color:rgba(255,164,92,.45);color:var(--c2)}
+.sdesc{margin:0 0 18px;font-size:13.5px;color:var(--ink2);line-height:1.8;padding-left:50px}
+.flowline{height:24px;margin-left:40px;border-left:2px dashed rgba(77,226,192,.28)}
+.fade{opacity:0;transform:translateY(14px);animation:up .5s cubic-bezier(.2,.7,.3,1) forwards}
+@keyframes up{to{opacity:1;transform:none}}
 
-section{background:var(--card);border:1px solid var(--line);border-radius:12px;
-  padding:20px 20px 22px;margin-bottom:16px;box-shadow:0 1px 3px rgba(44,59,71,.05)}
-section > h2{margin:0 0 4px;font-size:18px;font-weight:600;letter-spacing:.2px}
-.lead{margin:0 0 16px;font-size:13.5px;color:var(--ink2);line-height:1.85}
-.tagno{display:inline-block;background:var(--soft2);color:var(--pri-d);font-size:11.5px;font-weight:600;
-  padding:2px 9px;border-radius:99px;vertical-align:middle;margin-right:8px}
+/* ① 输入 */
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field label{display:block;font-size:12.5px;font-weight:600;color:var(--ink2);margin-bottom:8px}
+.field label span{color:var(--c1);margin-right:5px}
+.field input{width:100%;padding:12px 14px;border-radius:11px;border:1px solid var(--line);
+  background:rgba(8,16,28,.55);color:var(--ink);font-size:14px;outline:none;transition:.22s}
+.field input::placeholder{color:#5E7289}
+.field input:focus{border-color:var(--c1);box-shadow:0 0 0 3px rgba(77,226,192,.12)}
+.field .hint{margin:7px 0 0;font-size:11.5px;color:var(--ink3);line-height:1.6}
+.privacy{margin:14px 0 0;padding:11px 14px;border-radius:11px;background:var(--card2);
+  border:1px solid var(--line2);font-size:12px;color:var(--ink3);line-height:1.8}
+.privacy b{color:var(--ink2)}
+.inrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px}
+.inrow button{padding:9px 15px;border-radius:10px;border:1px solid var(--line);background:transparent;
+  color:var(--ink2);font-size:13px;cursor:pointer;transition:.22s}
+.inrow button:hover{color:var(--c1);border-color:rgba(77,226,192,.5)}
+.inrow .next{margin-left:auto;background:linear-gradient(135deg,var(--c1),var(--c1d));color:#062018;
+  border:none;font-weight:700;padding:10px 18px}
+.inrow .next:hover{color:#062018;transform:translateY(-1px)}
+.divider{height:1px;background:var(--line2);margin:20px 0}
+.dirrow{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.dirrow .t{font-size:13px;color:var(--ink2);font-weight:600;min-width:110px}
+.seg{display:flex;gap:8px;flex-wrap:wrap}
+.seg button{padding:9px 16px;border-radius:10px;border:1px solid var(--line);
+  background:transparent;color:var(--ink2);font-size:13.5px;cursor:pointer;transition:.22s;white-space:nowrap}
+.seg button:hover{border-color:rgba(255,255,255,.28);color:var(--ink)}
+.seg button.on{background:linear-gradient(135deg,rgba(77,226,192,.20),rgba(77,226,192,.07));
+  border-color:rgba(77,226,192,.55);color:var(--c1)}
+.seg.warm button.on{background:linear-gradient(135deg,rgba(255,164,92,.20),rgba(255,164,92,.07));
+  border-color:rgba(255,164,92,.55);color:var(--c2)}
+.route-preview{margin:14px 0 0;padding:11px 15px;border-radius:11px;background:rgba(77,226,192,.07);
+  border-left:3px solid var(--c1);font-size:13.5px;line-height:1.8;color:#BFEFE3}
+.route-preview b{color:var(--c1)}
 
-/* 模塊 1 · 情境決定器 */
-.picks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-.pick label{display:block;font-size:12.5px;font-weight:600;color:var(--ink2);margin-bottom:7px;letter-spacing:.3px}
-.pick select{width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:9px;background:#FBFDFF;
-  color:var(--ink);font-size:14px;line-height:1.5;outline:none;appearance:none;
-  background-image:linear-gradient(45deg,transparent 50%,var(--ink2) 50%),linear-gradient(135deg,var(--ink2) 50%,transparent 50%);
-  background-position:calc(100% - 17px) 50%,calc(100% - 12px) 50%;background-size:5px 5px,5px 5px;background-repeat:no-repeat}
-.pick select:focus{border-color:var(--pri);box-shadow:0 0 0 3px rgba(79,123,171,.12)}
-.btn{margin-top:16px;background:var(--pri);color:#fff;border:none;border-radius:9px;
-  padding:11px 22px;font-size:14.5px;font-weight:600;cursor:pointer;transition:.12s}
-.btn:hover{background:var(--pri-d)}
-.btn:active{transform:translateY(1px)}
-.btn.ghost{background:#fff;color:var(--pri-d);border:1px solid var(--line)}
-.btn.ghost:hover{background:var(--soft2)}
-.btn.sm{padding:8px 14px;font-size:13px;margin-top:0}
+/* ② 先认车 */
+.recognize{margin:0 0 18px;padding:16px;border-radius:15px;background:var(--card2);border:1px solid var(--line2)}
+.rhead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:5px}
+.rhead h3{margin:0;font-size:15px;font-weight:650}
+.rhead .tag{font-size:11.5px;padding:3px 10px;border-radius:99px;
+  border:1px solid rgba(77,226,192,.4);color:var(--c1)}
+.rhead .quizbtn{margin-left:auto;padding:7px 13px;border-radius:9px;border:1px solid var(--line);
+  background:transparent;color:var(--ink2);font-size:12.5px;cursor:pointer;transition:.22s}
+.rhead .quizbtn:hover{color:var(--c1);border-color:rgba(77,226,192,.5)}
+.rhead .quizbtn.on{background:rgba(255,164,92,.14);border-color:rgba(255,164,92,.5);color:var(--c2)}
+.rdesc{margin:0 0 14px;font-size:12.5px;color:var(--ink3);line-height:1.75}
+.cargrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.carcard{background:rgba(8,16,28,.5);border:1px solid var(--line);border-radius:13px;padding:10px;
+  cursor:pointer;transition:.22s;text-align:center}
+.carcard:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.3)}
+.carcard.on{border-color:var(--c1);background:rgba(77,226,192,.08);box-shadow:0 0 20px rgba(77,226,192,.10)}
+.carcard.picked{border-color:var(--c2);background:rgba(255,164,92,.08)}
+.carcard.wrong{border-color:rgba(255,164,92,.65)}
+.photo-slot{display:block;border-radius:9px;overflow:hidden;background:linear-gradient(160deg,#122436,#0B1929)}
+.carcard svg{display:block;width:100%;height:auto}
+.carcard .nm{display:block;margin-top:9px;font-size:13.5px;font-weight:650;color:var(--ink)}
+.carcard .tip{display:block;font-size:11px;color:var(--ink3);margin-top:3px;line-height:1.5}
+.rinfo{margin-top:12px;padding:12px 15px;border-radius:11px;background:rgba(77,226,192,.07);
+  border-left:3px solid var(--c1);font-size:13px;line-height:1.85;color:#BFEFE3;min-height:44px}
+.rinfo.warm{background:rgba(255,164,92,.08);border-color:var(--c2);color:#FFD9B4}
+.rinfo b{color:var(--ink)}
+.quizopts{display:none;gap:8px;flex-wrap:wrap;margin-top:12px}
+.quizopts.on{display:flex}
+.quizopts button{flex:1;min-width:108px;padding:9px;border-radius:9px;border:1px solid var(--line);
+  background:transparent;color:var(--ink2);font-size:13px;cursor:pointer;transition:.22s}
+.quizopts button:hover{border-color:var(--c1);color:var(--c1)}
 
-#result{margin-top:18px;display:none}
-#result.on{display:block}
-.rbox{background:var(--soft2);border-radius:10px;padding:16px 18px;font-size:14px;line-height:1.9}
-.rbox .who{font-size:13px;color:var(--pri-d);font-weight:600;margin:0 0 10px}
-.rbox ol{margin:0 0 14px;padding-left:22px}
-.rbox ol li{margin-bottom:7px}
-.rbox .check{background:#fff;border:1px solid var(--soft);border-radius:8px;padding:11px 14px;font-size:13.5px;line-height:1.85}
-.rbox .check b{color:var(--pri-d)}
-.rbox .tail{margin:12px 0 0;font-size:13px;color:var(--ink2)}
+/* ② 推演 */
+.simrow{display:grid;grid-template-columns:250px minmax(0,1fr);gap:18px;align-items:start}
+.panel{background:var(--card2);border:1px solid var(--line2);border-radius:15px;padding:16px;min-width:0}
+.lab{font-size:12px;color:var(--ink3);letter-spacing:.8px;margin:0 0 9px;font-weight:600}
+.vehseg{display:flex;flex-direction:column;gap:7px;margin-bottom:18px}
+.vehseg button{width:100%;text-align:left;padding:10px 13px;border-radius:10px;border:1px solid var(--line);
+  background:transparent;color:var(--ink2);font-size:13.5px;cursor:pointer;transition:.22s}
+.vehseg button:hover{border-color:rgba(255,255,255,.28);color:var(--ink)}
+.vehseg button.on{background:linear-gradient(135deg,rgba(255,164,92,.18),rgba(255,164,92,.05));
+  border-color:rgba(255,164,92,.55);color:var(--c2)}
+.primary{width:100%;padding:12px;border:none;border-radius:11px;cursor:pointer;
+  background:linear-gradient(135deg,var(--c1),var(--c1d));color:#062018;font-size:14.5px;font-weight:700;
+  transition:.22s;box-shadow:0 8px 24px rgba(77,226,192,.18)}
+.primary:hover{transform:translateY(-1px)}
+.ghost{width:100%;margin-top:9px;padding:9px;border:1px solid var(--line);border-radius:10px;
+  background:transparent;color:var(--ink2);font-size:13px;cursor:pointer;transition:.22s}
+.ghost:hover{color:var(--ink)}
+.panel-note{margin:13px 0 0;font-size:11.5px;color:var(--ink3);line-height:1.7}
+.stage{background:linear-gradient(180deg,rgba(255,255,255,.025),rgba(255,255,255,.008));
+  border:1px solid var(--line2);border-radius:15px;padding:12px;min-width:0;overflow:hidden}
+.svgbox{width:100%;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:10px}
+.stage svg{display:block;width:100%;height:auto;border-radius:10px}
+.swipe{display:none;margin:6px 0 0;font-size:11.5px;color:var(--ink3);text-align:right}
+.status{margin-top:12px;padding:11px 14px;border-radius:11px;border:1px solid var(--line2);
+  background:var(--card2);font-size:13.5px;line-height:1.75;color:var(--ink2);min-height:46px;transition:.25s}
+.status b{color:var(--ink)}
+.status.good{border-color:rgba(77,226,192,.4);background:var(--ok);color:#BFF3E6}
+.status.bad{border-color:rgba(255,164,92,.4);background:var(--bad);color:#FFD9B4}
 
-/* 模塊 2 · 站牌解讀 */
-.signwrap{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:20px;align-items:start}
-.signnote{font-size:11.5px;color:var(--ink3);margin:0 0 8px;line-height:1.6}
-.sign{background:#1F4F80;border-radius:10px;padding:12px;box-shadow:0 6px 18px rgba(31,79,128,.18)}
-.sign .row{display:block;width:100%;text-align:left;background:#fff;border:none;border-radius:5px;
-  padding:9px 12px;margin-bottom:7px;color:#23303B;cursor:pointer;font-size:13.5px;line-height:1.5;transition:.12s}
-.sign .row:last-child{margin-bottom:0}
-.sign .row:hover{background:#FFF6E4}
-.sign .row.active{background:#FFE9B8;box-shadow:inset 0 0 0 2px #E8B96A}
-.sign .row .k{display:inline-block;min-width:74px;color:#66809A;font-size:11.5px;letter-spacing:.5px}
-.sign .row .v{font-weight:600}
-.sign .row.big{padding:12px}
-.sign .row.big .v{font-size:17px;letter-spacing:1px}
-.signhead{background:rgba(255,255,255,.14);color:#DCEAF6;border-radius:5px;padding:6px 12px;
-  font-size:11px;letter-spacing:2px;margin-bottom:9px;text-align:center}
-#signinfo{background:#FBFDFF;border:1px solid var(--line);border-radius:10px;padding:16px 18px;min-height:190px}
-#signinfo h3{margin:0 0 8px;font-size:16px;font-weight:600;color:var(--pri-d)}
-#signinfo p{margin:0 0 10px;font-size:14px;line-height:1.9}
-#signinfo .todo{background:var(--ok);border-left:3px solid var(--ok-line);padding:10px 13px;
-  border-radius:0 7px 7px 0;font-size:13.5px;line-height:1.8}
-#signinfo .todo b{color:#2E6B4C}
+/* SVG */
+.stop{cursor:pointer;transition:.3s}
+.stop .box{fill:#16263A;stroke:rgba(255,255,255,.16);stroke-width:1.5;transition:.3s}
+.stop .txt{fill:#AFBFD2;font-size:16px;transition:.3s}
+.stop.dim{opacity:.30}
+.stop.hot .box{fill:rgba(77,226,192,.16);stroke:var(--c1);stroke-width:2.5;
+  filter:drop-shadow(0 0 12px rgba(77,226,192,.55))}
+.stop.hot .txt{fill:#CFFFF2;font-weight:600}
+.stop:hover .box{stroke:rgba(255,255,255,.5)}
+.car{transition:transform 1.15s cubic-bezier(.35,.05,.3,1),opacity .3s}
+.car .body{fill:#23364D;stroke:rgba(255,255,255,.22);stroke-width:1.2;transition:.3s}
+.car .win{fill:#4A6684}
+.car.run .body{fill:rgba(77,226,192,.22);stroke:var(--c1)}
+.car.hidden{opacity:.16}
+.laneArrow{fill:none;stroke:rgba(255,255,255,.16);stroke-width:2;stroke-dasharray:7 9}
+.board{fill:#0E2033;stroke:rgba(255,255,255,.22);stroke-width:1.4}
+.boardTxt{fill:#EAF2FB;font-size:15px;font-weight:600}
+.boardSub{fill:#8AA3BA;font-size:12px}
+.watermark{fill:#7D93AB;font-size:12.5px;letter-spacing:1px}
 
-/* 模塊 3 · 四種車 */
-.veh{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
-.vehbtn{background:#FBFDFF;border:1px solid var(--line);border-radius:10px;padding:14px 10px;
-  cursor:pointer;text-align:center;transition:.12s}
-.vehbtn:hover{border-color:var(--soft);background:var(--soft2)}
-.vehbtn.active{border-color:var(--pri);background:var(--soft2);box-shadow:0 0 0 2px rgba(79,123,171,.14)}
-.vehbtn .dot{width:12px;height:12px;border-radius:50%;display:inline-block;margin-bottom:7px}
-.vehbtn .nm{display:block;font-size:14px;font-weight:600;line-height:1.45}
-.vehbtn .sb{display:block;font-size:11.5px;color:var(--ink2);margin-top:3px;line-height:1.5}
-#vehinfo{margin-top:16px;background:#FBFDFF;border:1px solid var(--line);border-radius:10px;padding:16px 18px}
-#vehinfo h3{margin:0 0 12px;font-size:16px;color:var(--pri-d)}
-#vehinfo dl{display:grid;grid-template-columns:130px minmax(0,1fr);gap:0;margin:0;font-size:13.5px}
-#vehinfo dt,#vehinfo dd{padding:8px 0;border-top:1px solid var(--line);margin:0;line-height:1.75}
-#vehinfo dt{color:var(--ink2);font-weight:600}
-#vehinfo dd{color:var(--ink)}
-.srcnote{margin:12px 0 0;font-size:12px;color:var(--ink3);line-height:1.7}
+/* ③ 结果 */
+.empty{padding:26px 20px;text-align:center;border:1px dashed var(--line);border-radius:14px;
+  color:var(--ink3);font-size:13.5px;line-height:1.9;background:var(--card2)}
+.empty .big{display:block;font-size:22px;color:var(--ink2);margin-bottom:6px}
+.answers{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.answers button{flex:1;min-width:150px;padding:14px;border-radius:12px;cursor:pointer;font-size:15px;font-weight:600;
+  border:1px solid var(--line);background:var(--card2);color:var(--ink2);transition:.22s}
+.answers button:hover:not(:disabled){border-color:var(--c1);color:var(--c1);transform:translateY(-2px)}
+.answers button:disabled{opacity:.3;cursor:not-allowed}
+.prompt{margin:0 0 12px;font-size:13px;color:var(--ink2)}
+.result{display:none;border-radius:15px;padding:20px;border:1px solid rgba(77,226,192,.4);
+  background:linear-gradient(160deg,rgba(77,226,192,.10),rgba(77,226,192,.02))}
+.result.on{display:block;animation:up .35s cubic-bezier(.2,.7,.3,1) forwards}
+.result.warm{border-color:rgba(255,164,92,.45);
+  background:linear-gradient(160deg,rgba(255,164,92,.10),rgba(255,164,92,.02))}
+.result .kicker{font-size:11.5px;letter-spacing:1px;color:var(--ink3);margin:0 0 6px}
+.result .verdict{margin:0 0 12px;font-size:24px;font-weight:700;color:var(--c1);line-height:1.4}
+.result.warm .verdict{color:var(--c2)}
+.result .why{margin:0 0 14px;font-size:14px;line-height:1.9;color:var(--ink2)}
+.result .why b{color:var(--ink)}
+.result .check{background:rgba(255,255,255,.04);border-radius:11px;padding:13px 15px;
+  font-size:13px;line-height:1.9;color:var(--ink2)}
+.result .check b{color:var(--ink)}
+.result .copy{margin-top:14px;padding:9px 16px;border-radius:10px;border:1px solid var(--line);
+  background:transparent;color:var(--ink2);font-size:13px;cursor:pointer;transition:.22s}
+.result .copy:hover{color:var(--c1);border-color:rgba(77,226,192,.5)}
 
-/* 模塊 4 · 核對清單 */
-.bar{height:8px;background:var(--soft2);border-radius:99px;overflow:hidden;margin:0 0 14px}
-.bar > i{display:block;height:100%;width:0;background:var(--pri);border-radius:99px;transition:.25s}
-.bartext{font-size:12.5px;color:var(--ink2);margin:0 0 12px}
-.checklist{list-style:none;padding:0;margin:0}
-.checklist li{display:flex;gap:11px;align-items:flex-start;padding:10px 2px;border-top:1px solid var(--line);font-size:14px;line-height:1.8}
-.checklist li:first-child{border-top:none}
-.checklist input{width:18px;height:18px;flex:0 0 18px;margin-top:3px;accent-color:var(--pri);cursor:pointer}
-.checklist label{cursor:pointer}
-.checklist li.done label{color:var(--ink3);text-decoration:line-through}
-.acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
-.hint{font-size:12px;color:var(--ink3);margin:10px 0 0;line-height:1.7}
+/* tabs */
+.tabs{display:flex;gap:8px;margin:28px 0 14px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{flex:0 0 auto;padding:9px 16px;border-radius:99px;border:1px solid var(--line);
+  background:var(--card2);color:var(--ink2);font-size:13.5px;cursor:pointer;white-space:nowrap;transition:.22s}
+.tabs button.on{color:#062018;background:linear-gradient(135deg,var(--c1),var(--c1d));border-color:transparent;font-weight:650}
+.pane{display:none;padding:22px}
+.pane.on{display:block;animation:up .35s cubic-bezier(.2,.7,.3,1) forwards}
+.pane h3{margin:0 0 5px;font-size:17px;font-weight:650}
+.pane .desc{margin:0 0 18px;font-size:13.5px;color:var(--ink2);line-height:1.8}
 
-/* 模塊 5 · 官方來源 */
-table{width:100%;border-collapse:collapse;font-size:13.5px}
-th,td{text-align:left;padding:11px 10px;border-top:1px solid var(--line);vertical-align:top;line-height:1.75}
-th{background:var(--soft2);color:var(--pri-d);font-size:12.5px;font-weight:600;border-top:none}
-td:first-child{width:27%;font-weight:600}
-td a{word-break:break-all}
-.small{font-size:12px;color:var(--ink3)}
+.signwrap{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:18px;align-items:start}
+.sign{background:linear-gradient(160deg,#123A55,#0C2438);border:1px solid rgba(77,226,192,.22);
+  border-radius:14px;padding:12px}
+.sign .cap{text-align:center;font-size:10.5px;letter-spacing:2px;color:#7FA9C0;margin-bottom:10px}
+.sign button{display:block;width:100%;text-align:left;border:none;border-radius:9px;padding:10px 12px;margin-bottom:7px;
+  background:rgba(255,255,255,.94);color:#132433;cursor:pointer;font-size:13.5px;transition:.22s}
+.sign button:last-child{margin-bottom:0}
+.sign button:hover{background:#FFF3DC;transform:translateX(2px)}
+.sign button.on{background:#FFE0A8;box-shadow:inset 0 0 0 2px var(--c2)}
+.sign button .k{display:inline-block;min-width:64px;color:#5E7C93;font-size:11px}
+.sign button .v{font-weight:700}
+.sign button.big .v{font-size:16px;letter-spacing:1px}
+.infobox{background:var(--card2);border:1px solid var(--line2);border-radius:14px;padding:18px;min-height:186px}
+.infobox h4{margin:0 0 9px;font-size:16px;color:var(--c1)}
+.infobox p{margin:0 0 12px;font-size:14px;line-height:1.85;color:var(--ink2)}
+.infobox .todo{background:rgba(77,226,192,.08);border-left:3px solid var(--c1);
+  border-radius:0 8px 8px 0;padding:10px 13px;font-size:13.5px;line-height:1.8;color:#BFEFE3}
 
-/* 常見坑 */
-.pits{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.pit{background:#FBFDFF;border:1px solid var(--line);border-radius:10px;padding:14px 16px}
-.pit h4{margin:0 0 6px;font-size:14.5px;color:var(--ink)}
-.pit p{margin:0;font-size:13px;color:var(--ink2);line-height:1.8}
-.pit p b{color:var(--pri-d)}
+.vehgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.vehbtn{background:var(--card2);border:1px solid var(--line);border-radius:13px;padding:14px 10px;
+  text-align:center;cursor:pointer;color:var(--ink2);transition:.22s}
+.vehbtn:hover{transform:translateY(-2px)}
+.vehbtn.on{border-color:var(--c1);background:rgba(77,226,192,.09)}
+.vehbtn .dot{width:11px;height:11px;border-radius:50%;display:inline-block;margin-bottom:8px}
+.vehbtn .nm{display:block;color:var(--ink);font-size:14px;font-weight:650}
+.vehbtn .sb{display:block;font-size:11.5px;color:var(--ink3);margin-top:3px}
+#vehinfo{margin-top:16px;background:var(--card2);border:1px solid var(--line2);border-radius:14px;padding:18px}
+#vehinfo h4{margin:0 0 12px;font-size:16px;color:var(--c1)}
+#vehinfo dl{display:grid;grid-template-columns:120px minmax(0,1fr);gap:0;margin:0;font-size:13.5px}
+#vehinfo dt,#vehinfo dd{margin:0;padding:9px 0;border-top:1px solid var(--line2);line-height:1.75}
+#vehinfo dt{color:var(--ink3);font-weight:600}
+#vehinfo dd{color:var(--ink2)}
 
-.relate{background:var(--soft2);border-radius:10px;padding:14px 18px;font-size:13.5px;line-height:1.9;color:var(--ink2)}
-.relate b{color:var(--ink)}
+.bar{height:7px;background:rgba(255,255,255,.07);border-radius:99px;overflow:hidden;margin-bottom:10px}
+.bar i{display:block;height:100%;width:0;border-radius:99px;
+  background:linear-gradient(90deg,var(--c1),var(--c1d));transition:.3s}
+.bartext{font-size:12.5px;color:var(--ink3);margin:0 0 14px}
+.clist{list-style:none;padding:0;margin:0}
+.clist li{display:flex;gap:12px;align-items:flex-start;padding:11px 2px;border-top:1px solid var(--line2);font-size:14px;line-height:1.75}
+.clist li:first-child{border-top:none}
+.clist input{width:18px;height:18px;flex:0 0 18px;margin-top:4px;accent-color:var(--c1);cursor:pointer}
+.clist label{cursor:pointer;color:var(--ink2)}
+.clist li.done label{color:var(--ink3);text-decoration:line-through}
+.acts{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.acts button{padding:9px 16px;border-radius:10px;border:1px solid var(--line);background:transparent;
+  color:var(--ink2);font-size:13px;cursor:pointer;transition:.22s}
+.acts button:hover{color:var(--c1);border-color:rgba(77,226,192,.5)}
 
-footer{max-width:1000px;margin:0 auto;padding:0 22px 46px;font-size:12px;color:var(--ink3);line-height:1.9}
-footer .fx{border-top:1px solid var(--line);padding-top:14px}
-.xhs{display:inline-block;background:#ff2442;color:#fff;font-size:12px;padding:3px 11px;
-  border-radius:999px;text-decoration:none;font-weight:600;margin-top:6px}
+.srcgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.srcitem{background:var(--card2);border:1px solid var(--line2);border-radius:13px;padding:15px 16px}
+.srcitem h4{margin:0 0 6px;font-size:14px;color:var(--ink)}
+.srcitem p{margin:0;font-size:12.5px;color:var(--ink3);line-height:1.8}
+.srcitem a{font-size:12.5px;word-break:break-all}
+.boundary{margin-top:16px;background:rgba(255,164,92,.07);border:1px solid rgba(255,164,92,.28);
+  border-radius:13px;padding:15px 17px;font-size:13px;line-height:1.85;color:#FFD9B4}
+.boundary b{color:var(--c2)}
 
-@media (max-width:760px){
-  .picks,.signwrap,.veh,.pits{grid-template-columns:1fr}
-  .veh{grid-template-columns:repeat(2,minmax(0,1fr))}
+footer{max-width:1040px;margin:0 auto;padding:0 22px 44px;font-size:12px;color:var(--ink3);line-height:1.9;position:relative;z-index:1}
+footer .fx{border-top:1px solid var(--line);padding-top:16px}
+.xhs{display:inline-block;background:#ff2442;color:#fff;font-size:12px;padding:3px 11px;border-radius:999px;text-decoration:none;font-weight:600;margin-top:6px}
+.toast{position:fixed;right:22px;bottom:22px;z-index:20;max-width:330px;padding:13px 17px;border-radius:13px;
+  background:rgba(16,28,44,.96);border:1px solid rgba(77,226,192,.4);color:#CFFFF2;font-size:13.5px;line-height:1.7;
+  box-shadow:0 16px 40px rgba(0,0,0,.4);opacity:0;transform:translateY(12px);pointer-events:none;transition:.28s}
+.toast.on{opacity:1;transform:none}
+.toast.warm{border-color:rgba(255,164,92,.5);color:#FFD9B4}
+
+@media (max-width:860px){
+  .fields,.simrow,.signwrap{grid-template-columns:1fr}
+  .vehgrid,.cargrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .srcgrid{grid-template-columns:1fr}
   #vehinfo dl{grid-template-columns:1fr}
-  #vehinfo dt{padding-bottom:0;border-top:1px solid var(--line);padding-top:9px}
-  #vehinfo dd{border-top:none;padding-top:2px;padding-bottom:9px}
-  td:first-child{width:auto}
-  .top h1{font-size:21px}
+  #vehinfo dt{border-top:1px solid var(--line2);padding-bottom:0}
+  #vehinfo dd{border-top:none;padding-top:2px}
+  .stepcard,.pane{padding:16px}
+  .sdesc{padding-left:0}
+  .stage svg{min-width:560px}
+  .swipe{display:block}
+  header{padding-top:28px}
 }
 </style>
 </head>
 <body>
+<div class="glow"></div>
+<div class="wrap">
 
-<header class="top">
-  <div class="inner">
-    <a class="back" href="index.html">← 回香港擇校工具超市</a>
-    <h1>工具 06 · 口岸接駁看懂指南</h1>
-    <p>過關之後要坐巴士、小巴，難的往往不是「搭幾號車」，而是站在站頭前面，不知道自己該站馬路哪一邊、眼前這部車是不是往自己要去的方向。這頁不幫你查路線，只幫你把這幾件事看懂。</p>
-    <div class="pillrow">
-      <span class="pill">非官方整理</span>
-      <span class="pill">不查即時資料</span>
-      <span class="pill">免費 · 免註冊</span>
-      <span class="pill">資料只存本機</span>
-      <span class="pill">以運輸署公布為準</span>
-    </div>
+<header class="fade">
+  <div class="eyebrow">
+    <span class="chip hi">三步交互 · 示意数据</span>
+    <span class="chip">不含真实路线 / 站位 / 班次 / 收费</span>
+    <span class="chip">非官方整理</span>
+  </div>
+  <h1>过关之后，站哪一边？</h1>
+  <p class="sub">香港的巴士和小巴复杂，同一个站名在马路两边各有一个，路线号一样也可能是去程或回程。按下面三步走：先填两个地方，看车往哪开，再看你该站哪一边。</p>
+  <div class="flowbar">
+    <span class="fb"><b>1</b> 先填：起步地点 + 学校</span><span class="arw">→</span>
+    <span class="fb"><b>2</b> 先认车，再看车往哪开</span><span class="arw">→</span>
+    <span class="fb res"><b>3</b> 出结果：你该站哪边</span>
   </div>
 </header>
 
-<main>
+<!-- ========== ① 输入 ========== -->
+<section class="stepcard card active fade" id="step1" style="animation-delay:.05s">
+  <div class="shead">
+    <span class="num">1</span><h2>先填两个地方</h2><span class="kind in">输入 · 从这里开始</span>
+  </div>
+  <p class="sdesc">填上你过关后出来的地方、和孩子学校（或学校地址）。画面上的代号会换成你填的说法，方向判断就看得懂了。</p>
 
-<div class="warn">
-  <b>先說清楚這頁不做什麼。</b><br>
-  不畫路線圖、不給路線號、站數、班次、收費、即時到站，也不估算「幾分鐘到」。所有路線、站位、班次與收費，請以運輸署「香港出行易」、各營辦商公布與<b>現場站牌</b>為準（連結在第五節）。<br>
-  這頁只做一件事：教你站在站頭前面，該看哪幾個地方、按什麼順序判斷。下面所有內容都是<b>判斷方法</b>，不是交通資料。
-</div>
-
-<!-- 1 -->
-<section>
-  <h2><span class="tagno">01</span>你現在卡在哪一步</h2>
-  <p class="lead">選三項，給你一串按順序做的判斷步驟。答案不會出現任何路線號或時間，因為那些要現場看才算數。</p>
-  <div class="picks">
-    <div class="pick">
-      <label for="pPort">從哪一類口岸過關</label>
-      <select id="pPort">
-        <option value="none">還沒確定 / 都想了解</option>
-        <option value="rail">鐵路口岸（出閘接港鐵）</option>
-        <option value="road">公路口岸（要靠車接駁）</option>
-      </select>
+  <div class="fields">
+    <div class="field">
+      <label for="inpFrom"><span>1.</span>从哪出发（起步地点）</label>
+      <input id="inpFrom" type="text" maxlength="24" autocomplete="off" placeholder="例如：过关后出来的口岸 / 你所在的站">
+      <p class="hint">写你自己认得的说法就行，不用写完整地址。</p>
     </div>
-    <div class="pick">
-      <label for="pVeh">打算坐哪一種車</label>
-      <select id="pVeh">
-        <option value="none">還沒確定 / 先看通用做法</option>
-        <option value="mtr">港鐵</option>
-        <option value="bus">專營巴士</option>
-        <option value="green">綠色專線小巴</option>
-        <option value="red">紅色小巴</option>
-      </select>
-    </div>
-    <div class="pick">
-      <label for="pStuck">現在卡在哪一步</label>
-      <select id="pStuck">
-        <option value="find">找不到上車的地方</option>
-        <option value="side">分不清馬路兩邊</option>
-        <option value="bound" selected>分不清去程還是回程</option>
-        <option value="van">不敢坐小巴</option>
-        <option value="first">第一次帶孩子走</option>
-      </select>
+    <div class="field">
+      <label for="inpTo"><span>2.</span>要去哪里（学校 / 目的地）</label>
+      <input id="inpTo" type="text" maxlength="24" autocomplete="off" placeholder="例如：孩子学校 / 学校地址 / 附近地标">
+      <p class="hint">不想填真实地址，点下面的「填入示意值」也能看完整流程。</p>
     </div>
   </div>
-  <button class="btn" id="btnGo" type="button">看我該怎麼走 ▸</button>
 
-  <div id="result" aria-live="polite">
-    <div class="rbox">
-      <p class="who" id="rWho"></p>
-      <ol id="rSteps"></ol>
-      <div class="check">
-        <b>過馬路前先確認這三件：</b><br>
-        ① 站牌上「往」後面的地方，是不是你要去的方向；<br>
-        ② 車頭的目的地牌，是不是同一個地方；<br>
-        ③ 站位編號／站序，是不是對應這個方向。<br>
-        三樣對不上，先別上車，也先別過馬路。
+  <div class="privacy">
+    <b>这两个框只在本页内存里用</b>：刷新就清空，不上传、不写进浏览器存储、不据此查真实路线。页面不会记录你家住址或孩子学校。
+  </div>
+
+  <div class="inrow">
+    <button type="button" id="btnDemo">填入示意值试试</button>
+    <button type="button" id="btnEmpty">清空</button>
+    <button type="button" class="next" id="btnNext">下一步：看车往哪开 ↓</button>
+  </div>
+
+  <div class="divider"></div>
+  <div class="dirrow">
+    <span class="t">这一趟往哪走</span>
+    <div class="seg" id="segDir">
+      <button type="button" class="on" data-v="go">去学校（去程）</button>
+      <button type="button" data-v="back">回口岸（回程）</button>
+    </div>
+  </div>
+  <p class="route-preview" id="routePreview">这一趟：<b>（还没填起点）</b> → <b>（还没填目的地）</b>　·　去程</p>
+</section>
+
+<div class="flowline"></div>
+
+<!-- ========== ② 推演 ========== -->
+<section class="stepcard card fade" id="step2" style="animation-delay:.10s">
+  <div class="shead">
+    <span class="num">2</span><h2>先认车，再看车往哪开</h2><span class="kind">推演 · 先认车，再看方向</span>
+  </div>
+  <p class="sdesc">分两小步：<b>2.1 认出眼前是哪一种车</b>，再 <b>2.2 选好车种点「开始模拟」</b>。图里两条车道方向相反，马路两边各有一个名字一模一样的站。</p>
+
+  <div class="recognize">
+    <div class="rhead">
+      <h3>先认一下：你眼前是哪一种车</h3>
+      <span class="tag">2.1 · 先认车，再看方向</span>
+      <button class="quizbtn" id="btnQuiz" type="button">遮住名字测一下</button>
+    </div>
+    <p class="rdesc">真实场景是「先看到车，才知道该用哪套规矩」。点一张车卡看「怎么认」，下面模拟器的车种会跟着切换。图为 SVG 绘制示意，<b>非真实照片</b>，不含路线号、车牌或营办商标志；已选定改用自己的实拍照片，到位前保留示意图。</p>
+
+    <div class="cargrid" id="carGrid">
+      <!-- 照片位：将来拿到授权真实照片，只需把 .photo-slot 里的 SVG 换成图片标签，布局与交互不用改 -->
+      <button class="carcard" type="button" data-car="bus">
+        <span class="photo-slot" data-photo-slot="bus">
+          <svg viewBox="0 0 160 96" aria-hidden="true">
+            <rect x="6" y="14" width="148" height="60" rx="10" fill="#2E5F94"/>
+            <rect x="10" y="18" width="140" height="24" rx="5" fill="#BFD9E8"/>
+            <rect x="10" y="45" width="140" height="22" rx="5" fill="#BFD9E8"/>
+            <g stroke="#2E5F94" stroke-width="3">
+              <line x1="45" y1="18" x2="45" y2="42"/><line x1="80" y1="18" x2="80" y2="42"/><line x1="115" y1="18" x2="115" y2="42"/>
+              <line x1="45" y1="45" x2="45" y2="67"/><line x1="80" y1="45" x2="80" y2="67"/><line x1="115" y1="45" x2="115" y2="67"/>
+            </g>
+            <rect x="118" y="20" width="28" height="12" rx="2" fill="#0E2033"/>
+            <text x="122" y="29" fill="#4DE2C0" font-size="9" font-weight="700">XX</text>
+            <circle cx="38" cy="76" r="9" fill="#0B1929"/><circle cx="122" cy="76" r="9" fill="#0B1929"/>
+          </svg>
+        </span>
+        <span class="nm">专营巴士</span><span class="tip">车身大 · 车头有路线牌</span>
+      </button>
+
+      <button class="carcard" type="button" data-car="green">
+        <span class="photo-slot" data-photo-slot="green">
+          <svg viewBox="0 0 160 96" aria-hidden="true">
+            <rect x="8" y="22" width="144" height="50" rx="12" fill="#F1F5F2"/>
+            <path d="M8 34 Q80 12 152 34 L152 26 Q80 8 8 26 Z" fill="#3E9A62"/>
+            <rect x="20" y="34" width="32" height="19" rx="4" fill="#BFD9E8"/>
+            <rect x="58" y="34" width="30" height="19" rx="4" fill="#BFD9E8"/>
+            <rect x="94" y="34" width="30" height="19" rx="4" fill="#BFD9E8"/>
+            <rect x="8" y="57" width="144" height="7" fill="#3E9A62"/>
+            <rect x="130" y="37" width="18" height="12" rx="2" fill="#0E2033"/>
+            <text x="133" y="46" fill="#4DE2C0" font-size="8" font-weight="700">XX</text>
+            <circle cx="40" cy="74" r="9" fill="#0B1929"/><circle cx="120" cy="74" r="9" fill="#0B1929"/>
+          </svg>
+        </span>
+        <span class="nm">绿 Van</span><span class="tip">绿车顶 · 站牌有路线号</span>
+      </button>
+
+      <button class="carcard" type="button" data-car="red">
+        <span class="photo-slot" data-photo-slot="red">
+          <svg viewBox="0 0 160 96" aria-hidden="true">
+            <rect x="8" y="22" width="144" height="50" rx="12" fill="#F1F5F2"/>
+            <path d="M8 34 Q80 12 152 34 L152 26 Q80 8 8 26 Z" fill="#C0392B"/>
+            <rect x="20" y="34" width="32" height="19" rx="4" fill="#BFD9E8"/>
+            <rect x="58" y="34" width="30" height="19" rx="4" fill="#BFD9E8"/>
+            <rect x="94" y="34" width="30" height="19" rx="4" fill="#BFD9E8"/>
+            <rect x="8" y="57" width="144" height="7" fill="#C0392B"/>
+            <rect x="126" y="36" width="24" height="15" rx="2" fill="#FFFFFF"/>
+            <text x="129" y="43" fill="#2E5F94" font-size="7">起</text>
+            <text x="129" y="50" fill="#C0392B" font-size="7">○○</text>
+            <circle cx="40" cy="74" r="9" fill="#0B1929"/><circle cx="120" cy="74" r="9" fill="#0B1929"/>
+          </svg>
+        </span>
+        <span class="nm">红 Van</span><span class="tip">红车顶 · 车头水牌写起讫</span>
+      </button>
+
+      <button class="carcard" type="button" data-car="mtr">
+        <span class="photo-slot" data-photo-slot="mtr">
+          <svg viewBox="0 0 160 96" aria-hidden="true">
+            <rect x="0" y="78" width="160" height="6" fill="#2A3D52"/>
+            <rect x="0" y="84" width="160" height="12" fill="#16263A"/>
+            <rect x="36" y="16" width="88" height="62" rx="14" fill="#D8DEE4"/>
+            <rect x="44" y="24" width="72" height="26" rx="6" fill="#22405C"/>
+            <line x1="80" y1="24" x2="80" y2="50" stroke="#D8DEE4" stroke-width="3"/>
+            <rect x="54" y="55" width="52" height="9" rx="3" fill="#C0392B"/>
+            <circle cx="52" cy="72" r="5" fill="#F6D66B"/><circle cx="108" cy="72" r="5" fill="#F6D66B"/>
+            <text x="62" y="69" fill="#2A3D52" font-size="9" font-weight="700">○○</text>
+          </svg>
+        </span>
+        <span class="nm">港铁</span><span class="tip">不是路面车 · 看月台</span>
+      </button>
+    </div>
+
+    <div class="quizopts" id="quizOpts">
+      <button type="button" data-q="mtr">港铁</button>
+      <button type="button" data-q="bus">专营巴士</button>
+      <button type="button" data-q="green">绿 Van</button>
+      <button type="button" data-q="red">红 Van</button>
+    </div>
+    <div class="rinfo" id="rinfo" aria-live="polite">点一张车卡，看它靠哪几个特征认出来。</div>
+  </div>
+
+  <div class="simrow">
+    <div class="panel">
+      <p class="lab">打算坐（也可用上面 2.1 带入）</p>
+      <div class="vehseg" id="segVeh">
+        <button type="button" class="on" data-v="bus">专营巴士</button>
+        <button type="button" data-v="green">绿 Van（专线小巴）</button>
+        <button type="button" data-v="red">红 Van（非专线）</button>
       </div>
-      <p class="tail">還是拿不準：問站頭穿制服的職員，或直接問司機「到不到我要去的地方」；也可以在官方 App 再查一次點到點路線。不用不好意思，站錯邊比多問一句麻煩得多。</p>
+      <button class="primary" id="btnRun" type="button">开始模拟 ▸</button>
+      <button class="ghost" id="btnReset" type="button">重置</button>
+      <p class="panel-note">车牌、站位、方向都是示意，不代表任何真实路口或线路。</p>
+    </div>
+
+    <div class="stage">
+      <div class="svgbox">
+      <svg viewBox="0 0 680 380" role="img" aria-label="路口俯视示意图：马路两边各有一个同名站，两条车道方向相反">
+        <rect x="0" y="0" width="680" height="86" fill="#122033"/>
+        <rect x="0" y="294" width="680" height="86" fill="#122033"/>
+        <rect x="0" y="86" width="680" height="208" fill="#0C1626"/>
+        <rect x="0" y="86" width="680" height="2" fill="rgba(255,255,255,.10)"/>
+        <rect x="0" y="292" width="680" height="2" fill="rgba(255,255,255,.10)"/>
+        <line x1="0" y1="189" x2="680" y2="189" stroke="rgba(255,255,255,.16)" stroke-width="2" stroke-dasharray="14 12"/>
+        <path class="laneArrow" d="M60 137 H620"/><path d="M620 137 l-12 -7 v14 z" fill="rgba(255,255,255,.18)"/>
+        <path class="laneArrow" d="M620 241 H60"/><path d="M60 241 l12 -7 v14 z" fill="rgba(255,255,255,.18)"/>
+        <text class="watermark" id="laneTop" x="18" y="112">往 学校 · 车道</text>
+        <text class="watermark" id="laneBottom" x="18" y="278">往 口岸 · 车道</text>
+
+        <g class="car" id="carA">
+          <rect class="body" x="92" y="118" width="76" height="38" rx="9"/>
+          <rect class="win" x="146" y="124" width="15" height="26" rx="3"/>
+          <circle cx="108" cy="158" r="5" fill="#0C1626" stroke="rgba(255,255,255,.3)"/>
+          <circle cx="152" cy="158" r="5" fill="#0C1626" stroke="rgba(255,255,255,.3)"/>
+        </g>
+        <g class="car" id="carB">
+          <rect class="body" x="512" y="224" width="76" height="38" rx="9"/>
+          <rect class="win" x="519" y="230" width="15" height="26" rx="3"/>
+          <circle cx="528" cy="264" r="5" fill="#0C1626" stroke="rgba(255,255,255,.3)"/>
+          <circle cx="572" cy="264" r="5" fill="#0C1626" stroke="rgba(255,255,255,.3)"/>
+        </g>
+
+        <g class="stop" id="stopTop" role="button" tabindex="0" aria-label="选择马路上侧站位">
+          <rect class="box" x="238" y="14" width="196" height="58" rx="12"/>
+          <text class="txt" x="256" y="38">同名站 ○○（上侧）</text>
+          <text class="txt" id="stopTopSub" x="256" y="58" style="font-size:13px">站牌：往 学校 →</text>
+        </g>
+        <g class="stop" id="stopBottom" role="button" tabindex="0" aria-label="选择马路下侧站位">
+          <rect class="box" x="238" y="308" width="196" height="58" rx="12"/>
+          <text class="txt" x="256" y="332">同名站 ○○（下侧）</text>
+          <text class="txt" id="stopBottomSub" x="256" y="352" style="font-size:13px">站牌：← 往 口岸</text>
+        </g>
+
+        <g id="boardGroup">
+          <rect class="board" x="496" y="6" width="172" height="76" rx="9"/>
+          <text class="boardSub" x="510" y="26">示意站牌 · 非真实</text>
+          <text class="boardTxt" x="510" y="49">路线 XX</text>
+          <text class="boardTxt" id="boardDest" x="510" y="71" style="fill:#4DE2C0">往 ▸ 学校</text>
+        </g>
+        <text class="watermark" x="16" y="374">俯视示意图 · 非真实路口 · 所有站名与方向均为示意</text>
+      </svg>
+      </div>
+      <p class="swipe">示意图可左右滑动看全图 →</p>
+      <div class="status" id="status">先在第 1 步填两个地方（或点「填入示意值」），再回来点「开始模拟」。</div>
     </div>
   </div>
 </section>
 
-<!-- 2 -->
-<section>
-  <h2><span class="tagno">02</span>站牌上到底寫了什麼</h2>
-  <p class="lead">點左邊示意站牌的任一欄，右邊會說這一行在告訴你什麼、看懂了下一步要幹嘛。</p>
+<div class="flowline"></div>
+
+<!-- ========== ③ 结果 ========== -->
+<section class="stepcard card fade" id="step3" style="animation-delay:.15s">
+  <div class="shead">
+    <span class="num warm">3</span><h2>你该站哪一边</h2><span class="kind out">结果 · 这里出结论</span>
+  </div>
+  <p class="sdesc">第 2 步跑完，这里会让你选一次站位，然后给出结论和「过马路前先确认」的三件事。</p>
+
+  <div class="empty" id="empty3">
+    <span class="big">还没出结果</span>
+    先完成第 1 步（填地方）和第 2 步（开始模拟），这边就会亮起来。
+  </div>
+
+  <div id="quiz" style="display:none">
+    <p class="prompt" id="quizPrompt">点一下你觉得自己该站的位置，也可以直接点图里的站位。</p>
+    <div class="answers" id="answers">
+      <button type="button" id="ansTop" disabled>我站马路上侧</button>
+      <button type="button" id="ansBottom" disabled>我站马路下侧</button>
+    </div>
+  </div>
+
+  <div class="result" id="result" aria-live="polite">
+    <p class="kicker">结论</p>
+    <p class="verdict" id="verdict"></p>
+    <p class="why" id="why"></p>
+    <div class="check" id="resultCheck">
+      <b>过马路前先确认这三件：</b><br>
+      ① 站牌上「往」后面的地方，是不是你要去的方向；<br>
+      ② 车头的目的地牌，是不是同一个地方；<br>
+      ③ 站位编号 / 站序，是不是对应这个方向。<br>
+      三样对不上，先别上车，也先别过马路。
+    </div>
+    <button class="copy" type="button" id="btnCopyResult">复制这段结论</button>
+  </div>
+</section>
+
+<!-- ========== Tabs ========== -->
+<nav class="tabs fade" style="animation-delay:.18s" aria-label="补充内容">
+  <button type="button" class="on" data-p="sign">站牌解码</button>
+  <button type="button" data-p="veh">四种车，四套规矩</button>
+  <button type="button" data-p="list">出发前清单</button>
+  <button type="button" data-p="src">边界与来源</button>
+</nav>
+
+<section class="pane card on" id="pane-sign">
+  <h3>站牌上，哪一行才在讲方向</h3>
+  <p class="desc">点左边示意站牌的任意一行。站名只用来认地方，方向要看「往」。</p>
   <div class="signwrap">
-    <div>
-      <p class="signnote">示意圖 · 非真實站牌 · 不含任何真實路線、站名或收費資料 · 純文字與色塊繪製，非 AI 生成圖片</p>
-      <div class="sign">
-        <div class="signhead">PUBLIC LIGHT BUS / BUS STOP · 示意</div>
-        <button class="row big" type="button" data-k="route"><span class="k">路線號</span><span class="v">○○</span></button>
-        <button class="row big" type="button" data-k="dest"><span class="k">往 ▸</span><span class="v">○○（終點站）</span></button>
-        <button class="row" type="button" data-k="stop"><span class="k">本站</span><span class="v">○○○</span></button>
-        <button class="row" type="button" data-k="seq"><span class="k">站位</span><span class="v">編號 XXXX · 第 ○ 站</span></button>
-        <button class="row" type="button" data-k="fare"><span class="k">班次/收費</span><span class="v">以現場站牌為準</span></button>
-        <button class="row" type="button" data-k="arrow"><span class="k">方向標示</span><span class="v">→ ／ 循環線 ／ 特別班次</span></button>
-      </div>
+    <div class="sign">
+      <div class="cap">STOP SIGN · 示意</div>
+      <button type="button" class="big" data-k="route"><span class="k">路线号</span><span class="v">XX</span></button>
+      <button type="button" class="big" data-k="dest"><span class="k">往 ▸</span><span class="v">○○（终点站）</span></button>
+      <button type="button" data-k="stop"><span class="k">本站</span><span class="v">○○○</span></button>
+      <button type="button" data-k="seq"><span class="k">站位</span><span class="v">编号 XXXX</span></button>
     </div>
-    <div id="signinfo" aria-live="polite"></div>
+    <div class="infobox" id="signinfo" aria-live="polite"></div>
   </div>
 </section>
 
-<!-- 3 -->
-<section>
-  <h2><span class="tagno">03</span>四種車，四套規矩</h2>
-  <p class="lead">「巴士和小巴很複雜」通常是把幾種不同的車混在一起想了。點一下分開看。</p>
-  <div class="veh">
-    <button class="vehbtn active" type="button" data-v="mtr"><span class="dot" style="background:#E2231A"></span><span class="nm">港鐵</span><span class="sb">固定車站、固定月台</span></button>
-    <button class="vehbtn" type="button" data-v="bus"><span class="dot" style="background:#2F6FB0"></span><span class="nm">專營巴士</span><span class="sb">固定路線、站位編號</span></button>
-    <button class="vehbtn" type="button" data-v="green"><span class="dot" style="background:#3E9A62"></span><span class="nm">綠色專線小巴</span><span class="sb">固定路線、班次、收費</span></button>
-    <button class="vehbtn" type="button" data-v="red"><span class="dot" style="background:#C0392B"></span><span class="nm">紅色小巴</span><span class="sb">非固定路線</span></button>
+<section class="pane card" id="pane-veh">
+  <h3>先把车分清楚，再谈怎么搭</h3>
+  <p class="desc">「巴士和小巴很复杂」，通常是把几种不同规则的车混在一起想了。点一张卡分开看。</p>
+  <div class="vehgrid">
+    <button class="vehbtn on" type="button" data-v="mtr"><span class="dot" style="background:#E8604C"></span><span class="nm">港铁</span><span class="sb">固定车站 / 看月台</span></button>
+    <button class="vehbtn" type="button" data-v="bus"><span class="dot" style="background:#5B9DE0"></span><span class="nm">专营巴士</span><span class="sb">固定路线 / 站位编号</span></button>
+    <button class="vehbtn" type="button" data-v="green"><span class="dot" style="background:#4DE2C0"></span><span class="nm">绿 Van</span><span class="sb">固定路线 / 班次 / 收费</span></button>
+    <button class="vehbtn" type="button" data-v="red"><span class="dot" style="background:#FFA45C"></span><span class="nm">红 Van</span><span class="sb">非固定路线</span></button>
   </div>
   <div id="vehinfo" aria-live="polite"></div>
-  <p class="srcnote">分類依據：運輸署「小巴」專頁——綠色專線小巴按固定路線、班次和收費提供服務；紅色小巴行走非固定路線，其服務路線、班次及收費等營運安排毋須經運輸署審批。連結見第五節，以官方最新公布為準。</p>
+  <p class="panel-note">分类依据：运输署「小巴」专页 —— 绿色专线小巴按固定路线、班次和收费提供服务；红色小巴行走非固定路线，其服务路线、班次及收费等营运安排毋须经运输署审批。以官方最新公布为准。</p>
 </section>
 
-<!-- 4 -->
-<section>
-  <h2><span class="tagno">04</span>第一次帶孩子走 · 核對清單</h2>
-  <p class="lead">出發前勾一遍，走完再回來看。可以複製成文字發給同行的家人。</p>
+<section class="pane card" id="pane-list">
+  <h3>出发前，走一遍这 6 条</h3>
+  <p class="desc">勾一遍，走完再回来看。可以复制成文字发给同行的家人。</p>
   <div class="bar"><i id="barFill"></i></div>
-  <p class="bartext" id="barText">已完成 0 / 8 項</p>
-  <ul class="checklist" id="checklist"></ul>
+  <p class="bartext" id="barText">已完成 0 / 6 项</p>
+  <ul class="clist" id="clist"></ul>
   <div class="acts">
-    <button class="btn sm ghost" id="btnCopy" type="button">複製成文字</button>
-    <button class="btn sm ghost" id="btnClear" type="button">清除勾選</button>
+    <button type="button" id="btnCopy">复制成文字</button>
+    <button type="button" id="btnClear">清除勾选</button>
   </div>
-  <p class="hint">勾選狀態只存在你這台裝置的瀏覽器裡，不上傳、不需要登入；換裝置或清掉瀏覽器資料就會重置。清單不含任何地址、學校或行程資料。</p>
+  <p class="panel-note">勾选状态只存在这台设备的浏览器里，不上传、不登录。清单不含地址、学校或固定行程。</p>
 </section>
 
-<!-- 5 -->
-<section>
-  <h2><span class="tagno">05</span>要查真資料，去這幾個地方</h2>
-  <p class="lead">方法看這頁，資料看官方。以下為 2026-11-14 核實過的官方頁面；連結如失效，請由運輸署官網進入。</p>
-  <table>
-    <thead><tr><th>想確認什麼</th><th>去哪裡查</th><th>備註</th></tr></thead>
-    <tbody>
-      <tr>
-        <td>點到點路線、轉車、口岸交通資訊</td>
-        <td>運輸署「香港出行易」網頁版<br><a href="https://www.hkemobility.gov.hk/tc/route-search/pt" target="_blank" rel="noopener">hkemobility.gov.hk /tc/route-search/pt</a></td>
-        <td>官方點到點出行規劃；具備口岸實況，提供過境輪候狀況、口岸交通及公共交通資訊</td>
-      </tr>
-      <tr>
-        <td>這個 App 到底涵蓋哪些交通工具</td>
-        <td>政府一站通「香港出行易」<br><a href="https://www.gov.hk/tc/residents/transport/publictransport/hketransport.htm" target="_blank" rel="noopener">gov.hk /tc/residents/transport/publictransport/hketransport.htm</a></td>
-        <td>官方列明涵蓋港鐵、輕鐵、專營巴士、專線小巴、電車、渡輪、前往落馬洲／皇崗的過境巴士等；亦有陸上口岸交通運輸資訊</td>
-      </tr>
-      <tr>
-        <td>功能與口岸實況說明</td>
-        <td>運輸署「香港出行易」介紹頁<br><a href="https://www.td.gov.hk/tc/public_services/hong_kong_emobility/index.html" target="_blank" rel="noopener">td.gov.hk /tc/public_services/hong_kong_emobility/</a></td>
-        <td>官方列出點到點出行規劃、即時到站資訊、口岸實況等功能</td>
-      </tr>
-      <tr>
-        <td>紅 Van 為什麼查不到固定路線</td>
-        <td>運輸署「小巴」專頁<br><a href="https://www.td.gov.hk/tc/transport_in_hong_kong/public_transport/minibuses/?print=1" target="_blank" rel="noopener">td.gov.hk /tc/transport_in_hong_kong/public_transport/minibuses/</a></td>
-        <td>官方說明紅色小巴行走非固定路線、綠色專線小巴按固定路線班次收費服務</td>
-      </tr>
-      <tr>
-        <td>站位座標、方向、對面站、專線小巴路線資料</td>
-        <td>香港開放資料平台<br><a href="https://data.gov.hk/" target="_blank" rel="noopener">data.gov.hk</a> <span class="small">（於站內搜尋「專線小巴路線」「巴士站位」）</span></td>
-        <td>官方開放資料，進階查證用；資料定期更新，使用前請看該資料集的更新說明</td>
-      </tr>
-    </tbody>
-  </table>
-  <p class="srcnote">本頁為家長自行整理的<b>非官方</b>資料，未使用上述資料集內的任何路線、站位或班次數字；引用的是官方對規則的說明。平台規則與法規以最新公布為準，本頁不作法律定論。</p>
-</section>
-
-<!-- 6 -->
-<section>
-  <h2><span class="tagno">06</span>幾個容易踩的坑</h2>
-  <div class="pits">
-    <div class="pit"><h4>同一個站名，馬路兩邊各有一個</h4><p>站名是用來認地方，不是用來認方向。<b>先看「往」</b>，再看車頭目的地牌，最後才決定要不要過馬路。</p></div>
-    <div class="pit"><h4>路線號一樣，方向不一定一樣</h4><p>同一個號碼可能有去程、回程、特別班次。<b>號碼對上不等於方向對上</b>，終點站才是關鍵。</p></div>
-    <div class="pit"><h4>循環線可能沒有「回程」</h4><p>找不到回程方向時，先別以為自己站錯邊，<b>確認這條是不是循環線</b>，或是不是有特別班次安排。</p></div>
-    <div class="pit"><h4>紅 Van 查不到，不是你不會查</h4><p>按運輸署說明，紅色小巴行走非固定路線，路線、班次、收費毋須審批。<b>這類車本來就要靠問</b>，上車前問司機比較穩。</p></div>
+<section class="pane card" id="pane-src">
+  <h3>这页能给什么，不能给什么</h3>
+  <p class="desc">方法是这页的，资料是官方的。以下为 2026-11-14 核实过的官方页面。</p>
+  <div class="srcgrid">
+    <div class="srcitem"><h4>点到点路线 / 口岸交通</h4><p>运输署「香港出行易」网页版，具点到点出行规划与口岸实况。<br><a href="https://www.hkemobility.gov.hk/tc/route-search/pt" target="_blank" rel="noopener">hkemobility.gov.hk/tc/route-search/pt</a></p></div>
+    <div class="srcitem"><h4>涵盖哪些交通工具</h4><p>政府一站通「香港出行易」说明页，列明涵盖港铁、专营巴士、专线小巴、过境巴士等。<br><a href="https://www.gov.hk/tc/residents/transport/publictransport/hketransport.htm" target="_blank" rel="noopener">gov.hk /tc/residents/transport/publictransport/</a></p></div>
+    <div class="srcitem"><h4>红 Van 为什么查不到固定路线</h4><p>运输署「小巴」专页，说明红 Van 非固定路线、绿 Van 按固定路线班次收费服务。<br><a href="https://www.td.gov.hk/tc/transport_in_hong_kong/public_transport/minibuses/?print=1" target="_blank" rel="noopener">td.gov.hk /tc/transport_in_hong_kong/public_transport/minibuses/</a></p></div>
+    <div class="srcitem"><h4>进阶：站位 / 方向 / 对面站</h4><p>香港开放资料平台，站内有巴士站位与专线小巴路线资料。<br><a href="https://data.gov.hk/" target="_blank" rel="noopener">data.gov.hk</a></p></div>
   </div>
-  <div class="relate" style="margin-top:16px">
-    <b>跟工具 04 的關係：</b>工具 04「口岸通勤時間試算」算的是鐵路口岸按港鐵站數與落站步行的<b>推算值</b>；四個公路口岸目前沒有接駁數據，頁面上已註明需要實走採集。這頁不補那些數字，補的是「到了現場該怎麼看」。實走一次記下來的時間，通常比推算可靠。
+  <div class="boundary">
+    <b>边界说清楚：</b>本页是家长自行整理的非官方资料，用交互演示只教判断方法。不画路线图、不给路线号、站数、班次、收费、即时到站，也不估算几分钟到；图里所有站位、车、方向都是示意，不代表任何真实路口。不贬低任何商业地图产品，也不评价学校、校网或地区好坏。一切以运输署、各营办商最新公布与现场站牌为准，本页不作法律定论。
+  </div>
+  <div class="srcitem" style="margin-top:16px">
+    <h4>关于真实照片（待实拍替换）</h4>
+    <p>四张车卡目前是 SVG 示意图，容器已留好「照片位」。<b>已选定改用自己拍的照片</b>，照片到位后把容器里的 SVG 换成图片标签即可，布局与交互不用改；届时本页「示意数据」的声明与来源标注也要同步改。<b>当前页面没有放任何真实照片</b>：网上图片有版权，AI 生成图不能冒充「在香港拍的照片」，站牌特写还会带进真实路线号与站名，都要先核来源与授权。</p>
   </div>
 </section>
 
-</main>
+</div>
 
 <footer>
   <div class="fx">
-    資料來源：香港運輸署「香港出行易」與「小巴」專頁、政府一站通「香港出行易」說明頁、data.gov.hk（均為官方，2026-11-14 核實，連結見第五節）。<br>
-    免責聲明：本頁為家長自行整理之非官方資料，只提供判斷方法，不提供路線、站位、班次、收費或即時交通資訊，不構成交通或擇校建議；一切以運輸署、各營辦商最新公布及現場站牌為準，出行決定與後果由家長自行承擔。<br>
-    本站免費、無廣告、免註冊；核對清單只存放於本機瀏覽器，不上傳、不收集個人資料。我們不評價任何學校、校網或地區的好壞。<br>
-    有想加的工具、發現說明有錯，來小紅書找我們最方便：<a class="xhs" href="https://www.xiaohongshu.com/search_result?keyword=183236193" target="_blank" rel="noopener">去小紅書聊聊</a><br>
-    <span id="busuanzi_container_page_pv" style="display:none">本頁訪問 <span id="busuanzi_page_pv">–</span> 次</span><span id="busuanzi_container_site_uv" style="display:none">&nbsp;· 本站訪客 <span id="busuanzi_site_uv">–</span> 人</span>
+    数据来源：运输署「香港出行易」与「小巴」专页、政府一站通「香港出行易」说明页、data.gov.hk（官方，2026-11-14 核实，链接见「边界与来源」）。页面车图与路口图为 CSS / SVG 绘制示意，非 AI 生成图片、非真实照片；已选定改用实拍自有照片，到位后替换。<br>
+    免责声明：本页为家长自行整理的非官方资料，只教判断方法，不提供路线、站位、班次、收费或即时交通资讯，不构成交通或择校建议；一切以运输署、各营办商最新公布与现场站牌为准，出行决定与后果由家长自行承担。<br>
+    本站免费、无广告、免注册；地址输入只在本页内存，不上传、不收集个人资料。我们也不评价任何学校、校网或地区的好坏。<br>
+    有想加的工具、发现说明有错，来小红书找我们最方便：<a class="xhs" href="https://www.xiaohongshu.com/search_result?keyword=183236193" target="_blank" rel="noopener">去小红书聊聊</a><br>
+    <span id="busuanzi_container_page_pv" style="display:none">本页访问 <span id="busuanzi_page_pv">–</span> 次</span><span id="busuanzi_container_site_uv" style="display:none">&nbsp;· 本站访客 <span id="busuanzi_site_uv">–</span> 人</span>
   </div>
 </footer>
+<script async src="https://jsd.dusays.com/npm/penndu@17.0.0/bsz.js"></script>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
 (function(){
   'use strict';
   var $ = function(s){ return document.querySelector(s); };
   var $$ = function(s){ return Array.prototype.slice.call(document.querySelectorAll(s)); };
-
-  /* ---------- 模塊 1 · 情境決定器 ---------- */
-  var PORT = {
-    none: '先別急著選車。過關後第一步是找口岸內的公共交通指示牌，看清楚各種車的上車區在哪裡，再決定要坐哪一種。',
-    rail: '出閘後先跟著港鐵的指示走，別在還沒看清指示前就跟著人流出站轉車。後面若要轉巴士或小巴，先找到交通指示牌標示的上車區。',
-    road: '公路口岸的接駁以車為主，上車區可能分散。先看口岸內的公共交通指示牌分區，再找你要搭那一種車的站位；沒有把握就問口岸職員。'
-  };
-  var VEH = {
-    none: '先做「三看」：看路線號、看車頭目的地、看站牌的「往」。三樣對得上才上車。',
-    mtr: '方向看月台指示與列車的目的地，不是看站名。上車前確認列車終點站是不是你要去的方向。',
-    bus: '站位有編號，站牌會列出路線號與「往」哪裡。去程和回程的站位常常在馬路兩邊，同一個站名不代表同一邊。',
-    green: '綠色專線小巴按固定路線、班次和收費服務，官方查得到。站牌看路線號與終點站，車頭目的地牌要和站牌的「往」一致。',
-    red: '紅色小巴行走非固定路線，官方沒有可查的固定路線資料。上車前先問司機到不到你要去的地方、收費多少；落車要預先講清楚。'
-  };
-  var STUCK = {
-    find: '先找「公共交通／巴士／小巴」指示牌，再看站位編號。站位編號比站名更能定位，因為同名站可能不止一個。',
-    side: '站名幫不了你，方向才幫得了你。先看站牌的「往」和車頭目的地；兩邊都有站的話，去程回程通常各站一邊。確認前不要過馬路。',
-    bound: '看「往」後面的終點站是不是你要去的方向；同一個路線號可能有去程、回程、特別班次，號碼一樣不等於方向一樣。循環線可能只有一個方向，沒有「回程」。',
-    van: '先分顏色：綠色是專線小巴，按固定路線、班次、收費服務，官方查得到；紅色是非固定路線，要口頭問清楚。分完再決定要不要上車。',
-    first: '先把第四節的核對清單走一遍，特別是落車點叫什麼名字、以及跟孩子講好走散時怎麼辦。實走一次比在網上查可靠。'
-  };
-  var PORT_LABEL = {none:'還沒確定哪一類口岸', rail:'鐵路口岸（出閘接港鐵）', road:'公路口岸（要靠車接駁）'};
-  var VEH_LABEL  = {none:'還沒確定車種', mtr:'港鐵', bus:'專營巴士', green:'綠色專線小巴', red:'紅色小巴'};
-  var STUCK_LABEL= {find:'找不到上車的地方', side:'分不清馬路兩邊', bound:'分不清去程回程', van:'不敢坐小巴', first:'第一次帶孩子走'};
-
-  $('#btnGo').addEventListener('click', function(){
-    var p = $('#pPort').value, v = $('#pVeh').value, s = $('#pStuck').value;
-    $('#rWho').textContent = '你選的是：' + PORT_LABEL[p] + ' ／ ' + VEH_LABEL[v] + ' ／ 卡在「' + STUCK_LABEL[s] + '」';
-    var steps = [PORT[p], VEH[v], STUCK[s],
-      '出發前先用第五節的官方入口查一次點到點路線，把要搭的車種和在哪裡轉車抄下來；不用抄即時時間，現場會變。',
-      '到了現場，先找站牌、再對車頭、最後才決定站哪一邊。順序反過來，就容易在馬路兩邊來回跑。'];
-    var ol = $('#rSteps');
-    ol.innerHTML = '';
-    steps.forEach(function(t){
-      var li = document.createElement('li');
-      li.textContent = t;
-      ol.appendChild(li);
+  var toastTimer;
+  function toast(msg, warm){
+    var t = $('#toast'); t.textContent = msg;
+    t.classList.toggle('warm', !!warm); t.classList.add('on');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ t.classList.remove('on'); }, 3200);
+  }
+  function esc(s){
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  }
+  function short(v, n){ v = String(v || '').trim(); return v.length > n ? v.slice(0,n) + '…' : v; }
+  function segInit(sel, cb){
+    var box = $(sel);
+    box.addEventListener('click', function(e){
+      var b = e.target.closest('button'); if(!b) return;
+      Array.prototype.slice.call(box.querySelectorAll('button')).forEach(function(x){ x.classList.remove('on'); });
+      b.classList.add('on'); cb(b.getAttribute('data-v'));
     });
-    $('#result').classList.add('on');
+  }
+  function setStatus(html, cls){
+    $status.className = 'status' + (cls ? ' ' + cls : '');
+    $status.innerHTML = html;
+  }
+
+  /* ---------- 状态 ---------- */
+  var state = { from:'', to:'', dir:'go', veh:'bus', running:false, answered:false, side:'top', red:false };
+  var $status = $('#status');
+
+  function labels(){
+    return {
+      from: state.from.trim() || '口岸',
+      to:   state.to.trim()   || '学校'
+    };
+  }
+  function dstLabel(){ var l = labels(); return state.dir === 'go' ? l.to : l.from; }
+  function otherLabel(){ var l = labels(); return state.dir === 'go' ? l.from : l.to; }
+  function sideName(s){ return s === 'top' ? '马路上侧' : '马路下侧'; }
+
+  function refreshPreview(){
+    var l = labels();
+    var a = state.from.trim() ? short(l.from,12) : '（还没填起点）';
+    var b = state.to.trim() ? short(l.to,12) : '（还没填目的地）';
+    $('#routePreview').innerHTML = '这一趟：<b>' + esc(a) + '</b> → <b>' + esc(b) + '</b>　·　' +
+      (state.dir === 'go' ? '去程（去学校）' : '回程（回口岸）');
+    /* 两条车道的方向是固定的：上侧往学校、下侧往口岸，不随这一趟的去回程翻转 */
+    var toS = short(l.to,6), fromS = short(l.from,6);
+    $('#laneTop').textContent = '往 ' + toS + ' · 车道';
+    $('#laneBottom').textContent = '往 ' + fromS + ' · 车道';
+    $('#stopTopSub').textContent = '站牌：往 ' + toS + ' →';
+    $('#stopBottomSub').textContent = '站牌：← 往 ' + fromS;
+    /* 只有「这一趟车」的站牌会随去程／回程变 */
+    if(!state.running) $('#boardDest').textContent = '往 ▸ ' + short(dstLabel(),6);
+  }
+
+  ['inpFrom','inpTo'].forEach(function(id){
+    $('#'+id).addEventListener('input', function(e){
+      state[id === 'inpFrom' ? 'from' : 'to'] = e.target.value;
+      refreshPreview();
+    });
+  });
+  $('#btnDemo').addEventListener('click', function(){
+    $('#inpFrom').value = '口岸（示意）'; $('#inpTo').value = '学校（示意）';
+    state.from = '口岸（示意）'; state.to = '学校（示意）';
+    refreshPreview(); toast('已填入示意值，可以往下走了');
+  });
+  $('#btnEmpty').addEventListener('click', function(){
+    $('#inpFrom').value = ''; $('#inpTo').value = '';
+    state.from = ''; state.to = ''; refreshPreview();
+  });
+  $('#btnNext').addEventListener('click', function(){
+    $('#step2').scrollIntoView({ behavior:'smooth', block:'start' });
+    $('#step2').classList.add('active'); $('#step1').classList.remove('active');
+    toast('第 2 步：选车种，点开始模拟');
+  });
+  segInit('#segDir', function(v){ state.dir = v; refreshPreview(); if(state.running) run(); });
+  segInit('#segVeh', function(v){ state.veh = v; if(state.running) run(); });
+
+  /* ---------- SVG 状态 ---------- */
+  function resetCars(){
+    ['#carA','#carB'].forEach(function(id){
+      var c = $(id);
+      c.classList.remove('run','hidden');
+      c.style.transition = 'none'; c.style.transform = 'translateX(0)';
+      c.getBoundingClientRect();
+      c.style.transition = '';
+    });
+  }
+  function paintStops(mode){
+    var t = $('#stopTop'), b = $('#stopBottom');
+    t.classList.remove('hot','dim'); b.classList.remove('hot','dim');
+    if(mode === 'top'){ t.classList.add('hot'); b.classList.add('dim'); }
+    if(mode === 'bottom'){ b.classList.add('hot'); t.classList.add('dim'); }
+    if(mode === 'none'){ t.classList.add('dim'); b.classList.add('dim'); }
+  }
+  function enableQuiz(on){ $('#ansTop').disabled = !on; $('#ansBottom').disabled = !on; }
+  function resetResult(){
+    $('#result').classList.remove('on','warm');
+    $('#empty3').style.display = '';
+    $('#quiz').style.display = 'none';
+    $('#answers').style.display = '';
+    $('#quizPrompt').textContent = '点一下你觉得自己该站的位置，也可以直接点图里的站位。';
+    enableQuiz(false);
+  }
+  function markSteps(n){
+    $('#step1').classList.toggle('active', n === 1);
+    $('#step2').classList.toggle('active', n === 2);
+    $('#step3').classList.toggle('active', n === 3);
+  }
+
+  /* ---------- ② 开始模拟 ---------- */
+  function run(){
+    state.running = true; state.answered = false; state.red = false;
+    resetCars(); resetResult(); markSteps(2);
+    var toGo = state.dir === 'go';
+    state.side = toGo ? 'top' : 'bottom';
+    var d = short(dstLabel(),6);
+    $('#boardGroup').style.opacity = '1';
+    $('#boardDest').textContent = '往 ▸ ' + d;
+    $('#boardDest').style.fill = toGo ? '#4DE2C0' : '#FFA45C';
+
+    /* 红 Van 走另一套规则 */
+    if(state.veh === 'red'){
+      state.red = true; state.answered = true;
+      $('#carA').classList.add('hidden'); $('#carB').classList.add('hidden');
+      paintStops('none'); $('#boardGroup').style.opacity = '.35';
+      setStatus('<b>红 Van 没有固定站位。</b>按运输署说明，它行走非固定路线 —— 这一步不是「选哪一边」，而是上车前先问司机。', 'bad');
+      $('#empty3').style.display = 'none';
+      $('#quiz').style.display = 'block'; enableQuiz(false);
+      $('#quizPrompt').textContent = '红 Van 不适用「站哪边」，结论直接给：';
+      showResult(null, true);
+      markSteps(3);
+      toast('红 Van：先问司机，不是选边', true);
+      return;
+    }
+
+    var runCar = toGo ? $('#carA') : $('#carB');
+    var idleCar = toGo ? $('#carB') : $('#carA');
+    runCar.classList.add('run'); idleCar.classList.add('hidden');
+    paintStops(null);
+    setStatus('<b>车往「' + esc(d) + '」开。</b>先看车头目的地牌，再对站牌上的「往」—— 两个说的是同一个地方，才轮到判断该站哪一边。', '');
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){
+        runCar.style.transform = toGo ? 'translateX(300px)' : 'translateX(-300px)';
+      });
+    });
+    setTimeout(function(){
+      if(!state.running || state.answered) return;
+      setStatus('<b>轮到第 3 步了。</b>马路两边都叫「同名站 ○○」，站名分不出方向。到第 3 步点一下你该站的位置。', '');
+      $('#empty3').style.display = 'none';
+      $('#quiz').style.display = 'block';
+      enableQuiz(true); markSteps(3);
+      $('#step3').scrollIntoView({ behavior:'smooth', block:'nearest' });
+    }, 1150);
+    toast('模拟开始：注意车头方向');
+  }
+
+  /* ---------- ③ 结果 ---------- */
+  function showResult(side, red){
+    var r = $('#result'), warm = false, verdict, why;
+    if(red){
+      warm = true;
+      verdict = '这趟不是选边，是先问司机';
+      why = '<b>因为红 Van 没有固定站位。</b>运输署说明它行走非固定路线，服务路线、班次及收费等营运安排毋须经运输署审批 —— 所以没有「去程站这边、回程站那边」可查。上车前问司机到不到「' + esc(short(dstLabel(),10)) + '」，讲清楚在哪里下车。';
+    } else if(side === state.side){
+      verdict = '站对了 · 你该站在' + sideName(state.side);
+      why = '<b>同名站在马路两边各有一个，站名不能判方向。</b>这一趟车往「' + esc(short(dstLabel(),10)) + '」开，所以看站牌的「往」和车头目的地牌，而不是看站名。';
+    } else {
+      warm = true;
+      verdict = '站错边了 · 应该站' + sideName(state.side);
+      why = '<b>你选的那边，车是往「' + esc(short(otherLabel(),10)) + '」开的。</b>站名一样，方向不一样。回到第 2 步：先看站牌的「往」，再看车头目的地牌，最后才决定要不要过马路。';
+    }
+    r.classList.toggle('warm', warm);
+    $('#verdict').textContent = verdict;
+    $('#why').innerHTML = why;
+    $('#answers').style.display = 'none';
+    $('#resultCheck').innerHTML = red
+      ? '<b>上车前先问清楚这三件：</b><br>① 这趟车到不到「' + esc(short(dstLabel(),8)) + '」；<br>② 收费多少、怎么付；<br>③ 预先讲清楚在哪里下车。<br>红 Van 没有固定站位，别拿「站哪边」去套。'
+      : '<b>过马路前先确认这三件：</b><br>① 站牌上「往」后面的地方，是不是你要去的方向；<br>② 车头的目的地牌，是不是同一个地方；<br>③ 站位编号 / 站序，是不是对应这个方向。<br>三样对不上，先别上车，也先别过马路。';
+    r.classList.add('on');
+    state.resultText = [
+      '口岸接驳 · 这一趟的判断',
+      '起点：' + labels().from,
+      '目的地：' + labels().to,
+      '方向：' + (state.dir === 'go' ? '去程（去学校）' : '回程（回口岸）'),
+      '车种：' + (state.red ? '红 Van' : state.veh === 'green' ? '绿 Van' : '专营巴士'),
+      '结论：' + verdict,
+      '',
+      '判断要点：' + (state.red
+        ? '红 Van 无固定站位，上车前问司机到不到、收费多少、在哪里下车。'
+        : '过马路前先确认 ① 站牌「往」是不是你要去的方向 ② 车头目的地牌是不是同一个地方 ③ 站位编号／站序是不是对应这个方向。'),
+      '方法整理：香港择校工具超市 · 工具 06（非官方整理）；路线／站位／班次／收费请以运输署「香港出行易」与现场站牌为准。'
+    ].join('\n');
+  }
+  function answer(side){
+    if(!state.running || state.answered || state.red) return;
+    state.answered = true; enableQuiz(false);
+    paintStops(state.side);
+    $('#quizPrompt').textContent = '你选了：' + sideName(side) + '。结论在下面。';
+    showResult(side, false);
+    if(side === state.side) toast('站对了 · 方向看「往」，不看站名');
+    else toast('站错边了 · 看「往」后面的终点站', true);
+  }
+
+  $('#btnRun').addEventListener('click', run);
+  $('#btnReset').addEventListener('click', function(){
+    state.running = false; state.answered = false; state.red = false;
+    resetCars(); paintStops(null); resetResult(); markSteps(1);
+    $('#boardGroup').style.opacity = '1';
+    $('#boardDest').style.fill = '#4DE2C0';
+    refreshPreview();
+    setStatus('先在第 1 步填两个地方（或点「填入示意值」），再回来点「开始模拟」。', '');
+  });
+  $('#ansTop').addEventListener('click', function(){ answer('top'); });
+  $('#ansBottom').addEventListener('click', function(){ answer('bottom'); });
+  $('#stopTop').addEventListener('click', function(){ answer('top'); });
+  $('#stopBottom').addEventListener('click', function(){ answer('bottom'); });
+  $('#stopTop').addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); answer('top'); } });
+  $('#stopBottom').addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); answer('bottom'); } });
+  $('#btnCopyResult').addEventListener('click', function(){
+    var text = state.resultText || '';
+    function ok(){ toast('结论已复制'); $('#btnCopyResult').textContent = '已复制 ✓'; setTimeout(function(){ $('#btnCopyResult').textContent = '复制这段结论'; }, 2200); }
+    function fallback(){
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); ok(); } catch(e) { toast('复制失败，请手动选取', true); }
+      document.body.removeChild(ta);
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(ok, fallback);
+    } else { fallback(); }
+  });
+  markSteps(1); refreshPreview();
+
+  /* ---------- 2.1 车种识别 ---------- */
+  var RECOG = {
+    bus:{nm:'专营巴士', how:'车身大、双层或单层大巴，车头有路线号牌与目的地；站位有站牌和站位编号。', next:'接下来看：站牌的「往」＋车头目的地牌；去回程站位常在马路两边。'},
+    green:{nm:'绿 Van（绿色专线小巴）', how:'车顶绿色是常见的分辨点，站牌有路线号、终点站与「往」；按固定路线、班次和收费服务。', next:'接下来看：路线号＋终点站＋车头目的地牌，三者对上才上车。'},
+    red:{nm:'红 Van（红色小巴）', how:'车顶红色，车头水牌写起讫点；按运输署说明它行走非固定路线，没有可查的固定路线资料。', next:'接下来看：别找站位，上车前直接问司机到不到、收费多少、在哪里下车。'},
+    mtr:{nm:'港铁', how:'不是路面车，进站后看月台指示与列车终点站，没有「站马路哪一边」这个问题。', next:'接下来看：月台方向＋列车终点站；下面的模拟器是路面车专用。'}
+  };
+  var quiz = { on:false, picked:null };
+  var $rinfo = $('#rinfo');
+  $$('.carcard').forEach(function(c){ c.dataset.nm = c.querySelector('.nm').textContent; });
+  function rinfo(html, warm){
+    $rinfo.className = 'rinfo' + (warm ? ' warm' : '');
+    $rinfo.innerHTML = html;
+  }
+  function clearCards(){ $$('.carcard').forEach(function(c){ c.classList.remove('on','picked','wrong'); }); }
+  function showRecognize(k){
+    var o = RECOG[k];
+    clearCards();
+    var card = $('.carcard[data-car="'+k+'"]');
+    if(card) card.classList.add('on');
+    rinfo('<b>' + o.nm + ' · 怎么认：</b>' + o.how + '<br><b>' + o.next + '</b>');
+    if(k === 'mtr'){ toast('港铁看月台，不适用「站马路哪一边」', true); return; }
+    var btn = $('#segVeh button[data-v="'+k+'"]');
+    if(btn){
+      Array.prototype.slice.call($('#segVeh').querySelectorAll('button')).forEach(function(x){ x.classList.remove('on'); });
+      btn.classList.add('on'); state.veh = k;
+      if(state.running) run();
+      toast('已带入模拟器：' + o.nm);
+    }
+  }
+  $$('.carcard').forEach(function(card){
+    card.addEventListener('click', function(){
+      var k = card.getAttribute('data-car');
+      if(quiz.on){
+        quiz.picked = k;
+        clearCards(); card.classList.add('picked');
+        $('#quizOpts').classList.add('on');
+        rinfo('选好这张图了。下面点一个名字，看认得对不对。', true);
+      } else { showRecognize(k); }
+    });
+  });
+  $('#btnQuiz').addEventListener('click', function(){
+    quiz.on = !quiz.on; quiz.picked = null;
+    this.classList.toggle('on', quiz.on);
+    this.textContent = quiz.on ? '退出测验，显示名字' : '遮住名字测一下';
+    clearCards(); $('#quizOpts').classList.remove('on');
+    $$('.carcard').forEach(function(c){
+      c.querySelector('.nm').textContent = quiz.on ? '？' : c.dataset.nm;
+      c.querySelector('.tip').style.display = quiz.on ? 'none' : '';
+    });
+    rinfo(quiz.on
+      ? '<b>测验模式：</b>名字先遮住。点一张车图，再在下面选它是哪一种车。'
+      : '点一张车卡，看它靠哪几个特征认出来。');
+  });
+  $$('#quizOpts button').forEach(function(b){
+    b.addEventListener('click', function(){
+      if(!quiz.on || !quiz.picked) return;
+      var guess = b.getAttribute('data-q'), real = quiz.picked;
+      var card = $('.carcard[data-car="'+real+'"]');
+      card.classList.remove('picked');
+      card.querySelector('.nm').textContent = card.dataset.nm;
+      $('#quizOpts').classList.remove('on');
+      if(guess === real){
+        card.classList.add('on');
+        rinfo('<b>认对了，这是' + RECOG[real].nm + '。</b>' + RECOG[real].how);
+        toast('认对了 · ' + RECOG[real].nm);
+      } else {
+        card.classList.add('wrong','on');
+        rinfo('<b>不对，这张是' + RECOG[real].nm + '（你选了' + RECOG[guess].nm + '）。</b>' + RECOG[real].how, true);
+        toast('认错了 · 看这一个特征', true);
+      }
+      quiz.picked = null;
+    });
   });
 
-  /* ---------- 模塊 2 · 站牌解讀 ---------- */
+  /* ---------- Tabs ---------- */
+  $$('.tabs button').forEach(function(b){
+    b.addEventListener('click', function(){
+      $$('.tabs button').forEach(function(x){ x.classList.remove('on'); });
+      b.classList.add('on');
+      $$('.pane').forEach(function(p){ p.classList.remove('on'); });
+      $('#pane-' + b.getAttribute('data-p')).classList.add('on');
+    });
+  });
+
+  /* ---------- 站牌解码 ---------- */
   var SIGN = {
-    route: {t:'路線號', d:'用來認「哪一條線」，不是用來認方向。同一個號碼可能同時有去程、回程、特別班次，號碼對上只完成第一步。', todo:'把它抄下來，再去官方入口查這條線有幾個方向、有沒有循環線或特別班次。'},
-    dest:  {t:'「往 ▸」後面的終點站', d:'這一行才是判斷方向的關鍵。它寫的是這部車最後到哪裡，不是你要在哪一站下車。車頭的目的地牌應該和它一致。', todo:'問自己一句：這個終點站，是不是在我要去的那個方向？不是就別上車，也別急著過馬路。'},
-    stop:  {t:'本站站名', d:'用來認地方，不能用來認方向。同一個站名在馬路兩邊各有一個，是常見情況；光看站名，無法判斷自己站對了沒有。', todo:'別靠站名定位，改看站位編號，或直接問站頭職員「往○○是不是這邊等」。'},
-    seq:   {t:'站位編號／站序', d:'官方資料用站位編號區分同名站；站序能告訴你，在這個方向上自己是第幾站。這兩項比站名更能精確定位。', todo:'對一下站牌上的方向與站序，確認這個站位屬於你要搭的那個方向。'},
-    fare:  {t:'班次與收費', d:'綠色專線小巴按固定路線、班次和收費服務，站牌或官方資料查得到。紅色小巴行走非固定路線，路線、班次及收費等營運安排毋須運輸署審批，本來就沒有固定資料可查。', todo:'綠色看站牌與官方；紅色上車前直接問司機收費多少、到不到目的地。本頁不提供任何收費數字。'},
-    arrow: {t:'方向標示／循環線／特別班次', d:'有「→」或「往」才是在講方向。循環線可能只列一個方向、沒有「回程」；特別班次可能只在某些時段行走。這幾種都會讓「找不到回程」看起來像站錯邊。', todo:'找不到回程方向時，先確認是不是循環線或特別班次，再決定要不要換到對面。'}
+    route:{t:'路线号',d:'用来认「哪一条线」，不是用来认方向。同一个号码可能同时有去程、回程、特别班次，号码对上只完成第一步。',todo:'抄下来，再去官方入口查这条线有几个方向、有没有循环线。'},
+    dest:{t:'「往 ▸」后面的终点站',d:'这一行才在讲方向。它写的是车最后到哪里，不是你要在哪一站下车。车头目的地牌要和它一致。',todo:'问自己：这个终点站是不是在我要去的方向？不是就别上车，也别急着过马路。'},
+    stop:{t:'本站站名',d:'用来认地方，不能用来认方向。同一个站名在马路两边各有一个很常见，光看站名判断不了自己站对没有。',todo:'别靠站名定位，改看站位编号，或直接问站头职员「往○○是不是这边等」。'},
+    seq:{t:'站位编号 / 站序',d:'官方资料用站位编号区分同名站；站序告诉你在这个方向上是第几站。这两项比站名更能精确定位。',todo:'对一下站牌上的方向与站序，确认这个站位属于你要搭的方向。'}
   };
   function showSign(k){
-    var o = SIGN[k];
-    if(!o) return;
-    var box = $('#signinfo');
+    var o = SIGN[k], box = $('#signinfo');
     box.innerHTML = '';
-    var h = document.createElement('h3'); h.textContent = o.t;
+    var h = document.createElement('h4'); h.textContent = o.t;
     var p = document.createElement('p'); p.textContent = o.d;
     var d = document.createElement('div'); d.className = 'todo';
-    var b = document.createElement('b'); b.textContent = '看懂了要做什麼：';
+    var b = document.createElement('b'); b.textContent = '看懂了要做什么：';
     d.appendChild(b); d.appendChild(document.createTextNode(' ' + o.todo));
     box.appendChild(h); box.appendChild(p); box.appendChild(d);
-    $$('.sign .row').forEach(function(el){ el.classList.toggle('active', el.getAttribute('data-k') === k); });
+    $$('.sign button').forEach(function(el){ el.classList.toggle('on', el.getAttribute('data-k') === k); });
   }
-  $$('.sign .row').forEach(function(el){
-    el.addEventListener('click', function(){ showSign(el.getAttribute('data-k')); });
-  });
+  $$('.sign button').forEach(function(el){ el.addEventListener('click', function(){ showSign(el.getAttribute('data-k')); }); });
   showSign('dest');
 
-  /* ---------- 模塊 3 · 四種車 ---------- */
-  var VEHICLES = {
-    mtr: {t:'港鐵', rows:[
-      ['有沒有固定路線','有，車站與月台固定。'],
-      ['官方查不查得到','查得到，官方點到點規劃涵蓋港鐵與輕鐵。'],
-      ['怎麼確認方向','看月台指示與列車目的地／終點站，不是看站名。'],
-      ['怎麼下車','按車站廣播與月台指示，到站下車。'],
-      ['帶孩子要注意','先講好在哪一站下車、下車後往哪個出口走；高峰期車廂擠，先上車再慢慢找位置不如一開始就站好。']
-    ]},
-    bus: {t:'專營巴士', rows:[
-      ['有沒有固定路線','有，路線、站位、站序都有官方資料。'],
-      ['官方查不查得到','查得到，官方點到點規劃與開放資料都有路線／站位／方向。'],
-      ['怎麼確認方向','看站牌的「往」＋車頭目的地牌；去程回程的站位常常分在馬路兩邊。'],
-      ['怎麼下車','留意報站，接近下車站時按鈴，在巴士站下車。'],
-      ['帶孩子要注意','先確認落車站名，上車後坐近下車門；不確定就上車時問司機一聲。']
-    ]},
-    green: {t:'綠色專線小巴', rows:[
-      ['有沒有固定路線','有。運輸署：綠色專線小巴按固定的路線、班次和收費提供服務。'],
-      ['官方查不查得到','查得到，官方點到點規劃涵蓋專線小巴，data.gov.hk 另有路線與站位資料。'],
-      ['怎麼確認方向','看站牌的路線號、終點站與「往」，再對車頭目的地牌。'],
-      ['怎麼下車','按鈴或預先向司機講要落車的站，以該路線現場做法為準。'],
-      ['帶孩子要注意','車廂細、座位有限，上車前先想好在哪裡落車；要講的站名先跟孩子對一次。']
-    ]},
-    red: {t:'紅色小巴', rows:[
-      ['有沒有固定路線','沒有。運輸署：紅色小巴行走非固定路線。'],
-      ['官方查不查得到','沒有可查的固定路線資料。運輸署說明其服務路線、班次及收費等營運安排毋須經運輸署審批。'],
-      ['怎麼確認方向','上車前直接問司機到不到你要去的地方；看車頭目的地牌作參考，但仍以司機答覆為準。'],
-      ['怎麼下車','要預先口頭講清楚在哪裡落車，不能只等報站。'],
-      ['帶孩子要注意','收費與落車位置都要上車前問明白。帶小孩第一次走，若同行有大人不熟這套做法，可先選有固定資料可查的車種。']
-    ]}
+  /* ---------- 四种车 ---------- */
+  var VEH = {
+    mtr:{t:'港铁',rows:[['有没有固定路线','有，车站与月台固定。'],['官方查不查得到','查得到，官方点到点规划涵盖港铁与轻铁。'],['怎么确认方向','看月台指示与列车目的地 / 终点站，不是看站名。'],['怎么下车','按车站广播与月台指示。'],['带孩子要注意','先讲好在哪站下车、走哪个出口；没有「站马路哪一边」这个问题。']]},
+    bus:{t:'专营巴士',rows:[['有没有固定路线','有，路线、站位、站序都有官方资料。'],['官方查不查得到','查得到，官方点到点规划与开放资料都有。'],['怎么确认方向','看站牌的「往」＋车头目的地牌；去回程站位常在马路两边。'],['怎么下车','留意报站，接近下车站时按铃。'],['带孩子要注意','先确认落车站名，上车后坐近下车门。']]},
+    green:{t:'绿 Van（绿色专线小巴）',rows:[['有没有固定路线','有。运输署：按固定路线、班次和收费提供服务。'],['官方查不查得到','查得到，官方点到点规划涵盖专线小巴。'],['怎么确认方向','看站牌路线号、终点站与「往」，再对车头目的地牌。'],['怎么下车','按铃或预先向司机讲要下车的站，以该路线现场做法为准。'],['带孩子要注意','车厢小、座位有限，上车前先想好在哪里下车。']]},
+    red:{t:'红 Van（红色小巴）',rows:[['有没有固定路线','没有。运输署：红色小巴行走非固定路线。'],['官方查不查得到','没有可查的固定路线资料，其服务路线、班次及收费等营运安排毋须经运输署审批。'],['怎么确认方向','上车前直接问司机到不到你要去的地方；车头牌只作参考。'],['怎么下车','要预先口头讲清楚在哪里下车，不能只等报站。'],['带孩子要注意','收费与下车位置都要上车前问明白；第一次走可先选有固定资料可查的车种。']]}
   };
   function showVeh(k){
-    var o = VEHICLES[k];
-    if(!o) return;
-    var box = $('#vehinfo');
+    var o = VEH[k], box = $('#vehinfo');
     box.innerHTML = '';
-    var h = document.createElement('h3'); h.textContent = o.t;
-    box.appendChild(h);
+    var h = document.createElement('h4'); h.textContent = o.t; box.appendChild(h);
     var dl = document.createElement('dl');
     o.rows.forEach(function(r){
       var dt = document.createElement('dt'); dt.textContent = r[0];
@@ -459,87 +1002,71 @@ footer .fx{border-top:1px solid var(--line);padding-top:14px}
       dl.appendChild(dt); dl.appendChild(dd);
     });
     box.appendChild(dl);
-    $$('.vehbtn').forEach(function(el){ el.classList.toggle('active', el.getAttribute('data-v') === k); });
+    $$('.vehbtn').forEach(function(el){ el.classList.toggle('on', el.getAttribute('data-v') === k); });
   }
-  $$('.vehbtn').forEach(function(el){
-    el.addEventListener('click', function(){ showVeh(el.getAttribute('data-v')); });
-  });
+  $$('.vehbtn').forEach(function(el){ el.addEventListener('click', function(){ showVeh(el.getAttribute('data-v')); }); });
   showVeh('mtr');
 
-  /* ---------- 模塊 4 · 核對清單 ---------- */
+  /* ---------- 清单 ---------- */
   var ITEMS = [
-    '出發前用官方入口查一次點到點路線，把要搭的車種、在哪裡轉車抄下來（不抄即時時間）',
-    '確認學校那一頭的落車點叫什麼名字，附近有沒有認得出的地標',
-    '到了口岸先看公共交通指示牌，找到對應車種的上車區',
-    '上車前核對三件事：路線號、車頭目的地牌、站牌的「往」',
-    '分清楚自己站的是去程還是回程那邊；不確定就先別過馬路，先問一句',
-    '如果坐小巴，先分綠色還是紅色；紅色上車前問清楚到不到、收費多少、在哪裡落車',
-    '先跟孩子講好萬一走散怎麼辦，約好留在原地找穿制服的職員',
-    '實走一次，把真正花的時間記下來；工具 04 的公路口岸接駁數據還在補，自己的紀錄比推算可靠'
+    '用官方入口查一次点到点路线，把车种和转车点抄下来（不抄即时时间）',
+    '确认学校那头的下车点叫什么名字，附近有没有认得出的地标',
+    '到了口岸先看公共交通指示牌，找到对应车种的上车区',
+    '上车前核对三件事：路线号、车头目的地牌、站牌的「往」',
+    '分清楚自己站的是去程还是回程那边；不确定就先别过马路，先问一句',
+    '如果坐小巴，先分绿 Van 还是红 Van；红 Van 上车前问清楚到不到、在哪里下车'
   ];
-  var KEY = 'transit-guide-checklist-v1';
-  var saved = {};
+  var KEY = 'transit-proto-checklist-v1', saved = {};
   try { saved = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch(e) { saved = {}; }
-
-  var ul = $('#checklist');
-  ITEMS.forEach(function(txt, i){
+  var ul = $('#clist');
+  ITEMS.forEach(function(txt,i){
     var li = document.createElement('li');
     var cb = document.createElement('input');
-    cb.type = 'checkbox'; cb.id = 'ck' + i; cb.checked = !!saved[i];
-    var lb = document.createElement('label');
-    lb.setAttribute('for', 'ck' + i); lb.textContent = txt;
+    cb.type = 'checkbox'; cb.id = 'ck'+i; cb.checked = !!saved[i];
+    var lb = document.createElement('label'); lb.setAttribute('for','ck'+i); lb.textContent = txt;
     li.appendChild(cb); li.appendChild(lb);
     if(cb.checked) li.classList.add('done');
     cb.addEventListener('change', function(){
-      li.classList.toggle('done', cb.checked);
-      saved[i] = cb.checked;
+      li.classList.toggle('done', cb.checked); saved[i] = cb.checked;
       try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch(e) {}
       updateBar();
     });
     ul.appendChild(li);
   });
   function updateBar(){
-    var n = $$('#checklist input:checked').length;
+    var n = $$('#clist input:checked').length;
     $('#barFill').style.width = (n / ITEMS.length * 100) + '%';
-    $('#barText').textContent = '已完成 ' + n + ' / ' + ITEMS.length + ' 項';
+    $('#barText').textContent = '已完成 ' + n + ' / ' + ITEMS.length + ' 项';
   }
   updateBar();
-
   $('#btnClear').addEventListener('click', function(){
-    $$('#checklist input').forEach(function(cb){ cb.checked = false; cb.parentNode.classList.remove('done'); });
-    saved = {};
-    try { localStorage.removeItem(KEY); } catch(e) {}
-    updateBar();
+    $$('#clist input').forEach(function(cb){ cb.checked = false; cb.parentNode.classList.remove('done'); });
+    saved = {}; try { localStorage.removeItem(KEY); } catch(e) {}
+    updateBar(); toast('已清除勾选');
   });
   $('#btnCopy').addEventListener('click', function(){
-    var n = 0;
-    var lines = ['口岸接駁 · 第一次帶孩子走核對清單', ''];
-    $$('#checklist input').forEach(function(cb, i){
+    var n = 0, lines = ['口岸接驳 · 出发前清单（工具 06）',''];
+    $$('#clist input').forEach(function(cb,i){
       lines.push((cb.checked ? '[✓] ' : '[ ] ') + ITEMS[i]);
       if(cb.checked) n++;
     });
-    lines.push('', '已完成 ' + n + ' / ' + ITEMS.length + ' 項', '',
-      '方法整理：香港擇校工具超市 · 工具 06 口岸接駁看懂指南（非官方整理）',
-      '路線／站位／班次／收費請以運輸署「香港出行易」與現場站牌為準。');
+    lines.push('', '已完成 ' + n + ' / ' + ITEMS.length + ' 项', '',
+      '方法整理：香港择校工具超市 · 工具 06（非官方整理）',
+      '路线 / 站位 / 班次 / 收费请以运输署「香港出行易」与现场站牌为准。');
     var text = lines.join('\n');
+    function ok(){ $('#btnCopy').textContent = '已复制 ✓'; toast('清单已复制成文字'); setTimeout(function(){ $('#btnCopy').textContent = '复制成文字'; }, 2200); }
     function fallback(){
       var ta = document.createElement('textarea');
       ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
       document.body.appendChild(ta); ta.select();
-      try { document.execCommand('copy'); $('#btnCopy').textContent = '已複製 ✓'; }
-      catch(e) { $('#btnCopy').textContent = '複製失敗，請手動選取'; }
+      try { document.execCommand('copy'); ok(); } catch(e) { toast('复制失败，请手动选取', true); }
       document.body.removeChild(ta);
-      setTimeout(function(){ $('#btnCopy').textContent = '複製成文字'; }, 2200);
     }
     if(navigator.clipboard && navigator.clipboard.writeText){
-      navigator.clipboard.writeText(text).then(function(){
-        $('#btnCopy').textContent = '已複製 ✓';
-        setTimeout(function(){ $('#btnCopy').textContent = '複製成文字'; }, 2200);
-      }, fallback);
+      navigator.clipboard.writeText(text).then(ok, fallback);
     } else { fallback(); }
   });
 })();
 </script>
-<script async src="https://jsd.dusays.com/npm/penndu@17.0.0/bsz.js"></script>
 </body>
 </html>
