@@ -1,0 +1,172 @@
+{
+  "meta": {
+    "updated": "2026-11-15",
+    "ver": "v2.1",
+    "verified": "2026-11-15 逐项复核：香港政府新闻公报、深圳市口岸办、运输署、公开口岸攻略、香港巴士大典",
+    "note": "口岸接驳与港铁网络数据。线路号、收费、班次、车程均标注公开来源；标 est 或「参考区间」者为按官方锚点／路径规划推算，非实测。2026-10-12 新皇岗启用后的口岸状态已同步。"
+  },
+  "sources": [
+    {"id": "immd", "name": "香港入境事务处 · 出入境管制站地点（办公时间／轮候提示）", "url": "https://www.immd.gov.hk/hks/contactus/control_points.html"},
+    {"id": "td_sw", "name": "香港运输署 · 前往深圳湾口岸（B2/B2P/B3/B3X/618 班次与收费）", "url": "https://www.td.gov.hk/sc/transport_in_hong_kong/land_based_cross_boundary_transport/access_to_shenzhen_bay_port/index.html"},
+    {"id": "mtr_head", "name": "港铁 · 服务时间／列车平均班次（东铁线分时段班次）", "url": "https://www.mtr.com.hk/ch/customer/services/train_service_index.html"},
+    {"id": "mtr_pr", "name": "港铁新闻稿 PR-23-008 · 罗湖／落马洲站列车服务班次", "url": "https://www.mtr.com.hk/archive/corporate/en/press_release/PR-23-008-C.pdf"},
+    {"id": "szpo", "name": "深圳市人民政府口岸办公室 · 跨境学童通关高峰时段 6:30-8:00", "url": "https://ka.sz.gov.cn/ztzl/yhkayshjrgcs/news/content/post_12357816.html"},
+    {"id": "qzx", "name": "趣择校 · 深圳跨境上学一天（过关 15-30 分／校巴分区车程）", "url": "https://www.quzexiao.com/hk/wiki/cross-border-school-day"},
+    {"id": "td_73k", "name": "运输署交通通告 · 九巴 73K 上水—文锦渡（2026-01-26 起）", "url": "https://www.td.gov.hk/filemanager/en/content_13/Traffic%20Advice_73K_wef%202026.01.26_Chi.pdf"},
+    {"id": "hk01_hg", "name": "香港01 · 新皇岗口岸 13 条巴士／小巴接驳路线", "url": "https://global.hk01.com/旅遊/60367003/"},
+    {"id": "trip_lt", "name": "Trip.com · 莲塘／香园围口岸巴士路线、服务时间与班次", "url": "https://hk.trip.com/blog/liantang-port-information-transpotation/"},
+    {"id": "trip_lo", "name": "Trip.com · 罗湖口岸东铁线车程锚点（金钟44／九龙塘36／沙田28／上水7 分）", "url": "https://hk.trip.com/guide/transport/羅湖口岸時間.html"},
+    {"id": "td_map", "name": "腾讯地图路径规划 · 口岸至港铁站分段步行／车程／换乘", "url": ""},
+    {"id": "gov_hg", "name": "香港政府新闻公报 · 皇岗口岸重建后的交通及运输安排（2026-10-07，B10–B15／78／短途跨境巴士路线表）", "url": "https://www.info.gov.hk/gia/general/202610/07/P2026100700238.htm"},
+    {"id": "szpo_hg", "name": "深圳市人民政府口岸办公室 · 皇岗口岸（2026-10-12 启用、落马洲管制站旅检暂停）", "url": "https://ka.sz.gov.cn/bmfw/katgfw/content/post_2287675.html"},
+    {"id": "trip_port", "name": "Trip.com · 深圳口岸 2026 八大口岸开放时间与 10-12 后安排", "url": "https://hk.trip.com/blog/shenzhen-entry-port"},
+    {"id": "trip_lmc", "name": "Trip.com · 落马洲口岸 2026（落马洲支线／福田口岸照常运作）", "url": "https://hk.trip.com/blog/lok-ma-chau-port/"},
+    {"id": "hksz_lt", "name": "港深生活 · 莲塘／香园围口岸 2026 五条巴士线收费与车程", "url": "https://hkszlife.com/article/liantang-heung-yuen-wai-checkpoint-guide"},
+    {"id": "trip_mkt", "name": "Trip.com · 文锦渡口岸 2026（73K 不进入管制站）", "url": "https://hk.trip.com/blog/man-kam-to-port/"},
+    {"id": "hkbus_73k", "name": "香港巴士大典 · 九巴 73K 线（16 分／HK$5.1／15-30 分一班）", "url": "https://hkbus.fandom.com/wiki/73K"}
+  ],
+  "peaks": [
+    {"id": "p0500", "t": "05:00", "label": "深夜／凌晨（仅新皇岗 24 小时）", "clear": 10, "wait": 1.0, "road": 1.0, "cls": "base", "note": "凌晨时段只有新皇岗口岸提供 24 小时旅检；其余口岸已关闭，深夜／凌晨班次只有通宵线与 24 小时跨境短途巴士。"},
+    {"id": "p0630", "t": "06:30", "label": "学童赴港高峰·早段", "clear": 20, "wait": 0.6, "road": 1.05, "cls": "hot", "note": "深圳市口岸办：6:30-8:00 为赴港高峰；学童专用通道分流，过关约 15-30 分。港铁早繁班次最密，等车最短。"},
+    {"id": "p0700", "t": "07:00", "label": "学童赴港高峰·最挤", "clear": 30, "wait": 0.6, "road": 1.10, "cls": "peak", "note": "周一最挤（多校 8:00 前升旗礼）。过关常 25-30 分；路面开始拥堵。"},
+    {"id": "p0730", "t": "07:30", "label": "学童高峰＋上班高峰", "clear": 25, "wait": 0.6, "road": 1.18, "cls": "peak", "note": "过关约 20-30 分；巴士路面受上班车流影响，车程按 +18% 估。"},
+    {"id": "p0800", "t": "08:00", "label": "高峰尾段", "clear": 18, "wait": 0.7, "road": 1.15, "cls": "warm", "note": "学童人流回落，上班车流仍高；过关约 15-20 分。"},
+    {"id": "p0830", "t": "08:30", "label": "早繁转平峰", "clear": 14, "wait": 0.9, "road": 1.08, "cls": "warm", "note": "港铁 7:00-9:30 仍属早繁，班次密；之后转疏。"},
+    {"id": "p0930", "t": "09:30", "label": "非繁忙（平峰基线）", "clear": 10, "wait": 1.0, "road": 1.0, "cls": "base", "note": "入境处绿灯口径 ≤15 分；港铁非繁忙 4-8 分一班，等车反而变长。"},
+    {"id": "p1630", "t": "16:30", "label": "返程／下班高峰", "clear": 20, "wait": 0.7, "road": 1.18, "cls": "warm", "note": "深圳口岸办：15:00-18:00 为学童返程高峰。"}
+  ],
+  "dayTypes": [
+    {"id": "wd", "label": "平日（周二至五）", "clear": 1.0, "road": 1.0, "note": "基准日型"},
+    {"id": "mon", "label": "星期一", "clear": 1.25, "road": 1.05, "note": "多校周一升旗礼要求 8:00 前到校，学童集中，通关排队 +25%"},
+    {"id": "we", "label": "周末／公众假期", "clear": 1.8, "road": 1.10, "note": "旅游旺季、假期及周末轮候明显较长（入境处）"},
+    {"id": "hol", "label": "长假期首尾两天", "clear": 3.0, "road": 1.20, "note": "假期首尾尖峰排队可达 1-2 小时，尽量避开"}
+  ],
+  "lines": [
+    {
+      "id": "eal", "name": "东铁线", "per": 3, "est": true,
+      "stops": ["罗湖", "上水", "粉岭", "太和", "大埔墟", "大学", "火炭", "沙田", "大围", "九龙塘", "旺角东", "红磡", "会展", "金钟"],
+      "cum": [0, 7, 10, 13, 16, 20, 23, 27, 30, 35, 37, 40, 42, 44],
+      "branch": {"落马洲": 0, "cumBranch": [0, 12, 15, 18, 21, 25, 28, 32, 35, 40, 42, 45, 47, 49]},
+      "note": "官方锚点：金钟→罗湖 44 分、九龙塘→罗湖 36 分、沙田→罗湖 28 分、上水→罗湖 7 分；落马洲→上水 12 分。中间站按锚点线性插值（est）。"
+    },
+    {
+      "id": "tml", "name": "屯马线", "per": 2.5, "est": true,
+      "stops": ["乌溪沙", "马鞍山", "恒安", "大水坑", "石门", "第一城", "沙田围", "车公庙", "大围", "显径", "钻石山", "启德", "宋皇台", "土瓜湾", "何文田", "红磡", "尖东", "柯士甸", "南昌", "美孚", "荃湾西", "锦上路", "元朗", "朗屏", "天水围", "兆康", "屯门"],
+      "note": "站间按 2.5 分估（est）；官方未逐站公布车程。"
+    },
+    {
+      "id": "ktl", "name": "观塘线", "per": 2, "est": true,
+      "stops": ["黄埔", "何文田", "油麻地", "旺角", "太子", "石硖尾", "九龙塘", "乐富", "黄大仙", "钻石山", "彩虹", "九龙湾", "牛头角", "观塘", "蓝田", "油塘", "调景岭"]
+    },
+    {
+      "id": "twl", "name": "荃湾线", "per": 2, "est": true,
+      "stops": ["中环", "金钟", "尖沙咀", "佐敦", "油麻地", "旺角", "太子", "深水埗", "长沙湾", "茘枝角", "美孚", "茘景", "葵芳", "葵兴", "大窝口", "荃湾"]
+    },
+    {
+      "id": "isl", "name": "港岛线", "per": 2, "est": true,
+      "stops": ["坚尼地城", "香港大学", "西营盘", "上环", "中环", "金钟", "湾仔", "铜锣湾", "天后", "炮台山", "北角", "鲗鱼涌", "太古", "西湾河", "筲箕湾", "杏花邨", "柴湾"]
+    },
+    {
+      "id": "tcl", "name": "东涌线", "per": 3, "est": true,
+      "stops": ["香港", "九龙", "奥运", "南昌", "茘景", "青衣", "东涌", "欣澳", "迪士尼"]
+    },
+    {
+      "id": "tkl", "name": "将军澳线", "per": 2.5, "est": true,
+      "stops": ["北角", "鲗鱼涌", "油塘", "调景岭", "将军澳", "坑口", "宝琳", "康城"]
+    },
+    {
+      "id": "sil", "name": "南港岛线", "per": 2.5, "est": true,
+      "stops": ["金钟", "海洋公园", "黄竹坑", "利东", "海怡半岛"]
+    },
+    {
+      "id": "ael", "name": "机场快线", "per": 3.5, "est": true,
+      "stops": ["香港", "九龙", "青衣", "机场", "博览馆"]
+    }
+  ],
+  "walkSpeed": 80,
+  "transferMin": 5,
+  "schoolBuf": 10,
+  "defaultWait": 10,
+  "ports": {
+    "lo": {
+      "label": "罗湖", "type": "rail", "hours": "06:30–00:00", "open": 390, "close": 1440,
+      "desc": "过关后联检大楼直通港铁东铁线罗湖站，无需接驳车。",
+      "entryWalk": 3, "entryNote": "入境大堂→东铁线罗湖站站台约 3 分（同楼，含闸机）",
+      "startStation": "罗湖", "startBranch": null,
+      "boards": [],
+      "clearSrc": "immd/szpo/qzx",
+      "tip": "东铁线金钟方向；往上水仅 1 站 7 分，是北区学校最省时的口岸。"
+    },
+    "lok": {
+      "label": "落马洲支线／福田口岸", "type": "rail", "hours": "06:30–22:30", "open": 390, "close": 1350,
+      "desc": "同一个口岸的两个叫法：香港侧是港铁东铁线落马洲站（落马洲支线管制站），深圳侧是福田口岸，中间由跨境行人桥连接。2026-10-12 新皇岗启用后本口岸照常运作，停用的是旧落马洲管制站与皇巴。",
+      "entryWalk": 3, "entryNote": "办完香港入境手续后→落马洲站站台约 3 分（同楼，含闸机）；深圳侧福田口岸过桥约 8 分属通关之前，已含在你填的完关时刻里，不重复计",
+      "startStation": "落马洲", "startBranch": "落马洲",
+      "boards": [],
+      "clearSrc": "immd/trip_lmc/trip_port",
+      "tip": "过桥与两地查验都在完关之前，不重复计。落马洲支线班次比罗湖疏（早繁约 5-12 分、平峰 9.5-12 分一班），等车要多留时间。"
+    },
+    "lt": {
+      "label": "莲塘／香园围", "type": "road", "hours": "07:00–22:00", "open": 420, "close": 1320,
+      "desc": "无港铁直达。过关后到香园围边境管制站公共运输交汇处搭巴士／专线小巴，先到上水、粉岭或大围等港铁站再转车。",
+      "entryWalk": 8, "entryNote": "入境大堂→巴士／小巴站台约 8 分（约 547 米，腾讯地图路径规划）",
+      "startStation": null, "startBranch": null,
+      "boards": [
+        {"route": "城巴 B7", "op": "城巴", "to": "上水（宝运路）", "hub": "上水", "ride": 25, "rideMax": 37, "stops": 2, "head": [8, 10], "fare": 11.3, "boardWalk": 8, "note": "经粉岭站 A2 出口，班次最密（繁忙 8-10 分一班）。公开资料车程 15-20 分（上水站起算）至约 37 分（全程），此处取 25 分并给 37 分上限作参考（est）。", "src": "trip_lt/hksz_lt/td_map"},
+        {"route": "专线小巴 59S", "op": "专线小巴", "to": "上水站", "hub": "上水", "ride": 36, "rideMax": 36, "stops": 17, "head": [3, 8], "fare": 9.9, "boardWalk": 8, "note": "最便宜、班次最密（3-8 分），但 17 站约 36 分；06:30–21:00（港深生活／腾讯地图）。", "src": "trip_lt/td_map"},
+        {"route": "城巴 B8", "op": "城巴", "to": "大围站", "hub": "大围", "ride": 60, "rideMax": 60, "stops": 1, "head": [20, 30], "fare": 18.1, "boardWalk": 8, "note": "经沙田市中心、大埔广福邨直达大围站，约 60 分；适合沙田／大埔学校，免绕上水。", "src": "trip_lt"},
+        {"route": "九巴 B9", "op": "九巴", "to": "屯门站", "hub": "屯门", "ride": 60, "rideMax": 72, "stops": 1, "head": [15, 30], "fare": 21.3, "boardWalk": 8, "note": "经元朗形点直达屯门站；公开资料约 50-60 分、部分路径规划达 72 分，此处按 60 分估（est）。适合屯门／元朗／天水围学校。", "src": "trip_lt/hksz_lt"},
+        {"route": "九巴 79K", "op": "九巴", "to": "上水（经打鼓岭）", "hub": "上水", "ride": 43, "rideMax": 52, "stops": 30, "head": [15, 30], "fare": 6.9, "boardWalk": 9, "note": "最平但绕路，30 站约 43-52 分；班次疏，仅作备选。", "src": "trip_lt/td_map"}
+      ],
+      "clearSrc": "immd/trip_lt",
+      "tip": "去北区（上水／粉岭）学校选 B7 或 59S；去沙田／大埔选 B8；去屯门／元朗选 B9，可少换一次车。"
+    },
+    "sw": {
+      "label": "深圳湾", "type": "road", "hours": "06:30–00:00（旅检）", "open": 390, "close": 1440,
+      "desc": "一地两检。过关后在港方口岸区公共运输交汇处搭巴士／小巴，主要接元朗、天水围、屯门，再转屯马线。",
+      "entryWalk": 5, "entryNote": "旅检大楼→公共运输交汇处约 5 分（同区，含找站台）",
+      "startStation": null, "startBranch": null,
+      "boards": [
+        {"route": "屿巴 B2P", "op": "屿巴／城巴", "to": "天水围（天慈邨）", "hub": "天水围", "ride": 35, "rideMax": 35, "stops": 1, "head": [10, 25], "fare": 11.3, "boardWalk": 5, "note": "运输署：平日上学日 10-25 分一班；腾讯地图口岸→天盛苑约 35 分，步行 2 分到天水围站。", "src": "td_sw/td_map"},
+        {"route": "屿巴 B2", "op": "屿巴／城巴", "to": "元朗站", "hub": "元朗", "ride": 35, "rideMax": 35, "stops": 1, "head": [20, 30], "fare": 15.8, "boardWalk": 5, "note": "运输署：20-30 分一班，06:45 起由口岸开出；腾讯地图到蓝地／元朗方向约 35 分。", "src": "td_sw/td_map"},
+        {"route": "专线小巴 618", "op": "专线小巴", "to": "天水围（天恩邨）", "hub": "天水围", "ride": 40, "rideMax": 40, "stops": 3, "head": [8, 15], "fare": 14.4, "boardWalk": 5, "note": "运输署：8-15 分一班，班次最密；约 40 分到天水围。", "src": "td_sw/td_map"},
+        {"route": "城巴 B3X", "op": "城巴", "to": "屯门市中心", "hub": "屯门", "ride": 44, "rideMax": 44, "stops": 2, "head": [7, 25], "fare": 16.5, "boardWalk": 5, "note": "运输署：平日上学日 7-25 分一班；腾讯地图到屯门市中心约 43-44 分，再步行 4 分或转屯马线。", "src": "td_sw/td_map"},
+        {"route": "城巴 B3", "op": "城巴", "to": "屯门码头", "hub": "屯门", "ride": 43, "rideMax": 43, "stops": 1, "head": [20, 60], "fare": 16.5, "boardWalk": 5, "note": "运输署：20-60 分一班，班次疏；仅作 B3X 满座时备选。", "src": "td_sw/td_map"}
+      ],
+      "clearSrc": "immd/td_sw",
+      "tip": "深圳湾只接新界西（元朗／天水围／屯门）。若学校在北区或沙田，改走罗湖／落马洲会快很多。"
+    },
+    "hg": {
+      "label": "新皇岗（2026-10-12 启用）", "type": "road", "hours": "24 小时", "open": 0, "close": 1440,
+      "desc": "一地两检、24 小时通关，港方口岸区设室内公共运输交汇处，目前无港铁直达，靠 B 线巴士、专线小巴与 24 小时跨境短途巴士。2026-10-12 启用同日，旧落马洲管制站旅检与皇巴停运；落马洲支线／福田口岸不受影响。",
+      "entryWalk": 6, "entryNote": "入境大堂→室内公共运输交汇处约 6 分",
+      "startStation": null, "startBranch": null,
+      "boards": [
+        {"route": "九巴 B10", "op": "九巴", "to": "葵芳（葵翠邨）", "hub": "葵芳", "ride": 45, "rideMax": 60, "stops": 1, "head": [0, 0], "fare": 0, "boardWalk": 6, "note": "政府路线表：经大榄隧道转车站、青衣到葵芳。班次／车费未逐条核实，按公开路线与直达巴士一般 40-60 分估（est）。", "src": "gov_hg/trip_port"},
+        {"route": "九巴 B11", "op": "九巴", "to": "天水围天富／元朗", "hub": "天水围", "ride": 35, "rideMax": 45, "stops": 1, "head": [0, 0], "fare": 0, "boardWalk": 6, "note": "政府路线表：经新田公共运输交汇处、元朗市中心到天富。腾讯地图皇岗→新田约 22 分，全程按 35-45 分估（est）。", "src": "gov_hg/td_map"},
+        {"route": "屿巴 B12", "op": "屿巴", "to": "乌溪沙站", "hub": "乌溪沙", "ride": 75, "rideMax": 95, "stops": 21, "head": [0, 0], "fare": 0, "boardWalk": 6, "note": "政府路线表：经新田、大埔广福、科学园、马鞍山到乌溪沙站。路径规划 21 站约 95 分、直达巴士一般 40-60 分，此处取 75 分并给 95 分上限（est）。适合沙田／马鞍山学校。", "src": "gov_hg/trip_port/td_map"},
+        {"route": "城巴 B13", "op": "城巴", "to": "小西湾（蓝湾半岛）", "hub": "柴湾", "ride": 80, "rideMax": 105, "stops": 1, "head": [0, 0], "fare": 0, "boardWalk": 6, "note": "政府路线表：经大榄隧道、西隧、上环、北角到柴湾／小西湾。路径规划约 105-120 分，此处取 80-105 分参考区间（est）。", "src": "gov_hg/td_map", "hubNote": "B13 终点小西湾没有港铁站，接续点取柴湾站；落车后实际还需再转巴士或步行"},
+        {"route": "城巴 B14", "op": "城巴", "to": "启德（世运道）", "hub": "启德", "ride": 60, "rideMax": 90, "stops": 1, "head": [0, 0], "fare": 0, "boardWalk": 6, "note": "政府路线表：经大榄隧道转车站、启德体育园；路径规划约 86-105 分，此处取 60-90 分参考区间（est）。", "src": "gov_hg/td_map", "caution": "政府路线表注明「初期每日上午及下午繁忙时间提供服务」，非全日；上学时段可用，其余时段请先核实"},
+        {"route": "城巴 B15", "op": "城巴", "to": "屯门青山湾", "hub": "屯门", "ride": 55, "rideMax": 70, "stops": 1, "head": [0, 0], "fare": 0, "boardWalk": 6, "note": "政府路线表：经洪水桥、屯门市中心、屯门站到青山湾。", "src": "gov_hg", "only": "we"},
+        {"route": "专线小巴 78", "op": "专线小巴", "to": "八乡路（近大榄隧道转车站）", "hub": "锦上路", "ride": 30, "rideMax": 40, "stops": 1, "head": [0, 0], "fare": 0, "boardWalk": 6, "note": "政府路线表：经大榄隧道转车站、锦上路站。腾讯地图皇岗→落马洲新田交汇处约 24 分，此处按 30-40 分估（est）。", "src": "gov_hg/td_map", "hubNote": "78 号小巴终点是八乡路转车站，接续点取锦上路站，中间还需再接驳"},
+        {"route": "九巴 NB73", "op": "九巴", "to": "沙田市中心", "hub": "沙田", "ride": 50, "rideMax": 65, "stops": 1, "head": [0, 0], "fare": 0, "boardWalk": 6, "note": "政府路线表：通宵线，经新田、上水站、大埔广福到沙田市中心。", "src": "gov_hg", "only": "night"},
+        {"route": "跨境短途巴士", "op": "环岛中港通／永东等", "to": "旺角／油尖／观塘／湾仔／荃湾", "hub": "旺角", "ride": 45, "rideMax": 60, "stops": 1, "head": [0, 0], "fare": 0, "boardWalk": 6, "note": "政府路线表列 5 条 24 小时短途跨境巴士，一程直达市区免换乘；路径规划到旺角／油尖约 45-50 分。票价较高且需预先购票。", "src": "gov_hg/td_map", "night24": true, "hubNote": "短途跨境巴士有多个下车点，接续点取旺角站，实际请按你搭的那条线下车点看"}
+      ],
+      "clearSrc": "immd/gov_hg/szpo_hg",
+      "tip": "24 小时通关是唯一优势。日间上学不占优：无港铁直达，去北区学校不如罗湖／落马洲支线；B14 仅繁忙时段、B15 仅周末、NB73 是通宵线，工具已按日期与时段过滤。车费与班次未逐条核实，页面显示「—」而非猜一个数字。"
+    },
+    "mk": {
+      "label": "文锦渡", "type": "road", "hours": "07:00–22:00", "open": 420, "close": 1320,
+      "desc": "入境轮候较短（入境处），学童约 700 人／日并设专用通道；但公共交通最弱，实际多靠跨境校巴／保姆车接送。",
+      "entryWalk": 15, "entryNote": "管制站→文锦渡（新屋岭村）巴士总站步行约 15 分（约 1004 米，腾讯地图）；73K／59K 均不驶入管制站",
+      "startStation": null, "startBranch": null,
+      "boards": [
+        {"route": "九巴 73K", "op": "九巴", "to": "上水总站", "hub": "上水", "ride": 16, "rideMax": 25, "stops": 11, "head": [15, 30], "fare": 5.1, "boardWalk": 15, "note": "香港巴士大典／运输署公开资料：全程 16 分、HK$5.1、平日 15-30 分一班；绕经缸瓦甫的班次约 25 分。", "src": "td_73k/hkbus_73k/trip_mkt/td_map", "avoid": true, "caution": "73K 不驶入文锦渡管制站，公开资料注明该线不能用于往来口岸过境；须先步行 15 分到新屋岭村总站。文锦渡学童实际多由跨境校巴接送，用这条线前请先向运输署／九巴核实"},
+        {"route": "跨境校巴／保姆车", "op": "学校／保姆公司", "to": "学校（直达校门）", "hub": null, "direct": true, "ride": 30, "rideMax": 50, "stops": 0, "head": [0, 0], "waitFixed": 5, "fare": 0, "boardWalk": 0, "note": "趣择校：过关后换乘香港校巴，去粉岭／上水北区学校约 20-30 分、天水围约 30-40 分、沙田约 40-50 分。文锦渡学童主要靠此方式；此处按 30 分估，直达校门不需再转港铁。", "src": "qzx/szpo"}
+      ],
+      "clearSrc": "immd/szpo/td_73k",
+      "tip": "通关快但接驳弱：走路 15 分才到 73K 站、班次 15-30 分，且 73K 不驶入管制站。除非学校有专属校巴，否则不建议。"
+    },
+    "any": {"label": "不限／还没定", "type": "any", "hours": "—", "open": 0, "close": 1440, "desc": "还没定口岸：工具会用同一个完关时刻、同一所学校，把所有具体口岸逐個试算排序，直接比出最快、要换几次车、几点到校。", "entryWalk": 0, "entryNote": "", "startStation": null, "startBranch": null, "boards": [], "clearSrc": "", "tip": "先比罗湖与落马洲支线／福田口岸两个铁路口岸，再看公路口岸的接驳巴士是否更合你孩子的学校。"}
+  }
+}

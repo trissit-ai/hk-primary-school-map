@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>工具 04 · 口岸通勤时间试算｜香港择校工具超市</title>
+<meta name="description" content="选跨境口岸＋学校＋预计完关时刻，逐段列出坐什么车、要不要换乘、步行多久，并按学童通关高峰给出不同时段的加成参考数据。">
+<style>
+:root{
+  --bg:#F4F8FB; --card:#FFFFFF; --pri:#4F7BAB; --pri-d:#3A6188; --soft:#B7CCE0; --soft2:#E6EFF7;
+  --ink:#2C3B47; --ink2:#6B7C8A; --ink3:#94A4B1; --bar:#4E5A66; --line:#DCE6F0; --req:#C0563A;
+  --ok:#3F6212; --warn:#B5761B; --hot:#B0402F;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);
+  font:15px/1.68 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased}
+a{color:var(--pri-d)}
+b{font-weight:600}
+.top{background:var(--bar);color:#F2F6FA;padding:16px 22px 18px}
+.top .inner{max-width:1180px;margin:0 auto}
+.trow{display:flex;align-items:center;gap:14px}
+.home{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;flex:0 0 34px;border-radius:50%;background:#fff;color:#3A6188;box-shadow:0 1px 5px rgba(0,0,0,.18);text-decoration:none;font-size:17px;border:none}
+.home:hover{transform:translateY(-1px)}
+.crumb{font-size:13px;color:#AFC0CE;margin-bottom:6px}
+.crumb a{color:#CBDCEB;text-decoration:none}
+.top h1{margin:0 0 6px;font-size:23px;letter-spacing:.4px;font-weight:600}
+.top p{margin:0;font-size:13.5px;color:#C3D2E0;max-width:960px}
+.badge04{display:inline-block;background:#5E7080;color:#EAF1F7;font-size:12px;padding:2px 9px;border-radius:99px;margin-right:8px;vertical-align:2px;letter-spacing:.5px}
+main{max-width:1180px;margin:0 auto;padding:18px 22px 40px;display:grid;grid-template-columns:minmax(320px,36%) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:1000px){main{grid-template-columns:minmax(0,1fr);padding:14px}}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 3px rgba(44,59,71,.05);min-width:0}
+.panel-h{padding:14px 18px 12px;border-bottom:1px solid var(--line);background:var(--soft2)}
+.panel-h h2{margin:0;font-size:16px;font-weight:600}
+.panel-h .sub{margin:4px 0 0;font-size:12.5px;color:var(--ink2)}
+#left{position:sticky;top:0;max-height:100vh;overflow:auto;padding-bottom:6px}
+@media (max-width:1000px){#left{position:static;max-height:none;overflow:visible}}
+.sec{padding:14px 18px;border-bottom:1px solid var(--line)}
+.sec:last-child{border-bottom:0}
+.sec-t{display:flex;align-items:center;gap:8px;margin:0 0 12px;font-size:13px;font-weight:600;letter-spacing:.4px;color:var(--pri-d)}
+.sec-t .tagreq{background:var(--req);color:#fff;font-size:11px;padding:1px 7px;border-radius:99px;font-weight:500}
+label.lbl{display:block;font-size:12px;font-weight:600;color:var(--ink2);margin:0 0 6px}
+.req{color:var(--req)}
+input[type=text],input[type=time],select,input[list]{width:100%;font-size:14px;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;box-sizing:border-box}
+input:focus,select:focus{outline:2px solid var(--soft);border-color:var(--pri)}
+.row2{display:flex;gap:10px}
+.row2>*{flex:1}
+.hint{font-size:11.5px;color:var(--ink3);margin-top:6px;line-height:1.6}
+.calc{margin-top:4px;width:100%;background:var(--pri);color:#fff;border:none;border-radius:9px;padding:11px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit}
+.calc:hover{background:var(--pri-d)}
+.sch-name{font-size:19px;font-weight:600;margin:2px 0 2px}
+.sch-meta{font-size:12.5px;color:var(--ink2);margin-bottom:10px}
+.sch-meta span{margin-right:10px}
+.bd{border-top:1px dashed var(--line);margin:14px 0 0;padding-top:12px}
+.bd-t{font-size:13px;font-weight:600;color:var(--pri-d);margin:0 0 10px;display:flex;align-items:center;gap:8px}
+.bd-t .tag{font-size:10.5px;font-weight:500;color:#fff;background:var(--pri);border-radius:99px;padding:1px 8px}
+.rows{font-size:13.5px}
+.rows .r{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:4px 0;border-bottom:1px solid #F0F4F8}
+.rows .r .k{color:var(--ink2);flex:0 0 auto}
+.rows .r .v{font-weight:600;flex:1 1 120px;text-align:right;overflow-wrap:anywhere}
+.rows .r.total{font-size:15px;margin-top:4px;padding-top:8px;border-bottom:none}
+.rows .r.total .v{color:var(--pri-d);font-size:17px}
+.route{margin:0;padding:0;list-style:none;font-size:13.5px}
+.route li{display:flex;gap:11px;padding:8px 0;border-bottom:1px solid #F0F4F8;line-height:1.55}
+.route li:last-child{border-bottom:0}
+.route .num{flex:0 0 22px;height:22px;border-radius:50%;background:var(--soft2);color:var(--pri-d);font-size:11.5px;font-weight:600;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.route .body{flex:1;min-width:0}
+.route .what{font-weight:600;color:var(--ink)}
+.route .detail{font-size:12px;color:var(--ink2);margin-top:2px}
+.route .min{flex:0 0 66px;text-align:right;font-weight:600;color:var(--pri-d);font-size:13px;white-space:nowrap}
+.route .add{color:var(--warn);font-weight:600}
+.route .less{color:var(--ok);font-weight:600}
+.wake{background:var(--soft2);border-radius:8px;padding:12px 14px;margin-top:12px}
+.wake .line{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:3px 0;font-size:13.5px}
+.wake .line.big{font-size:15px;font-weight:600;color:var(--pri-d);margin-top:4px}
+.warnbox{background:#FCF3E8;border-left:3px solid var(--warn);border-radius:0 8px 8px 0;padding:11px 14px;font-size:13px;color:#7a5512;line-height:1.7;margin-top:10px}
+.okbox{background:#F0F7E9;border-left:3px solid var(--ok);border-radius:0 8px 8px 0;padding:11px 14px;font-size:13px;color:#3c571a;line-height:1.7;margin-top:10px}
+.note{background:#FBFCFE;border:1px solid var(--line);border-radius:8px;padding:11px 14px;font-size:12px;color:var(--ink2);line-height:1.8;margin-top:12px}
+.note b{color:var(--ink)}
+.empty{color:var(--ink3);font-size:13.5px;padding:18px 4px;text-align:center}
+.tbl{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:6px}
+.tbl th,.tbl td{padding:7px 8px;border-bottom:1px solid #EDF2F7;text-align:right;white-space:nowrap}
+.tbl th{background:var(--soft2);color:var(--pri-d);font-weight:600;font-size:11.5px}
+.tbl td:first-child,.tbl th:first-child{text-align:left}
+.tbl tr.cur td{background:#FFF6E8;font-weight:600}
+.tbl tr.base td{color:var(--ink2)}
+.tbl .up{color:var(--warn);font-weight:600}
+.tbl .hot{color:var(--hot);font-weight:600}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.alts{font-size:12.5px;color:var(--ink2);line-height:1.8}
+.alts .alt{padding:7px 0;border-bottom:1px dashed var(--line)}
+.alts .alt:last-child{border-bottom:0}
+.alts b{color:var(--ink)}
+.hint,.note,.warnbox,.okbox,.alts,.route .detail,.src,.sch-meta{overflow-wrap:anywhere}
+.src{font-size:11.5px;line-height:1.9;color:var(--ink3)}
+.src a{text-decoration:none}
+.src a:hover{text-decoration:underline}
+.xhs{display:inline-block;background:#ff2442;color:#fff;font-size:12px;padding:3px 11px;border-radius:999px;text-decoration:none;font-weight:600}
+.xhs:hover{background:#e01f39}
+.statsline{margin-top:6px}
+footer{max-width:1180px;margin:0 auto;padding:0 22px 46px;font-size:12px;color:var(--ink3);line-height:1.9}
+footer .fx{border-top:1px solid var(--line);padding-top:14px}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="inner">
+    <div class="trow">
+      <a class="home" href="index.html" title="工具超市首页">🏠</a>
+      <div>
+        <div class="crumb"><a href="index.html">香港择校工具超市</a> / 工具 04</div>
+        <h1><span class="badge04">工具 04</span>口岸通勤时间试算</h1>
+      </div>
+    </div>
+    <p>选口岸＋学校＋预计完关时刻，逐段告诉你过关后坐哪条线、要不要换车、走多久，并按学童通关高峰给出不同时段的加成参考。全港 __N__ 所学校都可试算。</p>
+  </div>
+</header>
+
+<main>
+  <div class="panel" id="left">
+    <div class="sec">
+      <div class="sec-t"><span class="tagreq">必填</span>输入条件</div>
+      <label class="lbl" for="fPort">1 · 跨境口岸 <span class="req">*</span></label>
+      <select id="fPort"></select>
+      <div class="hint" id="portHint"></div>
+    </div>
+    <div class="sec">
+      <label class="lbl" for="fSchool">2 · 学校 <span class="req">*</span></label>
+      <input type="text" id="fSchool" list="schList" placeholder="输入或选学校名，例如：上水惠州公立学校" autocomplete="off">
+      <datalist id="schList"></datalist>
+      <div class="hint">全港 __N__ 所都可选；输入时自动联想。</div>
+    </div>
+    <div class="sec">
+      <label class="lbl" for="fClear">3 · 预计完关时刻（踏出香港侧口岸）</label>
+      <input type="time" id="fClear" value="07:00">
+      <div class="hint">这是你办完两边手续、进入香港侧的时间点。工具会按它落在哪个高峰，给出通关排队和各段等待的加成。</div>
+    </div>
+    <div class="sec">
+      <label class="lbl" for="fDay">4 · 日期类型</label>
+      <select id="fDay"></select>
+      <div class="hint">周一学童最集中；周末与长假期通关排队明显更久。</div>
+    </div>
+    <div class="sec">
+      <label class="lbl">5 · 上学时间（默认 08:00）</label>
+      <div class="row2">
+        <div><input type="time" id="fStart" value="08:00"></div>
+        <div><label class="lbl" for="fDays" style="margin:0 0 6px">每周几天</label><select id="fDays"><option>5</option><option>6</option><option>4</option><option>3</option></select></div>
+      </div>
+    </div>
+    <div class="sec">
+      <button class="calc" id="btnCalc">试算通勤</button>
+    </div>
+  </div>
+
+  <div class="panel" id="right">
+    <div class="panel-h"><h2>推算结果</h2><div class="sub">逐段路线 · 分时段峰值加成 · 参考数据</div></div>
+    <div class="sec" id="out">
+      <div class="empty">左边选好口岸、学校、预计完关时刻，按「试算通勤」就会显示：完整分段路线（坐什么车／换什么车／步行多久）、当前时段的峰值加成、以及不同完关时刻的对照参考。</div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="fx">
+    <div id="srcList" class="src"></div>
+    <div style="margin-top:8px">
+    推算口径：过关后至到校按「口岸内步行 → 等车 → 接驳巴士／小巴（线路号＋站数＋车程区间）→ 换乘 → 港铁（线路＋站数＋车程）→ 落站步行 → 到校缓冲」逐段相加；港铁站间时间以东铁线官方车程锚点插值、其余线路按站间估算；步速 80 米／分（带娃慢走）；站内换乘 5 分；部分公路口岸以邻近港铁站作接续点，已在路线里注明。<b>标「est」或「参考」的数字为按官方班次／车程锚点推算，不是实测</b>；未核实的班次与车费显示「待核」。实际以当日班次、人流与路面为准。<br>
+    免责声明：本工具仅供个人参考，不构成任何择校或交通建议；一切以教育局、学校、入境事务处、运输署及各公共交通营办商官方公布与现场站牌为准，择校与出行决定及后果由家长自行承担。<br>
+    本站免费、无广告、免注册；输入只在本页内存，不上传、不收集个人资料。我们也不评价任何学校、校网或地区的好坏。<br>
+    想拿面试日全集、开放日情报？来小红书私信领取：<a class="xhs" href="https://www.xiaohongshu.com/search_result?keyword=183236193" target="_blank" rel="noopener">去小红书聊聊</a><br>
+    <div class="statsline"><span id="busuanzi_container_page_pv" style="display:none">本页访问 <b id="busuanzi_page_pv">–</b> 次</span><span id="busuanzi_container_site_uv" style="display:none">&nbsp;· 本站访客 <b id="busuanzi_site_uv">–</b> 人</span></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+var SCHOOLS = /*__SCHOOLS__*/;
+var D = /*__DATA__*/;
+
+/* ============ 工具函数 ============ */
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+function r1(x){ return Math.round(x*10)/10; }
+function ceil(x){ return Math.ceil(x); }
+function mm(m){ m=Math.round(m); var h=Math.floor(((m%1440)+1440)%1440/60), q=((m%60)+60)%60; return (h<10?'0':'')+h+':'+(q<10?'0':'')+q; }
+function parseTime(t){ var p=(t||'07:00').split(':'); return (+p[0])*60+(+p[1]); }
+function money(x){ return x?('HK$'+r1(x)):'—'; }
+
+/* ============ 港铁网络 ============ */
+var GRAPH = {};      // key: 站名|线路id -> [{to,w,kind}]
+var STN_LINES = {};  // 站名 -> [线路id]
+function node(st, li){ return st+'|'+li; }
+function addEdge(a, b, w, kind){
+  if(!GRAPH[a]) GRAPH[a]=[];
+  GRAPH[a].push({to:b,w:w,kind:kind||'ride'});
+}
+function buildGraph(){
+  D.lines.forEach(function(L){
+    L.stops.forEach(function(st){ (STN_LINES[st]=STN_LINES[st]||[]).push(L.id); });
+    for(var i=0;i<L.stops.length-1;i++){
+      var w = L.cum ? (L.cum[i+1]-L.cum[i]) : L.per;
+      var a=node(L.stops[i],L.id), b=node(L.stops[i+1],L.id);
+      addEdge(a,b,w,'ride'); addEdge(b,a,w,'ride');
+    }
+  });
+  // 落马洲支线：落马洲→上水 12 分（港铁票价资料），汇入东铁主线
+  STN_LINES['落马洲'] = STN_LINES['落马洲'] || ['eal'];
+  addEdge(node('落马洲','eal'), node('上水','eal'), 12, 'ride');
+  addEdge(node('上水','eal'), node('落马洲','eal'), 12, 'ride');
+  // 同站不同线：换乘
+  Object.keys(STN_LINES).forEach(function(st){
+    var ls=STN_LINES[st];
+    for(var i=0;i<ls.length;i++) for(var j=0;j<ls.length;j++){
+      if(i!==j) addEdge(node(st,ls[i]), node(st,ls[j]), D.transferMin, 'transfer');
+    }
+  });
+}
+buildGraph();
+
+/* Dijkstra：从起点站（可属多线）到终点站，返回分段 */
+function railPath(from, to){
+  if(!from || !to) return null;
+  if(from===to) return {mins:0, legs:[], transfers:0};
+  var dist={}, prev={}, visited={}, queue=[];
+  (STN_LINES[from]||[]).forEach(function(li){ var k=node(from,li); dist[k]=0; queue.push(k); });
+  if(!queue.length) return null;
+  var TARGET = (STN_LINES[to]||[]).map(function(li){return node(to,li);});
+  if(!TARGET.length) return null;
+  var guard=0;
+  while(queue.length && guard++<20000){
+    queue.sort(function(a,b){return (dist[a]===undefined?1e9:dist[a])-(dist[b]===undefined?1e9:dist[b]);});
+    var cur=queue.shift();
+    if(visited[cur]) continue;
+    visited[cur]=1;
+    (GRAPH[cur]||[]).forEach(function(e){
+      var nd=dist[cur]+e.w;
+      if(dist[e.to]===undefined || nd<dist[e.to]){ dist[e.to]=nd; prev[e.to]={from:cur,w:e.w,kind:e.kind}; queue.push(e.to); }
+    });
+  }
+  var best=null;
+  TARGET.forEach(function(k){ if(dist[k]!==undefined && (!best||dist[k]<dist[best])) best=k; });
+  if(!best) return null;
+  // 回溯成节点链
+  var chain=[], k=best;
+  while(k){ chain.unshift({k:k, from:prev[k]?prev[k].from:null, w:prev[k]?prev[k].w:0, kind:prev[k]?prev[k].kind:null}); k=prev[k]?prev[k].from:null; }
+  // 连续同线乘车段合并；换乘独立成段，不与后续车程合并
+  var legs=[], transfers=0;
+  chain.forEach(function(c,i){
+    if(i===0) return;
+    var st=c.k.split('|')[0], li=c.k.split('|')[1], fst=c.from.split('|')[0];
+    if(c.kind==='transfer'){
+      transfers++;
+      legs.push({type:'transfer', line:li, from:fst, to:st, mins:c.w});
+    } else {
+      var last=legs[legs.length-1];
+      if(last && last.type==='ride' && last.line===li){ last.to=st; last.mins+=c.w; last.hops+=1; }
+      else legs.push({type:'ride', line:li, from:fst, to:st, mins:c.w, hops:1});
+    }
+  });
+  return {mins:dist[best], legs:legs, transfers:transfers};
+}
+function lineName(id){ var L=D.lines.filter(function(x){return x.id===id;})[0]; return L?L.name:id; }
+function lineEst(id){ var L=D.lines.filter(function(x){return x.id===id;})[0]; return L&&L.est; }
+
+/* ============ 峰值 ============ */
+function peakAt(t){
+  // 18:00 后或 06:00 前：深夜／凌晨，只有新皇岗 24 小时开放
+  if(t>=18*60 || t<6*60) return D.peaks[0];
+  var best=D.peaks[0];
+  D.peaks.forEach(function(p){ if(parseTime(p.t)<=t) best=p; });
+  return best;
+}
+function dayType(id){ return D.dayTypes.filter(function(x){return x.id===id;})[0] || D.dayTypes[0]; }
+function clearMin(peak, day){ return Math.min(120, Math.round(peak.clear*day.clear)); }
+function hasHead(b){ return !!(b && b.head && b.head[0]>0); }
+function waitMin(b, peak){
+  if(b && b.waitFixed) return b.waitFixed;
+  if(!hasHead(b)) return r1(D.defaultWait*peak.wait);
+  return r1(((b.head[0]+b.head[1])/4)*peak.wait);
+}
+/* 按日期类型与时段过滤接驳路线：B15 仅周末、NB73 仅通宵 */
+function boardsFor(portKey, peak, day){
+  var p=D.ports[portKey];
+  return (p.boards||[]).filter(function(b){
+    if(peak.id==='p0500') return b.only==='night' || b.night24===true;
+    if(b.only==='night') return false;
+    if(b.only==='we' && (day.id==='wd'||day.id==='mon')) return false;
+    if(b.only==='wd' && (day.id==='we'||day.id==='hol')) return false;
+    return true;
+  });
+}
+
+/* ============ 单条方案计算 ============ */
+/* 返回 {steps:[{what,detail,min,base,add}], total, base, add, rail, board} */
+function plan(portKey, sch, peak, day, board){
+  var p=D.ports[portKey];
+  var steps=[], total=0, base=0;
+  function step(what, detail, min, baseMin){
+    min=r1(min); var bm=baseMin===undefined?min:r1(baseMin);
+    steps.push({what:what, detail:detail, min:min, base:bm, add:r1(min-bm)});
+    total+=min; base+=bm;
+  }
+  if(p.entryWalk) step('口岸内步行', p.entryNote, p.entryWalk, p.entryWalk);
+  var hub=null, rail=null;
+  if(board){
+    var w=waitMin(board, peak), wb=waitMin(board, {wait:1});
+    var headTxt = hasHead(board)
+      ? '班次约 '+board.head[0]+'–'+board.head[1]+' 分；高峰加班车时更密、平峰更疏'
+      : (board.waitFixed ? '按校巴／保姆车班次，此处仅计集合上车时间；实际班次请向学校确认'
+                         : '班次未逐条核实，按参考候车 '+D.defaultWait+' 分估（est）；请以运输署「香港出行易」与现场站牌为准');
+    step('候车 · '+esc(board.route), headTxt, w, wb);
+    var ride=board.ride, roadMul=peak.road*day.road, rideNow=r1(ride*roadMul);
+    var det=(board.op?esc(board.op)+' · ':'')+(board.stops?board.stops+' 站 · ':'')+'车费 '+(board.fare?money(board.fare):'—（未核实）')
+      +' · 车程参考 '+ride+(board.rideMax>ride?'–'+board.rideMax:'')+' 分。'+esc(board.note||'');
+    step('乘 '+esc(board.route)+' → '+esc(board.to), det, rideNow, ride);
+    if(roadMul>1.0001) steps[steps.length-1].detail += ' 路面按 ×'+r1(roadMul)+' 计。';
+    if(board.hubNote) steps[steps.length-1].detail += ' <b>'+esc(board.hubNote)+'</b>';
+    if(board.caution) steps[steps.length-1].detail += ' <span style="color:var(--warn)">注意：'+esc(board.caution)+'</span>';
+    hub=board.hub;
+  } else {
+    hub=p.startStation;
+  }
+  if(hub && sch.s && hub!==sch.s){
+    rail=railPath(hub, sch.s);
+    if(!rail){
+      step('港铁接驳', '起点 '+esc(hub)+' 至 '+esc(sch.s)+' 暂未能排出线路，建议改选邻近学校或校巴。', 0, 0);
+    } else {
+      if(board) step('在 '+esc(hub)+' 换乘', '下车后转入港铁网络'+(board.hubNote?'；'+esc(board.hubNote):''), D.transferMin, D.transferMin);
+      // 首程候车：东铁线早繁约 2.7–5.5 分一班、平峰 4–8 分（港铁官方）
+      var tw=r1(4*peak.wait), twb=4;
+      if(p.startBranch==='落马洲' || hub==='落马洲'){ tw=r1(tw+3); twb=twb+3; }
+      if(rail.legs.length) step('候车 · 港铁', '按港铁分时段班次估算，高峰班次较密', tw, twb);
+      rail.legs.forEach(function(L){
+        if(L.type==='transfer'){
+          step('站内换乘 · '+esc(L.from), '换 '+esc(lineName(L.line))+'（含站内步行）', L.mins, L.mins);
+        } else {
+          var est=lineEst(L.line)?' · 站间 est':'';
+          step('乘 '+esc(lineName(L.line))+' '+L.hops+' 站', esc(L.from)+' → '+esc(L.to)+est, L.mins, L.mins);
+        }
+      });
+    }
+  } else if(hub && sch.s && hub===sch.s){
+    step('已在最近站', '学校最近港铁站就是 '+esc(sch.s)+'，无需再乘车。', 0, 0);
+  } else if(board && board.direct){
+    step('直达校门', esc(board.route)+' 一程到校，不需再转港铁。', 0, 0);
+  }
+  if(board && board.direct){
+    step('校门步行到教室', '校巴／保姆车直达校门，按 2 分计；不按最近港铁站距离计算', 2, 2);
+  } else {
+    var walk=r1((sch.sd||0)/D.walkSpeed), walkWarn='';
+    if(sch.sd>2000) walkWarn=' 距离较远，建议核实校巴／巴士接驳。';
+    step('落站步行到校', (sch.sd||0)+' 米 ÷ '+D.walkSpeed+' 米／分（带娃慢走）'+walkWarn, walk, walk);
+  }
+  step('到校到教室缓冲', '上楼、放书包、进教室', D.schoolBuf, D.schoolBuf);
+  return {steps:steps, total:r1(total), base:r1(base), add:r1(total-base), rail:rail, board:board, hub:hub};
+}
+
+function bestPlan(portKey, sch, peak, day){
+  var boards=boardsFor(portKey, peak, day);
+  if(!boards.length) return {best:plan(portKey,sch,peak,day,null), alts:[]};
+  var all=boards.map(function(b){ return {p:plan(portKey,sch,peak,day,b), b:b}; });
+  // 已标注使用限制的路线（如 73K 不驶入管制站）降到备选，不作为主方案推荐
+  function score(x){ return x.p.total + (x.b.avoid?1000:0); }
+  all.sort(function(a,b){ return score(a)-score(b); });
+  return {best:all[0].p, alts:all.slice(1)};
+}
+
+/* ============ 渲染 ============ */
+function row(k,v){ return '<div class="r"><span class="k">'+k+'</span><span class="v">'+v+'</span></div>'; }
+function schoolHead(s){
+  return '<div class="sch-name">'+esc(s.n)+'</div>'
+    + '<div class="sch-meta"><span>'+esc(s.t)+'</span><span>'+esc(s.d)+'</span>'
+    + (s.k&&s.k!=='不适用'?'<span>校网 '+esc(s.k)+'</span>':'')
+    + '<span>最近港铁：'+esc(s.s||'—')+'（'+(s.sd||0)+' m）</span></div>';
+}
+function routeHtml(p){
+  var h='<ul class="route">';
+  p.steps.forEach(function(s,i){
+    var add = s.add>0.05 ? ' <span class="add">+'+r1(s.add)+'</span>'
+            : (s.add<-0.05 ? ' <span class="less">−'+r1(-s.add)+'</span>' : '');
+    h+='<li><span class="num">'+(i+1)+'</span><span class="body">'
+      + '<span class="what">'+s.what+'</span>'
+      + (s.detail?'<div class="detail">'+s.detail+'</div>':'')
+      + '</span><span class="min">'+r1(s.min)+' 分'+add+'</span></li>';
+  });
+  return h+'</ul>';
+}
+
+function calc(){
+  var portKey=$('fPort').value, name=$('fSchool').value.trim();
+  var sch=null;
+  for(var i=0;i<SCHOOLS.length;i++) if(SCHOOLS[i].n===name){ sch=SCHOOLS[i]; break; }
+  var out=$('out');
+  if(!sch){ out.innerHTML='<div class="empty">找不到这所学校，请从联想清单里选，或检查名称。</div>'; return; }
+  if(portKey==='any'){
+    var keys=Object.keys(D.ports).filter(function(k){return k!=='any';});
+    var t0=parseTime($('fClear').value), day0=dayType($('fDay').value), pk0=peakAt(t0);
+    var st0=parseTime($('fStart').value), cm0=clearMin(pk0,day0);
+    var rows=keys.map(function(k){
+      var P0=D.ports[k], r=bestPlan(k,sch,pk0,day0);
+      var nTr=(r.best.rail?r.best.rail.transfers:0)+(r.best.board&&!r.best.board.direct?1:0);
+      return {k:k,P:P0,p:r.best,nTr:nTr,closed:(t0<P0.open||t0>P0.close),arr:t0+r.best.total};
+    });
+    rows.sort(function(a,b){ return a.p.total-b.p.total; });
+    var a=schoolHead(sch)+'<div class="bd"><div class="bd-t">还没定口岸？逐個比一比 <span class="tag">'+esc(pk0.label)+'</span></div>'
+      +'<div class="scroll"><table class="tbl"><thead><tr>'
+      +'<th>口岸</th><th>过关后首程</th><th>换乘</th><th>完关→到校</th><th>通关排队参考</th><th>预计到校</th>'
+      +'</tr></thead><tbody>';
+    rows.forEach(function(r,i){
+      a+='<tr'+(i===0?' class="cur"':'')+'>'
+        +'<td>'+esc(r.P.label)+(i===0?' ◀ 最快':'')+(r.closed?' <span class="hot">未开放</span>':'')+'</td>'
+        +'<td>'+(r.p.board?esc(r.p.board.route):'港铁 '+esc(r.P.startStation||'—'))+'</td>'
+        +'<td>'+r.nTr+' 次</td>'
+        +'<td>'+r1(r.p.total)+' 分</td>'
+        +'<td>'+cm0+' 分</td>'
+        +'<td>'+mm(r.arr)+(r.arr>st0?' <span class="hot">迟</span>':'')+'</td>'
+        +'</tr>';
+    });
+    a+='</tbody></table></div>'
+      +'<div class="note">同一所学校、同一完关时刻（'+mm(t0)+'）、同一日期类型（'+esc(day0.label)+'）横向比较。'
+      +'「完关→到校」不含通关排队，排队另列；若要 '+mm(t0)+' 完关，建议约 <b>'+mm(t0-cm0)+'</b> 抵达口岸。'
+      +'最快一行已高亮；在左边选具体口岸可看完整逐段路线、步行时间与其他接驳方案。</div>'
+      +'<div class="note">'+esc(pk0.note)+' 口岸开放时间以入境处公布为准；标「未开放」者请勿按该时段规划。</div></div>';
+    out.innerHTML=a;
+    return;
+  }
+  var t=parseTime($('fClear').value), day=dayType($('fDay').value), peak=peakAt(t);
+  var start=parseTime($('fStart').value), days=+$('fDays').value||5;
+  var res=bestPlan(portKey,sch,peak,day), p=res.best, P=D.ports[portKey];
+  var cm=clearMin(peak,day), arrive=t+p.total, arriveBase=t+p.base;
+  var szSide=20; // 深圳住处→口岸，参考 15–25 分（趣择校）
+  var reachPort=t-cm, leave=reachPort-szSide, wake=leave-35;
+  var oneway=cm+szSide+p.total;
+  var late=arrive>start;
+
+  var h=schoolHead(sch);
+  h+='<div class="bd"><div class="bd-t">口岸与完关时段 <span class="tag">'+esc(P.label)+'</span></div>'
+    + '<div class="rows">'
+    + row('口岸开放时间', esc(P.hours))
+    + row('香港侧接驳', esc(P.desc))
+    + row('预计完关时刻', mm(t)+' · '+esc(peak.label))
+    + row('日期类型', esc(day.label))
+    + row('通关排队参考', cm+' 分（基准 '+peak.clear+' 分 × '+r1(day.clear)+'）')
+    + '</div>'
+    + '<div class="note">'+esc(peak.note)+' '+esc(day.note)+' 若要 '+mm(t)+' 完关，建议约 <b>'+mm(reachPort)+'</b> 抵达口岸。</div>'
+    + ((t<P.open||t>P.close) ? '<div class="warnbox"><b>注意：</b>你填的完关时刻 '+mm(t)+' 不在这个口岸的开放时间（'+esc(P.hours)+'）内。请改时间，或改选 24 小时开放的新皇岗口岸。</div>' : '')
+    + '</div>';
+
+  h+='<div class="bd"><div class="bd-t">完关后逐段路线 <span class="tag">含峰值加成</span></div>'
+    + routeHtml(p)
+    + '<div class="rows"><div class="r total"><span>完关 → 到校合计'
+    + (Math.abs(p.add)>0.05?'（比 09:30 平峰 '+(p.add>0?'+':'−')+r1(Math.abs(p.add))+' 分）':'')+'</span><span>'+r1(p.total)+' 分</span></div></div>'
+    + '<div class="note">每行右侧 <b>+N</b>／<b>−N</b> 是该段因当前时段／日型额外增加或减少的时间；平峰基线 '+r1(p.base)+' 分。'
+    + (p.board&&p.board.direct ? '本方案由 <b>'+esc(p.board.route)+'</b> 一程直达校门，不用转港铁。'
+       : (p.board ? '本方案先搭 <b>'+esc(p.board.route)+'</b> 到 '+esc(p.hub||'学校')+'，再转港铁；若学校就在 '+esc(sch.s)+'，落站后仅需步行。'
+                  : '铁路口岸过关后直接进港铁站，无需接驳巴士。'))
+    + '</div></div>';
+
+  h+='<div class="bd"><div class="bd-t">到校时间</div><div class="wake">'
+    + '<div class="line"><span>预计完关</span><span>'+mm(t)+'</span></div>'
+    + '<div class="line"><span>完关 → 到校</span><span>'+r1(p.total)+' 分（平峰 '+r1(p.base)+' 分）</span></div>'
+    + '<div class="line big"><span>预计到校</span><span>'+mm(arrive)+'</span></div>'
+    + '<div class="line"><span>上学时间</span><span>'+mm(start)+'</span></div>'
+    + '</div>'
+    + (late
+      ? '<div class="warnbox"><b>按此时段会迟到约 '+ceil(arrive-start)+' 分。</b>建议把完关时刻提前到 '+mm(t-(arrive-start)-5)+' 之前（留 5 分余量），或改走更近的口岸／学校。平峰同路线到校 '+mm(arriveBase)+'。</div>'
+      : '<div class="okbox"><b>可提前 '+ceil(start-arrive)+' 分到校。</b>若想再多留余量，把完关时刻提前 10–15 分即可。周一请按上表加成再预留。</div>')
+    + '<div class="rows" style="margin-top:10px">'
+    + row('约几点抵达口岸（含通关排队）', mm(reachPort))
+    + row('约几点出家门（深圳段 '+szSide+' 分）', mm(leave))
+    + row('孩子约几点起床（准备 35 分）', mm(wake))
+    + row('每天来回（家门→校门×2）', ceil(oneway*2)+' 分（约 '+r1(oneway*2/60)+' 小时）')
+    + row('每周 '+days+' 天', r1(oneway*2*days/60)+' 小时')
+    + '</div></div>';
+
+  // 峰值对照
+  h+='<div class="bd"><div class="bd-t">不同完关时刻 · 峰值对照参考</div>'
+    + '<div class="scroll"><table class="tbl"><thead><tr>'
+    + '<th>完关时刻</th><th>时段</th><th>通关排队</th><th>完关→到校</th><th>比平峰</th><th>到校</th>'
+    + '</tr></thead><tbody>';
+  var basePeak=D.peaks.filter(function(x){return x.id==='p0930';})[0];
+  var baseDay={id:'wd',clear:1,road:1,label:'平日',note:''};
+  var baseTotal=bestPlan(portKey,sch,basePeak,baseDay).best.total;
+  D.peaks.forEach(function(pk){
+    var r=bestPlan(portKey,sch,pk,day);
+    var cm2=clearMin(pk,day), arr=parseTime(pk.t)+r.best.total;
+    var deltaBase=r1(r.best.total-baseTotal);
+    var isCur=(pk.id===peak.id);
+    h+='<tr class="'+(isCur?'cur':(pk.id==='p0930'?'base':''))+'">'
+      + '<td>'+esc(pk.t)+(isCur?' ◀ 当前':'')+'</td>'
+      + '<td>'+esc(pk.label)+'</td>'
+      + '<td>'+cm2+' 分</td>'
+      + '<td>'+r1(r.best.total)+' 分</td>'
+      + '<td class="'+(deltaBase>=8?'up':'')+'">'+(deltaBase>0.05?'+':(deltaBase<-0.05?'−':''))+r1(Math.abs(deltaBase))+' 分</td>'
+      + '<td>'+mm(arr)+(arr>start?' <span class="hot">迟</span>':'')+'</td>'
+      + '</tr>';
+  });
+  h+='</tbody></table></div>'
+    + '<div class="note">「比平峰」以 09:30 非繁忙、平日为基线，只比<b>完关之后</b>的路程；通关排队另列，未并入。'
+    + '铁路口岸高峰班次密，候车反而比平峰短，完关后路程可能略少于平峰；公路口岸则会因路面拥堵与候车变长而增加。'
+    + '<b>真正拉开差距的是通关排队</b>：同一日型下 07:00 比 09:30 多 20 分、长假期首尾可达 1–2 小时，请连同「通关排队」一栏一起看。</div></div>';
+
+  if(res.alts.length){
+    h+='<div class="bd"><div class="bd-t">其他接驳方案（可换乘的选择）</div><div class="alts">';
+    res.alts.slice(0,5).forEach(function(a){
+      h+='<div class="alt"><b>'+esc(a.b.route)+'</b> → '+esc(a.b.to)
+        +' · 车程参考 '+a.b.ride+(a.b.rideMax>a.b.ride?'–'+a.b.rideMax:'')+' 分 · '
+        +(hasHead(a.b)?'班次 '+a.b.head[0]+'–'+a.b.head[1]+' 分':'班次待核')+' · '+(a.b.fare?money(a.b.fare):'车费待核')
+        +' ｜ 全程约 '+r1(a.p.total)+' 分'+(a.p.board&&a.p.hub?'（在 '+esc(a.p.hub)+' 换乘）':'')
+        +'<div class="detail">'+esc(a.b.note||'')+(a.b.caution?' <span style="color:var(--warn)">注意：'+esc(a.b.caution)+'</span>':'')+'</div></div>';
+    });
+    h+='</div><div class="note">主方案从可用路线中按「完关→到校总时长最短」挑选；已标注使用限制的路线（带「注意」字样）只列为备选，不会自动推荐。若你更看重少换乘、车费或班次密度，可按上表自行改选。'
+      +esc(P.tip||'')+'</div></div>';
+  } else {
+    h+='<div class="bd"><div class="note"><b>选口岸提示：</b>'+esc(P.tip||'')+'</div></div>';
+  }
+
+  h+='<div class="note"><b>数据来源与口径：</b>教育局《学校位置及资料》名册（学校／最近港铁站／步行距离）；香港政府新闻公报与深圳市口岸办（新皇岗 B10–B15、44B／78／NB73 路线表、2026-10-12 后口岸状态）；入境事务处（口岸开放时间、轮候提示）；运输署（深圳湾 B2／B2P／B3／B3X、文锦渡 73K、莲塘 B7／B8／B9 收费与班次）；港铁（东铁线车程锚点、分时段班次）；深圳市口岸办（学童 6:30–8:00 赴港高峰）；趣择校（过关 15–30 分、校巴分区车程）。'
+    + '线路号与已核实的收费、班次逐条标来源；<b>未核实的收费与班次显示「待核」而不是猜一个数字</b>；车程区间、站间时间与峰值系数标 est，均为按官方锚点／路径规划推算的参考值，不是实测。详情见页脚来源清单。</div>';
+
+  out.innerHTML=h;
+}
+
+/* ============ 初始化 ============ */
+function buildUI(){
+  $('fPort').innerHTML=Object.keys(D.ports).map(function(k){
+    return '<option value="'+esc(k)+'">'+esc(D.ports[k].label)+'</option>';
+  }).join('');
+  $('fDay').innerHTML=D.dayTypes.map(function(d){
+    return '<option value="'+esc(d.id)+'">'+esc(d.label)+'</option>';
+  }).join('');
+  var sorted=SCHOOLS.slice().sort(function(a,b){return a.n<b.n?-1:1;});
+  $('schList').innerHTML=sorted.map(function(s){return '<option value="'+esc(s.n)+'">';}).join('');
+  $('srcList').innerHTML='<b>参考来源：</b>'+D.sources.map(function(s){
+    return s.url?('<a href="'+esc(s.url)+'" target="_blank" rel="noopener">'+esc(s.name)+'</a>'):esc(s.name);
+  }).join(' · ');
+}
+$('fPort').onchange=function(){
+  var p=D.ports[this.value];
+  $('portHint').innerHTML=p?('<b>'+esc(p.label)+'</b>：'+esc(p.desc)):'';
+};
+buildUI();
+$('fPort').onchange();
+$('btnCalc').onclick=calc;
+$('fSchool').addEventListener('keydown',function(e){ if(e.key==='Enter') calc(); });
+</script>
+<script async src="https://jsd.dusays.com/npm/penndu@17.0.0/bsz.js"></script>
+</body>
+</html>

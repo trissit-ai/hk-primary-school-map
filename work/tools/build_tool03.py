@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# [停用 2026-11-15] 这是旧版「口岸通勤时间试算」生成器，OUT 仍写 tool03.html，
+# 但线上 tool03.html 已是「插班申请表产生器」。直接运行会覆盖线上页面。
+# 工具 04 现由 work/tools/build_tool04_commute.py + tool04_commute.tpl.html 生成，请用那一组。
 """
 生成 工具03 口岸通勤时间试算 (tool03.html)
 源数据：hk-school-map/data.json（教育局官方名册）

@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+# [停用 2026-11-15] 这是旧版「自订权重筛选器」生成器（线上对应 tool05.html），
+# 但 OUT 仍写 tool04.html。直接运行会把新版工具 04 覆盖掉。
+# 工具 04 现由 work/tools/build_tool04_commute.py + tool04_commute.tpl.html 生成，请用那一组。
 """构建 tool04.html（工具 04 · 自订权重筛选器，全港版）
 
 输入： work/tools/psp2026_all.json（教育局《小学概览 2026》全港逐校抓取，S 级）
