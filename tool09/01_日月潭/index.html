@@ -427,7 +427,14 @@ const TIMELINE = [
   { text: "日月潭是我国台湾省最大的一个湖，它在台湾省中部的山区。那里群山环绕，树木茂盛，周围有许多名胜古迹。", start: 13.62, end: 26.10 },
   { text: "日月潭很深，湖水碧绿。湖中央有个美丽的小岛，把湖水分成两半：北边像圆圆的太阳，叫日潭；南边像弯弯的月亮，叫月潭。", start: 26.18, end: 38.96 },
   { text: "清晨，湖面上飘着薄薄的雾。天边的晨星和山上的点点灯光，隐隐约约地倒映在湖水中。", start: 39.04, end: 51.68 },
-  { text: "中午，太阳高照，整个日月潭的美景和周围的建筑，都清晰地展现在眼前。要是下起蒙蒙细雨，日月潭好像披上轻纱，周围的景物一片朦胧，就像童话中的仙境。", start: 51.76, end: 73.36 },
+  // 第 4 行行内锚点：整行均分会让「要是下起…上轻纱」慢约 3.6–4 秒。
+  // i = 字符索引，d = 相对本行起点的秒数（识别基准速度 21.60s）。
+  // 58.10 要是下起(medium 58.20/small 57.92)；60.35 日月潭好像(60.60/60.10)；
+  // 64.50 轻纱扫完；64.50–67.24 为拖腔停顿；67.24 周围起唱(small)；70.30 就像童话。
+  { text: "中午，太阳高照，整个日月潭的美景和周围的建筑，都清晰地展现在眼前。要是下起蒙蒙细雨，日月潭好像披上轻纱，周围的景物一片朦胧，就像童话中的仙境。", start: 51.76, end: 73.36,
+    baseSpan: 21.60,
+    anchors: [ { i: 33, d: 6.34 }, { i: 42, d: 8.59 }, { i: 52, d: 12.74 },
+               { i: 53, d: 15.48 }, { i: 62, d: 18.54 } ] },
   { text: "日月潭风光秀丽，吸引了许许多多的中外游客。", start: 74.10, end: 80.34 }
 ];
 const ESTIMATED = TIMELINE.map(x => ({ start: x.start, end: x.end }));
@@ -541,6 +548,28 @@ function currentShot(t) {
   return s.p;
 }
 
+// 逐字进度：默认整行均分；有 anchors 的行按实测句首时间插值。
+// anchors 的 d 相对行起点，会随「字幕快慢」缩放、随校准平移，不需要额外维护。
+function sungChars(l, t) {
+  const total = l.text.length;
+  const span = Math.max(l.end - l.start, 1e-6);
+  if (!l.anchors || !l.anchors.length) {
+    return Math.max(0, Math.min(total, Math.floor((t - l.start) / span * total)));
+  }
+  if (t <= l.start) return 0;
+  if (t >= l.end) return total;
+  const base = l.baseSpan || span;
+  const rel = (t - l.start) * base / span;          // 换算回识别基准速度
+  const pts = [{ i: 0, d: 0 }].concat(l.anchors, [{ i: total, d: base }]);
+  for (let k = 0; k < pts.length - 1; k++) {
+    if (rel < pts[k + 1].d) {
+      const f = (rel - pts[k].d) / Math.max(pts[k + 1].d - pts[k].d, 1e-6);
+      return Math.max(0, Math.min(total, Math.floor(pts[k].i + f * (pts[k + 1].i - pts[k].i))));
+    }
+  }
+  return total;
+}
+
 function renderLyric(active, t) {
   if (!active) {
     if (lastLyricKey !== "none") { lyric.innerHTML = ""; lastLyricKey = "none"; }
@@ -563,8 +592,7 @@ function renderLyric(active, t) {
   }
   $("idleHint").classList.add("hidden");
   const { i, l } = active;
-  const k = Math.max(0, Math.min(l.text.length,
-    Math.floor((t - l.start) / Math.max(l.end - l.start, 1e-6) * l.text.length)));
+  const k = sungChars(l, t);
   const key = i + ":" + k;
   if (key === lastLyricKey) return;
   lastLyricKey = key;
