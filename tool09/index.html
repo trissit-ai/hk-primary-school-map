@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>工具 09 · 课文唱唱｜香港择校工具超市</title>
+<meta name="description" content="把小学语文课文唱出来：逐字 KTV 字幕、真实风景照片、课堂提示。免费、无广告、不用注册。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Oswald:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --wall:#FFF9EC; --floor:#F8E7D2; --page:#FFF9EF; --butter:#FBF3E4;
+  --ink:#3A3550; --ink-60:rgba(58,53,80,.60); --ink-35:rgba(58,53,80,.35); --ink-15:rgba(58,53,80,.15);
+  --lemon:#FBE46D; --blush:#F7D2D1; --chip-on:#FCEB93; --drawer:#F9E3DF;
+  --mat:#F6EAD8;
+  --serif:"Newsreader","Songti SC","STSong",Georgia,serif;
+  --mono:"DM Mono","SFMono-Regular",ui-monospace,Menlo,monospace;
+  --cond:"Oswald","Arial Narrow","PingFang SC","Microsoft YaHei",sans-serif;
+  --cjk:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--wall);color:var(--ink);
+  font:15px/1.75 var(--cjk);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+.nav{height:58px;display:flex;align-items:center;gap:24px;padding:0 27px;
+  border-bottom:1px solid var(--ink-15);background:var(--wall);position:sticky;top:0;z-index:20}
+.logo{font:500 21px/1 var(--serif);margin-right:12px;white-space:nowrap}
+.links{display:flex;gap:22px;font:400 13.5px/1 var(--serif);opacity:.85}
+.links a:hover{opacity:1;text-decoration:underline;text-underline-offset:4px}
+.pill{margin-left:auto;font:400 10.5px/1 var(--mono);letter-spacing:.1em;
+  border:1px solid var(--ink-35);border-radius:99px;padding:7px 12px}
+
+.hero{position:relative;overflow:hidden;min-height:360px;display:flex;flex-direction:column;
+  justify-content:center;padding:64px 6vw 54px;
+  background:radial-gradient(120% 90% at 50% 118%,var(--floor) 0%,var(--wall) 62%)}
+.arc{position:absolute;left:50%;bottom:-40%;transform:translateX(-50%);
+  border:1px solid var(--ink-15);border-radius:50%;pointer-events:none}
+.arc.a1{width:150%;height:78%}.arc.a2{width:112%;height:58%}.arc.a3{width:78%;height:40%}
+.hero .k,.hero h1,.hero .lead,.hero .enter{position:relative;z-index:2}
+.hero .lead,.hero .enter{background:var(--wall)}
+.hero .k{font:400 11px/1 var(--mono);letter-spacing:.16em;color:var(--ink-60);margin-bottom:16px}
+.hero h1{margin:0;font:600 clamp(58px,9vw,132px)/.88 var(--cond);letter-spacing:.02em;
+  transform:scaleX(.855);transform-origin:bottom left;white-space:nowrap}
+.hero h1 span{font-family:var(--cjk);font-weight:800}
+.hero .lead{max-width:620px;margin:22px 0 0;font:400 15px/1.9 var(--cjk);color:var(--ink-60)}
+.hero .enter{display:inline-block;margin-top:22px;align-self:flex-start;
+  font:400 11px/1 var(--mono);letter-spacing:.12em;border-bottom:1px solid var(--ink);
+  padding-bottom:4px;background:rgba(255,249,236,.7)}
+.mask{display:block;overflow:hidden}.mask>i{display:block;font-style:normal;transform:translateY(105%)}
+.intro .mask>i{animation:rise 1s cubic-bezier(.2,.7,.2,1) forwards;animation-delay:var(--d,0ms)}
+@keyframes rise{to{transform:translateY(0)}}
+
+main{max-width:1180px;margin:0 auto;padding:8px 24px 40px}
+.sect{font:400 11px/1 var(--mono);letter-spacing:.14em;color:var(--ink-60);margin:34px 0 16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:26px}
+.card{background:var(--page);border:1px solid var(--ink-15);border-radius:10px;overflow:hidden;
+  box-shadow:0 2px 12px rgba(58,53,80,.05);transition:transform .3s cubic-bezier(.2,.7,.2,1),box-shadow .3s}
+.card:hover{transform:translateY(-4px);box-shadow:0 8px 26px rgba(58,53,80,.10)}
+.card a{display:block}
+.card .im{aspect-ratio:16/9;background:var(--mat);overflow:hidden}
+.card .im img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s}
+.card:hover .im img{transform:scale(1.04)}
+.card .bd{padding:18px 20px 20px}
+.card .no{font:400 10px/1 var(--mono);letter-spacing:.14em;color:var(--ink-60)}
+.card h3{margin:10px 0 8px;font:600 26px/1.1 var(--cond);letter-spacing:.02em}
+.card h3 em{font-style:normal;font-family:var(--cjk);font-weight:700}
+.card p{margin:0 0 14px;font:400 13.5px/1.8 var(--cjk);color:var(--ink-60)}
+.card ul{margin:0 0 16px;padding-left:18px;font:400 12.5px/1.8 var(--cjk);color:var(--ink-60)}
+.card .go{display:inline-block;background:var(--ink);color:var(--wall);border-radius:99px;
+  padding:9px 18px;font:500 13px/1 var(--cond);letter-spacing:.1em}
+.card.coming{opacity:.62;background:var(--butter)}
+.card.coming .go{background:#9A94A6;pointer-events:none}
+
+.note{background:var(--blush);border-radius:10px;padding:18px 22px;margin:34px 0 0;
+  font:400 13px/1.9 var(--cjk);color:var(--ink-60)}
+.note b{color:var(--ink)}
+footer{max-width:1180px;margin:0 auto;padding:0 24px 48px;font:400 12px/1.9 var(--mono);color:var(--ink-60)}
+footer .fx{border-top:1px solid var(--ink-15);padding-top:16px}
+footer .xhs{display:inline-block;background:#ff2442;color:#fff;border-radius:99px;
+  padding:3px 12px;font:600 11px/1.6 var(--cjk);margin-left:4px}
+
+@media (max-width:819px),(orientation:portrait) and (max-width:1100px){
+  .nav{height:52px;padding:0 16px;gap:10px}.logo{font-size:19px;margin-right:0}
+  .links{display:none}.pill{font-size:9px;padding:6px 10px}
+  .hero{min-height:300px;padding:48px 20px 44px}
+  .hero h1{font-size:min(18vw,86px)}
+  .hero .lead{font-size:14px}
+  main{padding:8px 16px 30px}
+  .grid{grid-template-columns:1fr;gap:18px}
+  footer{padding:0 16px 40px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:0s!important;animation-delay:0s!important;transition-duration:0s!important}
+  .mask>i{transform:none}
+}
+</style>
+</head>
+<body class="intro">
+
+<header class="nav">
+  <a class="logo" href="../index.html">课文唱唱</a>
+  <nav class="links">
+    <a href="../index.html">工具超市</a>
+    <a href="#lessons">课文清单</a>
+    <a href="#about">关于这个工具</a>
+  </nav>
+  <span class="pill">工具 09 &nbsp;/&nbsp; 课文唱唱</span>
+</header>
+
+<section class="hero">
+  <div class="arc a1"></div><div class="arc a2"></div><div class="arc a3"></div>
+  <div class="k mask" style="--d:250ms"><i>TOOL 09 &nbsp;·&nbsp; SING THE LESSON &nbsp;·&nbsp; 免费 · 无广告 · 免注册</i></div>
+  <h1 class="mask" style="--d:310ms"><i><span>课文唱唱</span></i></h1>
+  <p class="lead mask" style="--d:370ms"><i>把小学语文课文配上逐字 KTV 字幕和真实风景照片，让小朋友边听边认字。
+    每一课都有段落导航、课堂提示和字幕校准，进度条可任意前后拖动。全部在浏览器里完成，音频不上传。</i></p>
+  <a class="enter mask" href="#lessons" style="--d:430ms"><i>看已经上线的课文 →</i></a>
+</section>
+
+<main>
+  <div class="sect" id="lessons">已经上线 · 01</div>
+  <div class="grid">
+    <div class="card">
+      <a href="01_日月潭/index.html">
+        <div class="im"><img src="01_日月潭/assets/photos/05.jpg" alt="日月潭实景照片"></div>
+        <div class="bd">
+          <div class="no">课文 01 / 01 &nbsp;·&nbsp; 二年级 · 写景</div>
+          <h3><em>课文唱唱 - 01_日月潭</em></h3>
+          <p>《日月潭》课文正文 5 行，配 9 张 Wikimedia Commons 真实风景照片与逐字扫色字幕。</p>
+          <ul>
+            <li>音频 110.92 秒，本机 YuE2 生成，内嵌在页面里可任意 seek</li>
+            <li>前奏 0–13.62 秒 · 课文 13.62–80.34 秒 · 尾奏约 30.6 秒</li>
+            <li>5 段章节跳转、课堂提示、字幕快慢与本机听校打点</li>
+          </ul>
+          <span class="go">打开课文 01 ▸</span>
+        </div>
+      </a>
+    </div>
+    <div class="card coming">
+      <div class="bd">
+        <div class="no">课文 02 &nbsp;·&nbsp; 筹备中</div>
+        <h3><em>下一课</em></h3>
+        <p>还在选课文和配乐。想先听哪一课，欢迎来小红书说一声。</p>
+        <span class="go">待上线</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="note" id="about">
+    <b>关于这个工具的几句实话</b><br>
+    1. 课文文字版权归原权利人所有，这里只作课堂识读辅助，不替代课本。<br>
+    2. 音乐由本机 YuE2 生成；模型权重为 CC BY-NC 4.0 <b>非商用</b>，本站免费、不商业化，请勿挪作商业用途。<br>
+    3. 照片全部为 Wikimedia Commons 真实拍摄，逐张署名与授权条件见各课页面里的「说明」；标注 BY-SA 的照片若改编后公开分发，需按相同方式共享。<br>
+    4. 字幕时间轴用<b>本机离线</b>语音识别做词级对齐，没有把音频上传到任何服务；歌唱识别必有错字，若发现某句差一点，页面里可逐句打点修正。<br>
+    5. 本站不评价任何学校、校网或地区的好坏，这个工具也不是择校建议。
+  </div>
+</main>
+
+<footer>
+  <div class="fx">
+    本站免费、无广告、免注册；不收集个人资料，音频与照片不上传。<br>
+    免责声明：本页仅供个人与课堂参考，不构成任何教学或择校建议；一切以学校与官方公布为准。<br>
+    有想加的课文、发现说明有错，来小红书找我们最方便：<a class="xhs" href="https://www.xiaohongshu.com/search_result?keyword=183236193" target="_blank" rel="noopener">去小红书聊聊</a><br>
+    <span id="busuanzi_container_page_pv" style="display:none">本页访问 <span id="busuanzi_page_pv">–</span> 次</span><span id="busuanzi_container_site_uv" style="display:none">&nbsp;· 本站访客 <span id="busuanzi_site_uv">–</span> 人</span>
+  </div>
+</footer>
+<script async src="https://jsd.dusays.com/npm/penndu@17.0.0/bsz.js"></script>
+</body>
+</html>
