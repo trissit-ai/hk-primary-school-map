@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>工具 06 · 口岸接驳看懂指南｜香港择校工具超市</title>
-<meta name="description" content="过关后先认车，再看懂站牌、分清楚马路两边与去回程。三步交互：填起点与学校、看车往哪开、看你该站哪一边。家长自用的免费工具，示意数据，不含真实路线。">
+<meta name="description" content="过关后先认车，再看懂站牌、分清楚马路两边与去回程。三步交互：选方向填两个地点、看车往哪开、看你该站哪一边。家长自用的免费工具，示意数据，不含真实路线。">
 <style>
 :root{
   --bg:#0A101C; --card:rgba(255,255,255,.045); --card2:rgba(255,255,255,.028);
@@ -116,6 +116,8 @@ h1{margin:0 0 10px;font-size:clamp(28px,4.6vw,42px);font-weight:700;letter-spaci
 .divider{height:1px;background:var(--line2);margin:20px 0}
 .dirrow{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .dirrow .t{font-size:13px;color:var(--ink2);font-weight:600;min-width:110px}
+.dirrow .tip{font-size:11.5px;color:var(--ink3)}
+#step1 .dirrow{margin-bottom:16px}
 .seg{display:flex;gap:8px;flex-wrap:wrap}
 .seg button{padding:9px 16px;border-radius:10px;border:1px solid var(--line);
   background:transparent;color:var(--ink2);font-size:13.5px;cursor:pointer;transition:.22s;white-space:nowrap}
@@ -318,6 +320,7 @@ footer .statsnote{color:var(--ink3);font-size:11px;margin-left:8px}
 .toast.warm{border-color:rgba(255,164,92,.5);color:#FFD9B4}
 
 @media (max-width:860px){
+  .toast{left:14px;right:14px;bottom:auto;top:14px;max-width:none}
   .fields,.simrow,.signwrap{grid-template-columns:1fr}
   .vehgrid,.cargrid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .srcgrid{grid-template-columns:1fr}
@@ -360,11 +363,20 @@ footer .statsnote{color:var(--ink3);font-size:11px;margin-left:8px}
   <div class="shead">
     <span class="num">1</span><h2>先填两个地方</h2><span class="kind in">输入 · 从这里开始</span>
   </div>
-  <p class="sdesc">填上你过关后出来的地方、和孩子学校。两个框都能<b>打字搜</b>，也能点右侧箭头<b>展开清单往下选</b>口岸或全港学校；画面上的代号会换成你选的说法，方向判断就看得懂了。</p>
+  <p class="sdesc">两个框完全一样，<b>都能填口岸或学校</b>，可打字搜，也可点右侧箭头展开清单往下选。填好后用「这一趟往哪走」决定方向，切换方向不用改框里的字。</p>
+
+  <div class="dirrow">
+    <span class="t">这一趟往哪走</span>
+    <div class="seg" id="segDir">
+      <button type="button" class="on" data-v="go">去学校（去程）</button>
+      <button type="button" data-v="back">回口岸（回程）</button>
+    </div>
+    <span class="tip">切换方向不用改框里的字</span>
+  </div>
 
   <div class="fields">
     <div class="field">
-      <label for="inpFrom"><span>1.</span>从哪出发（起步地点）</label>
+      <label for="inpFrom"><span>1.</span>地点 A · 口岸或学校都行</label>
       <div class="combo-wrap" id="wrapFrom">
         <input id="inpFrom" type="text" autocomplete="off" spellcheck="false" role="combobox"
           aria-autocomplete="list" aria-expanded="false" aria-controls="listFrom"
@@ -372,18 +384,18 @@ footer .statsnote{color:var(--ink3);font-size:11px;margin-left:8px}
         <button type="button" class="combo-toggle" id="tgFrom" aria-label="展开候选清单" aria-expanded="false">▾</button>
         <div class="combo-list" id="listFrom" role="listbox" aria-label="起点候选清单"></div>
       </div>
-      <p class="hint">可以搜口岸、学校名或地区；不想选也能自己写。清单可往下滚动看全部。</p>
+      <p class="hint">可搜口岸、学校名或地区，也能自己写；清单可往下滚动看全部。</p>
     </div>
     <div class="field">
-      <label for="inpTo"><span>2.</span>要去哪里（学校 / 目的地）</label>
+      <label for="inpTo"><span>2.</span>地点 B · 口岸或学校都行</label>
       <div class="combo-wrap" id="wrapTo">
         <input id="inpTo" type="text" autocomplete="off" spellcheck="false" role="combobox"
           aria-autocomplete="list" aria-expanded="false" aria-controls="listTo"
-          placeholder="打字搜学校或口岸，或点 ▾ 展开清单">
+          placeholder="打字搜口岸或学校，或点 ▾ 展开清单">
         <button type="button" class="combo-toggle" id="tgTo" aria-label="展开候选清单" aria-expanded="false">▾</button>
         <div class="combo-list" id="listTo" role="listbox" aria-label="目的地候选清单"></div>
       </div>
-      <p class="hint">回程时这里也可以选口岸。不想填真实地点，点下面「填入示意值」也能看完整流程。</p>
+      <p class="hint">和左边一样，口岸、学校都能选；也能自己写。不想填真实地点，点「填入示例」也能看完整流程。</p>
     </div>
   </div>
 
@@ -393,20 +405,13 @@ footer .statsnote{color:var(--ink3);font-size:11px;margin-left:8px}
   </div>
 
   <div class="inrow">
-    <button type="button" id="btnDemo">填入示意值试试</button>
+    <button type="button" id="btnDemo">填入示例</button>
     <button type="button" id="btnEmpty">清空</button>
     <button type="button" class="next" id="btnNext">下一步：看车往哪开 ↓</button>
   </div>
 
   <div class="divider"></div>
-  <div class="dirrow">
-    <span class="t">这一趟往哪走</span>
-    <div class="seg" id="segDir">
-      <button type="button" class="on" data-v="go">去学校（去程）</button>
-      <button type="button" data-v="back">回口岸（回程）</button>
-    </div>
-  </div>
-  <p class="route-preview" id="routePreview">这一趟：<b>（还没填起点）</b> → <b>（还没填目的地）</b>　·　去程</p>
+  <p class="route-preview" id="routePreview">这一趟：<b>（还没填地点 A）</b> → <b>（还没填地点 B）</b>　·　去程</p>
 </section>
 
 <div class="flowline"></div>
@@ -731,8 +736,8 @@ footer .statsnote{color:var(--ink3);font-size:11px;margin-left:8px}
 
   function labels(){
     return {
-      from: state.from.trim() || '口岸',
-      to:   state.to.trim()   || '学校'
+      from: state.from.trim() || '地点 A',
+      to:   state.to.trim()   || '地点 B'
     };
   }
   function dstLabel(){ var l = labels(); return state.dir === 'go' ? l.to : l.from; }
@@ -741,10 +746,13 @@ footer .statsnote{color:var(--ink3);font-size:11px;margin-left:8px}
 
   function refreshPreview(){
     var l = labels();
-    var a = state.from.trim() ? short(l.from,12) : '（还没填起点）';
-    var b = state.to.trim() ? short(l.to,12) : '（还没填目的地）';
+    var toGo = state.dir === 'go';
+    var a0 = state.from.trim() ? short(l.from,12) : '（还没填地点 A）';
+    var b0 = state.to.trim() ? short(l.to,12) : '（还没填地点 B）';
+    /* 预览箭头随去／回程翻转：去程 A→B，回程 B→A（框里的字不变） */
+    var a = toGo ? a0 : b0, b = toGo ? b0 : a0;
     $('#routePreview').innerHTML = '这一趟：<b>' + esc(a) + '</b> → <b>' + esc(b) + '</b>　·　' +
-      (state.dir === 'go' ? '去程（去学校）' : '回程（回口岸）');
+      (toGo ? '去程（去学校）' : '回程（回口岸）');
     /* 两条车道的方向是固定的：上侧往学校、下侧往口岸，不随这一趟的去回程翻转 */
     var toS = short(l.to,6), fromS = short(l.from,6);
     $('#laneTop').textContent = '往 ' + toS + ' · 车道';
@@ -762,9 +770,9 @@ footer .statsnote{color:var(--ink3);font-size:11px;margin-left:8px}
     });
   });
   $('#btnDemo').addEventListener('click', function(){
-    $('#inpFrom').value = '口岸（示意）'; $('#inpTo').value = '学校（示意）';
-    state.from = '口岸（示意）'; state.to = '学校（示意）';
-    refreshPreview(); toast('已填入示意值，可以往下走了');
+    $('#inpFrom').value = '罗湖口岸'; $('#inpTo').value = '学校（示例）';
+    state.from = '罗湖口岸'; state.to = '学校（示例）';
+    refreshPreview(); toast('示例已填 · 切换方向看箭头翻转');
   });
   $('#btnEmpty').addEventListener('click', function(){
     $('#inpFrom').value = ''; $('#inpTo').value = '';

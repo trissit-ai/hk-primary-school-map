@@ -141,10 +141,26 @@ async function pick(page, listSel) {
   r = await page.evaluate(() => document.getElementById('listFrom').classList.contains('open'));
   check(!r, 'Esc 关闭', r);
 
+  // 文案中性 + 方向开关前置 + 回程箭头翻转（两个框来回都能用）
+  r = await page.evaluate(() => ({
+    l1: document.querySelector('label[for="inpFrom"]').textContent,
+    l2: document.querySelector('label[for="inpTo"]').textContent,
+    tip: document.querySelector('.dirrow .tip') ? document.querySelector('.dirrow .tip').textContent : '',
+    dirBeforeFields: !!(document.querySelector('.dirrow').compareDocumentPosition(document.querySelector('.fields')) & 4)
+  }));
+  check(r.l1.includes('地点 A') && r.l2.includes('地点 B'), '两框中性标签（不再写死起点/学校）', r);
+  check(r.tip.includes('切换方向不用改框里的字'), '方向切换提示', r.tip);
+  check(r.dirBeforeFields, '方向开关在两个输入框之前', r.dirBeforeFields);
+
   // 原有按钮与三步流程回归
   await page.click('#btnDemo');
   r = await page.evaluate(() => [document.getElementById('inpFrom').value, document.getElementById('inpTo').value]);
-  check(r[0] === '口岸（示意）' && r[1] === '学校（示意）', '填入示意值仍可用', r);
+  check(r[0] === '罗湖口岸' && r[1] === '学校（示例）', '填入示例仍可用', r);
+  let pvGo = await page.evaluate(() => document.getElementById('routePreview').textContent);
+  await page.click('#segDir button[data-v="back"]');
+  let pvBack = await page.evaluate(() => document.getElementById('routePreview').textContent);
+  check(pvGo.includes('罗湖口岸 → 学校（示例）') && pvGo.includes('去程'), '去程预览 A→B', pvGo);
+  check(pvBack.includes('学校（示例） → 罗湖口岸') && pvBack.includes('回程'), '回程箭头翻转 B→A', pvBack);
   await page.click('#btnEmpty');
   r = await page.evaluate(() => [document.getElementById('inpFrom').value, document.getElementById('inpTo').value]);
   check(r[0] === '' && r[1] === '', '清空仍可用', r);
